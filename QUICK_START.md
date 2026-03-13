@@ -1,4 +1,4 @@
-# 🚀 Quick Start Guide - E-Invitation SaaS Platform
+# 🚀 Quick Start Guide - Marasim Platform
 
 ## What's Ready ✅
 

@@ -59,7 +59,7 @@ export default function ServerErrorPage() {
             <ul className="space-y-1">
               <li>• Clear your browser cache</li>
               <li>• Try again in a few minutes</li>
-              <li>• Contact support@example.com</li>
+              <li>• Contact support@marasim.digital</li>
             </ul>
           </div>
         </div>

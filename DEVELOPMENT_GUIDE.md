@@ -2,7 +2,7 @@
 
 ## Getting Started with Development
 
-Your E-Invitation platform is fully configured for development and testing!
+Your Marasim platform is fully configured for development and testing!
 
 ---
 
@@ -81,7 +81,7 @@ Expires: 15 minutes
 
 ### Test Admin User
 ```
-Email: admin@e-invitation.app
+Email: admin@marasim.digital
 Password: Admin@123456
 Role: super_admin
 ```
@@ -172,7 +172,7 @@ Branch: OMRAN (0309)
    ```
 
 2. **Use Admin Credentials**
-   - Email: `admin@e-invitation.app`
+   - Email: `admin@marasim.digital`
    - Password: `Admin@123456`
 
 3. **Admin Dashboard Sections**
@@ -352,7 +352,7 @@ BANK_IBAN=SA9230400108089585850010
 
 # Email (OTP)
 MAILSLURP_API_KEY=sk_Xvhd...
-MAILSLURP_FROM_EMAIL=noreply@e-invitation.app
+MAILSLURP_FROM_EMAIL=noreply@marasim.digital
 
 # WhatsApp (Messages)
 TWILIO_PHONE_NUMBER=+966551981751

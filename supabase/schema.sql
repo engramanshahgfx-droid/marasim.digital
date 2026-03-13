@@ -1,4 +1,4 @@
--- E-Invitation Management Platform - Supabase Database Schema
+-- Marasim Platform - Supabase Database Schema
 -- Version: 1.0.0 MVP
 
 -- Enable necessary extensions

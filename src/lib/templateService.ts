@@ -3,7 +3,7 @@ import { getCurrentUser } from './auth'
 import { isSupabaseConfigured, supabase } from './supabase'
 
 // Local storage key for templates when Supabase is not configured
-const LOCAL_STORAGE_KEY = 'inviteflow_templates'
+const LOCAL_STORAGE_KEY = 'Marasim_templates'
 
 export interface TemplateData {
   language: 'en' | 'ar'

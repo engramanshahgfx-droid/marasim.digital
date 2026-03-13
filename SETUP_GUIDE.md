@@ -1,8 +1,8 @@
-# E-Invitation SaaS Platform - Complete Setup & Configuration Guide
+# Marasim Platform - Complete Setup & Configuration Guide
 
 ## ✅ What Has Been Built
 
-This is a **production-ready SaaS E-Invitation Management platform** with:
+This is a **production-ready SaaS Marasim platform** with:
 
 ### Core Features ✓
 - ✅ User authentication with Email OTP
@@ -24,7 +24,7 @@ This is a **production-ready SaaS E-Invitation Management platform** with:
 ## 📁 Project Structure After Implementation
 
 ```
-e-invitation-management/
+marasim/
 ├── src/
 │   ├── app/
 │   │   ├── [locale]/

@@ -92,7 +92,7 @@ export default function ContactPage() {
         {/* Contact Info */}
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {[
-            { label: 'Email', value: 'support@e-invitation.com' },
+            { label: 'Email', value: 'support@marasim.digital' },
             { label: 'Phone', value: '+966 55 1981 751' },
             { label: 'Hours', value: 'Mon - Fri, 9 AM - 6 PM' },
           ].map((item, idx) => (

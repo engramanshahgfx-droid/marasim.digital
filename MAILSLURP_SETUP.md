@@ -2,7 +2,7 @@
 
 ## Overview
 
-The E-Invitation platform uses **MailSlurp** for free email OTP (One-Time Password) sending during user registration and password recovery.
+The Marasim platform uses **MailSlurp** for free email OTP (One-Time Password) sending during user registration and password recovery.
 
 ### Why MailSlurp?
 - ✅ **Free tier** - No cost for development and testing
@@ -20,7 +20,7 @@ Your account is already configured:
 | Setting | Value |
 |---------|-------|
 | **API Key** | `sk_XvHdcjNcBJqsCoN0_EnBsKP1R9SS6ItdwR7cG0Mt8BuUvRI3UPuBOKVLQwosbqYaf45DUh6yxX7bUVyig` |
-| **From Email** | `noreply@e-invitation.app` |
+| **From Email** | `noreply@marasim.digital` |
 | **Organization** | `engramanshahgfx-droid's Org` |
 | **Status** | ✅ Active |
 
@@ -33,7 +33,7 @@ In `.env`:
 ```env
 # MailSlurp Configuration
 MAILSLURP_API_KEY=sk_XvHdcjNcBJqsCoN0_EnBsKP1R9SS6ItdwR7cG0Mt8BuUvRI3UPuBOKVLQwosbqYaf45DUh6yxX7bUVyig
-MAILSLURP_FROM_EMAIL=noreply@e-invitation.app
+MAILSLURP_FROM_EMAIL=noreply@marasim.digital
 ```
 
 ---
@@ -64,8 +64,8 @@ VALUES ('user@example.com', '523847', NOW() + INTERVAL '15 minutes');
 ### 4. Email Sent via MailSlurp
 ```
 To: user@example.com
-From: noreply@e-invitation.app
-Subject: Your E-Invitation Verification Code
+From: noreply@marasim.digital
+Subject: Your Marasim Verification Code
 Body: HTML with 6-digit code displayed prominently
 ```
 
@@ -94,8 +94,8 @@ const mailslurpResponse = await fetch('https://api.mailslurp.com/sendEmail', {
   },
   body: JSON.stringify({
     to: [email],
-    from: 'noreply@e-invitation.app',
-    subject: 'Your E-Invitation Verification Code',
+    from: 'noreply@marasim.digital',
+    subject: 'Your Marasim Verification Code',
     text: `Your verification code is: ${otp}`,
     html: `<div>Your code: ${otp}</div>`,
   }),
@@ -108,9 +108,9 @@ const mailslurpResponse = await fetch('https://api.mailslurp.com/sendEmail', {
 ```json
 {
   "id": "msg_abc123def456",
-  "from": "noreply@e-invitation.app",
+  "from": "noreply@marasim.digital",
   "to": ["user@example.com"],
-  "subject": "Your E-Invitation Verification Code",
+  "subject": "Your Marasim Verification Code",
   "sent": true
 }
 ```
@@ -134,7 +134,7 @@ const mailslurpResponse = await fetch('https://api.mailslurp.com/sendEmail', {
 2. Enter test email (use real email or inbox service)
 3. Enter password and name
 4. Click "Register"
-5. Look for OTP email from noreply@e-invitation.app
+5. Look for OTP email from noreply@marasim.digital
 6. Copy 6-digit code
 7. Paste in verification prompt
 8. Account created ✅
@@ -163,7 +163,7 @@ Users receive a professional HTML email:
 <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; padding: 32px;">
   <div style="text-align: center; margin-bottom: 24px;">
     <div style="display: inline-block; background: #3b82f6; color: white; font-weight: bold; padding: 8px 16px; border-radius: 8px; font-size: 18px;">EI</div>
-    <span style="font-size: 20px; font-weight: bold; margin-left: 8px;">E-Invitation</span>
+    <span style="font-size: 20px; font-weight: bold; margin-left: 8px;">Marasim</span>
   </div>
   <h2 style="text-align: center; color: #111827;">Your Verification Code</h2>
   <div style="text-align: center; margin: 24px 0;">

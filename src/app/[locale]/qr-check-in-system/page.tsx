@@ -6,7 +6,7 @@ import type { Metadata } from 'next'
 import QRCheckInInteractive from './components/QRCheckInInteractive'
 
 export const metadata: Metadata = {
-  title: 'QR Check-in System - InviteFlow',
+  title: 'QR Check-in System - Marasim',
   description:
     'Real-time attendance tracking through secure QR code scanning with duplicate prevention and instant status updates for event management.',
 }

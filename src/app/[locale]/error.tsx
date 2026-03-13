@@ -59,7 +59,7 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
           {/* Support Link */}
           <p className="mt-8 text-sm text-gray-600">
             Need help?{' '}
-            <a href="mailto:support@example.com" className="font-medium text-red-600 hover:text-red-700">
+            <a href="mailto:support@marasim.digital" className="font-medium text-red-600 hover:text-red-700">
               Contact Support
             </a>
           </p>

@@ -1,4 +1,4 @@
-# 🚀 E-Invitation SaaS - Quick Reference Guide
+# 🚀 Marasim - Quick Reference Guide
 
 ## 📍 Important URLs
 
@@ -229,7 +229,7 @@ Role: super_admin
 
 ### Test Bank Details (Default)
 ```
-Account Name: E-Invitation Management
+Account Name: Marasim
 Bank Name: Saudi National Bank
 Account Number: 1234567890
 IBAN: SA49XXXXXXXXXXXXXXXXXXXX

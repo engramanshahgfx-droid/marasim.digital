@@ -1,4 +1,4 @@
--- E-Invitation Management Platform - Supabase Database Schema (Updated)
+-- Marasim Platform - Supabase Database Schema (Updated)
 -- Version: 2.0.0 - PayPal + Bank Transfer
 
 -- Enable necessary extensions

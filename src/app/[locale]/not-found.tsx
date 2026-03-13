@@ -60,7 +60,7 @@ export default function NotFound() {
           {/* Additional Help */}
           <p className="mt-8 text-sm text-gray-600">
             Still need help?{' '}
-            <a href="mailto:support@example.com" className="font-medium text-purple-600 hover:text-purple-700">
+            <a href="mailto:support@marasim.digital" className="font-medium text-purple-600 hover:text-purple-700">
               Contact Support
             </a>
           </p>

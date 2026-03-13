@@ -1,8 +1,8 @@
-# E-Invitation SaaS Platform - Complete Implementation Guide
+# Marasim Platform - Complete Implementation Guide
 
 ## 🎯 Project Overview
 
-This is a **complete SaaS-based E-Invitation Management platform** built with:
+This is a **complete SaaS-based Marasim platform** built with:
 - **Frontend**: Next.js 15 + React 19 + TypeScript
 - **Backend**: Next.js API Routes
 - **Database**: Supabase (PostgreSQL)
@@ -495,7 +495,7 @@ For issues or questions:
 
 ## 🎉 You're All Set!
 
-Your E-Invitation SaaS platform is now fully configured with:
+Your Marasim platform is now fully configured with:
 ✅ User authentication & registration
 ✅ Free trial system
 ✅ PayPal integration

@@ -108,10 +108,10 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600">
-                <span className="text-sm font-bold text-white">IF</span>
+              <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg">
+                <img src="/logo.png" alt="Marasim Logo" className="h-full w-full object-contain" />
               </div>
-              <span className="text-xl font-bold text-gray-900">InviteFlow</span>
+              <span className="text-xl font-bold text-gray-900">Marasim</span>
             </div>
             <div className="hidden items-center gap-6 md:flex">
               <a href="#features" className="text-sm text-gray-600 hover:text-gray-900">
@@ -180,7 +180,7 @@ export default function HomePage() {
                   <div className="h-3 w-3 rounded-full bg-green-400" />
                 </div>
                 <div className="flex-1 text-center">
-                  <span className="text-xs text-gray-400">inviteflow.app/dashboard</span>
+                  <span className="text-xs text-gray-400">Marasim.app/dashboard</span>
                 </div>
               </div>
               <div className="bg-gradient-to-br from-blue-50 via-white to-purple-50 p-8">
@@ -309,7 +309,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="mb-4 text-3xl font-bold text-gray-900">Ready to Simplify Your Event Management?</h2>
           <p className="mb-8 text-lg text-gray-600">
-            Join thousands of event organizers who use InviteFlow to create stunning digital invitations.
+            Join thousands of event organizers who use Marasim to create stunning digital invitations.
           </p>
           <Link
             href={`/${locale}/auth/register`}
@@ -322,15 +322,16 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 px-4 py-12 text-gray-400 sm:px-6 lg:px-8">
+      <footer className="bg-gray-900 px-4 py-12  sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 md:flex-row">
           <div className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600">
-              <span className="text-sm font-bold text-white">IF</span>
+            <div className="h-8 w-8 overflow-hidden">
+              <img src="/logo.png" alt="Marasim Logo" className="h-full w-full object-contain" />
             </div>
-            <span className="text-lg font-bold text-white">InviteFlow</span>
+            <span className="text-lg font-bold text-white">Marasim</span>
           </div>
-          <p className="text-sm">© {new Date().getFullYear()} InviteFlow. All rights reserved.</p>
+
+          <p className="text-sm">© {new Date().getFullYear()} Marasim. All rights reserved.</p>
         </div>
       </footer>
     </div>

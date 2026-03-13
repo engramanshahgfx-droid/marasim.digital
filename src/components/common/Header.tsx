@@ -1,6 +1,7 @@
 'use client'
 
 import Icon from '@/components/ui/AppIcon'
+import AppImage from '@/components/ui/AppImage'
 import { getCurrentUser } from '@/lib/auth'
 import { supabase } from '@/lib/supabase'
 import { useLocale } from 'next-intl'
@@ -73,14 +74,19 @@ const Header = ({ className = '' }: HeaderProps) => {
     router.push(`/${locale}/auth/login`)
   }
 
-  const getInitials = () => {
-    const name = user?.profile?.full_name || user?.email || 'U'
-    return name
-      .split(' ')
-      .map((n: string) => n[0])
+  const getUserInitials = () => {
+    const displayName = user?.profile?.full_name?.trim() || user?.email?.trim() || 'User'
+    const parts = displayName.split(/\s+/).filter(Boolean)
+
+    if (parts.length === 1) {
+      return parts[0].slice(0, 2).toUpperCase()
+    }
+
+    return parts
+      .slice(0, 2)
+      .map((part: string) => part[0])
       .join('')
       .toUpperCase()
-      .slice(0, 2)
   }
 
   const events = [
@@ -104,32 +110,9 @@ const Header = ({ className = '' }: HeaderProps) => {
             href={localizedPath('/event-management-dashboard')}
             className="transition-smooth flex items-center gap-2 hover:opacity-80 md:gap-3"
           >
-            <svg
-              width="32"
-              height="32"
-              viewBox="0 0 40 40"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8 md:h-10 md:w-10"
-            >
-              <rect width="40" height="40" rx="8" fill="var(--color-primary)" />
-              <path
-                d="M20 10L12 16V28C12 28.5304 12.2107 29.0391 12.5858 29.4142C12.9609 29.7893 13.4696 30 14 30H26C26.5304 30 27.0391 29.7893 27.4142 29.4142C27.7893 29.0391 28 28.5304 28 28V16L20 10Z"
-                stroke="var(--color-accent)"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              <path
-                d="M16 30V20H24V30"
-                stroke="var(--color-accent)"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+            <AppImage src="/logo.png" alt="Marasim logo" width={40} height={40} className="h-8 w-8 rounded-md md:h-10 md:w-10" />
             <span className="hidden font-heading text-lg font-semibold text-primary sm:inline md:text-xl">
-              InviteFlow
+              Marasim
             </span>
           </Link>
 
@@ -223,8 +206,8 @@ const Header = ({ className = '' }: HeaderProps) => {
               className="transition-smooth flex items-center gap-2 rounded-md px-1 py-2 hover:bg-muted focus:outline-none sm:gap-3 sm:px-2 md:px-3"
               aria-label="User profile menu"
             >
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-500 text-xs font-semibold text-white sm:h-9 sm:w-9 sm:text-sm md:h-10 md:w-10">
-                {getInitials()}
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-foreground sm:h-9 sm:w-9 sm:text-sm md:h-10 md:w-10">
+                {getUserInitials()}
               </div>
             </button>
 

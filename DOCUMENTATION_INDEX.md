@@ -1,4 +1,4 @@
-# 📚 E-Invitation SaaS Platform - Complete Documentation Index
+# 📚 Marasim Platform - Complete Documentation Index
 
 ## 🎯 Getting Started
 

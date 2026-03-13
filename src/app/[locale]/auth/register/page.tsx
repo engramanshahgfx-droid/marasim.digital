@@ -84,10 +84,10 @@ export default function RegisterPage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
             <Link href={`/${locale}`} className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600">
-                <span className="text-sm font-bold text-white">IF</span>
+              <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg">
+                <img src="/logo.png" alt="Marasim Logo" className="h-full w-full object-contain" />
               </div>
-              <span className="text-lg font-bold text-gray-900 sm:text-xl">InviteFlow</span>
+              <span className="text-lg font-bold text-gray-900 sm:text-xl">Marasim</span>
             </Link>
             <div className="flex items-center gap-2 sm:gap-3">
               <Link

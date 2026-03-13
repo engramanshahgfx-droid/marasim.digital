@@ -1,4 +1,4 @@
-# E-Invitation SaaS - System Architecture Diagram
+# Marasim - System Architecture Diagram
 
 ## 📐 Complete System Architecture
 
@@ -12,7 +12,7 @@
         ┌──────────────────────┐                    ┌──────────────────────┐
         │   USER BROWSER       │                    │   ADMIN BROWSER      │
         ├──────────────────────┤                    ├──────────────────────┤
-        │ • Home Page          │                    │ • Admin Login        │
+        │ • Home Page          │                    │ • Marasim Login        │
         │ • Features           │                    │ • Dashboard          │
         │ • Pricing            │                    │ • User Management    │
         │ • Register           │                    │ • Payment Approvals  │
