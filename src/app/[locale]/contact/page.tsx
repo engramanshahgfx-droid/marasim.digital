@@ -13,7 +13,9 @@ export default function ContactPage() {
   const content = {
     title: isArabic ? 'تواصل معنا' : 'Get in Touch',
     subtitle: isArabic ? 'هل لديك أسئلة؟ يسعدنا التواصل معك.' : 'Have questions? We would love to hear from you.',
-    success: isArabic ? 'شكرًا لرسالتك! سنعود إليك قريبًا.' : 'Thank you for your message! We will get back to you soon.',
+    success: isArabic
+      ? 'شكرًا لرسالتك! سنعود إليك قريبًا.'
+      : 'Thank you for your message! We will get back to you soon.',
     name: isArabic ? 'الاسم' : 'Name',
     email: isArabic ? 'البريد الإلكتروني' : 'Email',
     message: isArabic ? 'الرسالة' : 'Message',

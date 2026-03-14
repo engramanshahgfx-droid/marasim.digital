@@ -145,9 +145,13 @@ export default function HomePage() {
     howItWorksTitle: isArabic ? 'كيف يعمل' : 'How It Works',
     howItWorksDescription: isArabic ? 'ابدأ في 3 خطوات بسيطة' : 'Get started in 3 simple steps',
     featuresTitle: isArabic ? 'كل ما تحتاجه' : 'Everything You Need',
-    featuresDescription: isArabic ? 'أدوات قوية لإدارة فعالياتك من البداية إلى النهاية' : 'Powerful tools to manage your events from start to finish',
+    featuresDescription: isArabic
+      ? 'أدوات قوية لإدارة فعالياتك من البداية إلى النهاية'
+      : 'Powerful tools to manage your events from start to finish',
     pricingTitle: isArabic ? 'أسعار بسيطة وواضحة' : 'Simple, Transparent Pricing',
-    pricingDescription: isArabic ? 'ابدأ مجانًا وقم بالترقية عندما تكون جاهزًا' : 'Start free, upgrade when you\'re ready',
+    pricingDescription: isArabic
+      ? 'ابدأ مجانًا وقم بالترقية عندما تكون جاهزًا'
+      : "Start free, upgrade when you're ready",
     mostPopular: isArabic ? 'الأكثر شيوعًا' : 'MOST POPULAR',
     getStarted: isArabic ? 'ابدأ الآن' : 'Get Started',
     ctaTitle: isArabic ? 'جاهز لتبسيط إدارة فعالياتك؟' : 'Ready to Simplify Your Event Management?',
@@ -155,7 +159,9 @@ export default function HomePage() {
       ? 'انضم إلى منظمي الفعاليات الذين يستخدمون Marasim لإنشاء دعوات رقمية مميزة.'
       : 'Join thousands of event organizers who use Marasim to create stunning digital invitations.',
     ctaButton: isArabic ? 'أنشئ دعوتك' : 'Create Your Invitation',
-    footerNote: isArabic ? 'لا حاجة إلى بطاقة ائتمان · توجد خطة مجانية' : 'No credit card required · Free plan available',
+    footerNote: isArabic
+      ? 'لا حاجة إلى بطاقة ائتمان · توجد خطة مجانية'
+      : 'No credit card required · Free plan available',
     footerRights: isArabic ? 'جميع الحقوق محفوظة.' : 'All rights reserved.',
   }
 
@@ -342,7 +348,9 @@ export default function HomePage() {
                 }`}
               >
                 {plan.popular && (
-                  <div className="bg-blue-600 py-1.5 text-center text-xs font-bold text-white">{content.mostPopular}</div>
+                  <div className="bg-blue-600 py-1.5 text-center text-xs font-bold text-white">
+                    {content.mostPopular}
+                  </div>
                 )}
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-gray-900">{plan.name[locale as 'en' | 'ar']}</h3>
@@ -391,7 +399,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 px-4 py-12  sm:px-6 lg:px-8">
+      <footer className="bg-gray-900 px-4 py-12 sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 md:flex-row">
           <div className="flex items-center gap-2">
             <div className="h-8 w-8 overflow-hidden">
@@ -400,7 +408,9 @@ export default function HomePage() {
             <span className="text-lg font-bold text-white">Marasim</span>
           </div>
 
-          <p className="text-sm">© {new Date().getFullYear()} Marasim. {content.footerRights}</p>
+          <p className="text-sm">
+            © {new Date().getFullYear()} Marasim. {content.footerRights}
+          </p>
         </div>
       </footer>
     </div>

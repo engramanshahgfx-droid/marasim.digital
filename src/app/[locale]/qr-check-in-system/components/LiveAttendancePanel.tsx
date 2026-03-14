@@ -11,14 +11,44 @@ interface LiveAttendancePanelProps {
   className?: string
 }
 
-const LiveAttendancePanel = ({ totalGuests, checkedInGuests, confirmedGuests, eventName, className = '' }: LiveAttendancePanelProps) => {
+const LiveAttendancePanel = ({
+  totalGuests,
+  checkedInGuests,
+  confirmedGuests,
+  eventName,
+  className = '',
+}: LiveAttendancePanelProps) => {
   const locale = useLocale()
   const isArabic = locale === 'ar'
 
   const metrics = [
-    { labelEn: 'Checked In', labelAr: 'تم تسجيل الحضور', value: checkedInGuests, total: totalGuests, icon: 'UserGroupIcon', color: 'bg-success/10 text-success', bar: 'bg-success' },
-    { labelEn: 'Pending Arrivals', labelAr: 'قيد الوصول', value: Math.max(totalGuests - checkedInGuests, 0), total: totalGuests, icon: 'ClockIcon', color: 'bg-warning/10 text-warning', bar: 'bg-warning' },
-    { labelEn: 'Confirmed RSVP', labelAr: 'تأكيد الحضور', value: confirmedGuests, total: totalGuests, icon: 'CheckCircleIcon', color: 'bg-primary/10 text-primary', bar: 'bg-primary' },
+    {
+      labelEn: 'Checked In',
+      labelAr: 'تم تسجيل الحضور',
+      value: checkedInGuests,
+      total: totalGuests,
+      icon: 'UserGroupIcon',
+      color: 'bg-success/10 text-success',
+      bar: 'bg-success',
+    },
+    {
+      labelEn: 'Pending Arrivals',
+      labelAr: 'قيد الوصول',
+      value: Math.max(totalGuests - checkedInGuests, 0),
+      total: totalGuests,
+      icon: 'ClockIcon',
+      color: 'bg-warning/10 text-warning',
+      bar: 'bg-warning',
+    },
+    {
+      labelEn: 'Confirmed RSVP',
+      labelAr: 'تأكيد الحضور',
+      value: confirmedGuests,
+      total: totalGuests,
+      icon: 'CheckCircleIcon',
+      color: 'bg-primary/10 text-primary',
+      bar: 'bg-primary',
+    },
   ]
 
   const calculatePercentage = (value: number, total: number) => Math.round((value / Math.max(total, 1)) * 100)
@@ -90,14 +120,14 @@ const LiveAttendancePanel = ({ totalGuests, checkedInGuests, confirmedGuests, ev
       <div className="bg-muted/30 border-t border-border p-6">
         <div className="grid grid-cols-2 gap-4">
           <div className="text-center">
-            <p className="font-mono text-2xl font-semibold text-text-primary">{calculatePercentage(checkedInGuests, Math.max(totalGuests, 1))}%</p>
+            <p className="font-mono text-2xl font-semibold text-text-primary">
+              {calculatePercentage(checkedInGuests, Math.max(totalGuests, 1))}%
+            </p>
             <p className="mt-1 text-xs text-text-secondary">{isArabic ? 'نسبة الحضور الكلية' : 'Overall Attendance'}</p>
           </div>
           <div className="text-center">
             <p className="font-mono text-2xl font-semibold text-text-primary">{checkedInGuests}</p>
-            <p className="mt-1 text-xs text-text-secondary">
-              {isArabic ? 'إجمالي المسجلين' : 'Total Check-ins'}
-            </p>
+            <p className="mt-1 text-xs text-text-secondary">{isArabic ? 'إجمالي المسجلين' : 'Total Check-ins'}</p>
           </div>
         </div>
       </div>

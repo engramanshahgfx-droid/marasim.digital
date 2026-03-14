@@ -33,7 +33,9 @@ const BulkActionsBar = ({
           <div className="flex items-center gap-3">
             <Icon name="CheckCircleIcon" size={24} />
             <span className="text-sm font-medium">
-              {isArabic ? `تم تحديد ${selectedCount} ضيف` : `${selectedCount} guest${selectedCount > 1 ? 's' : ''} selected`}
+              {isArabic
+                ? `تم تحديد ${selectedCount} ضيف`
+                : `${selectedCount} guest${selectedCount > 1 ? 's' : ''} selected`}
             </span>
           </div>
 
@@ -48,7 +50,15 @@ const BulkActionsBar = ({
               ) : (
                 <Icon name="ChatBubbleLeftRightIcon" size={16} />
               )}
-              <span className="text-sm font-medium">{isSendingWhatsApp ? (isArabic ? 'جاري الإرسال...' : 'Sending...') : (isArabic ? 'إرسال واتساب' : 'Send WhatsApp')}</span>
+              <span className="text-sm font-medium">
+                {isSendingWhatsApp
+                  ? isArabic
+                    ? 'جاري الإرسال...'
+                    : 'Sending...'
+                  : isArabic
+                    ? 'إرسال واتساب'
+                    : 'Send WhatsApp'}
+              </span>
             </button>
             <button
               onClick={onUpdateStatus}

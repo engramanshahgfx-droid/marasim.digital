@@ -61,7 +61,9 @@ const FilterPanel = ({ filters, onFilterChange, guestCounts }: FilterPanelProps)
             type="text"
             value={filters.searchQuery}
             onChange={(e) => handleFilterChange('searchQuery', e.target.value)}
-            placeholder={isArabic ? 'ابحث بالاسم أو الهاتف أو البريد الإلكتروني...' : 'Search by name, phone, or email...'}
+            placeholder={
+              isArabic ? 'ابحث بالاسم أو الهاتف أو البريد الإلكتروني...' : 'Search by name, phone, or email...'
+            }
             className="w-full rounded-md border border-input bg-background py-2.5 pl-10 pr-4 text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-3 focus:ring-ring focus:ring-offset-2"
           />
         </div>
@@ -77,10 +79,18 @@ const FilterPanel = ({ filters, onFilterChange, guestCounts }: FilterPanelProps)
           onChange={(e) => handleFilterChange('deliveryStatus', e.target.value)}
           className="w-full rounded-md border border-input bg-background px-4 py-2.5 text-text-primary focus:outline-none focus:ring-3 focus:ring-ring focus:ring-offset-2"
         >
-          <option value="all">{isArabic ? 'الكل' : 'All'} ({guestCounts.total})</option>
-          <option value="delivered">{isArabic ? 'تم التسليم' : 'Delivered'} ({guestCounts.delivered})</option>
-          <option value="failed">{isArabic ? 'فشل' : 'Failed'} ({guestCounts.failed})</option>
-          <option value="pending">{isArabic ? 'معلق' : 'Pending'} ({guestCounts.pending})</option>
+          <option value="all">
+            {isArabic ? 'الكل' : 'All'} ({guestCounts.total})
+          </option>
+          <option value="delivered">
+            {isArabic ? 'تم التسليم' : 'Delivered'} ({guestCounts.delivered})
+          </option>
+          <option value="failed">
+            {isArabic ? 'فشل' : 'Failed'} ({guestCounts.failed})
+          </option>
+          <option value="pending">
+            {isArabic ? 'معلق' : 'Pending'} ({guestCounts.pending})
+          </option>
         </select>
       </div>
 
@@ -94,10 +104,18 @@ const FilterPanel = ({ filters, onFilterChange, guestCounts }: FilterPanelProps)
           onChange={(e) => handleFilterChange('responseStatus', e.target.value)}
           className="w-full rounded-md border border-input bg-background px-4 py-2.5 text-text-primary focus:outline-none focus:ring-3 focus:ring-ring focus:ring-offset-2"
         >
-          <option value="all">{isArabic ? 'الكل' : 'All'} ({guestCounts.total})</option>
-          <option value="confirmed">{isArabic ? 'مؤكد' : 'Confirmed'} ({guestCounts.confirmed})</option>
-          <option value="declined">{isArabic ? 'معتذر' : 'Declined'} ({guestCounts.declined})</option>
-          <option value="no-response">{isArabic ? 'لا يوجد رد' : 'No Response'} ({guestCounts.noResponse})</option>
+          <option value="all">
+            {isArabic ? 'الكل' : 'All'} ({guestCounts.total})
+          </option>
+          <option value="confirmed">
+            {isArabic ? 'مؤكد' : 'Confirmed'} ({guestCounts.confirmed})
+          </option>
+          <option value="declined">
+            {isArabic ? 'معتذر' : 'Declined'} ({guestCounts.declined})
+          </option>
+          <option value="no-response">
+            {isArabic ? 'لا يوجد رد' : 'No Response'} ({guestCounts.noResponse})
+          </option>
         </select>
       </div>
 
@@ -111,9 +129,15 @@ const FilterPanel = ({ filters, onFilterChange, guestCounts }: FilterPanelProps)
           onChange={(e) => handleFilterChange('checkInStatus', e.target.value)}
           className="w-full rounded-md border border-input bg-background px-4 py-2.5 text-text-primary focus:outline-none focus:ring-3 focus:ring-ring focus:ring-offset-2"
         >
-          <option value="all">{isArabic ? 'الكل' : 'All'} ({guestCounts.total})</option>
-          <option value="checked-in">{isArabic ? 'تم تسجيل الحضور' : 'Checked In'} ({guestCounts.checkedIn})</option>
-          <option value="not-checked-in">{isArabic ? 'لم يتم تسجيل الحضور' : 'Not Checked In'} ({guestCounts.total - guestCounts.checkedIn})</option>
+          <option value="all">
+            {isArabic ? 'الكل' : 'All'} ({guestCounts.total})
+          </option>
+          <option value="checked-in">
+            {isArabic ? 'تم تسجيل الحضور' : 'Checked In'} ({guestCounts.checkedIn})
+          </option>
+          <option value="not-checked-in">
+            {isArabic ? 'لم يتم تسجيل الحضور' : 'Not Checked In'} ({guestCounts.total - guestCounts.checkedIn})
+          </option>
         </select>
       </div>
 
@@ -142,7 +166,9 @@ const FilterPanel = ({ filters, onFilterChange, guestCounts }: FilterPanelProps)
         >
           <div className="flex items-center gap-2">
             <Icon name="FunnelIcon" size={20} className="text-primary" />
-            <span className="text-sm font-medium text-text-primary">{isArabic ? 'الفلاتر والبحث' : 'Filters & Search'}</span>
+            <span className="text-sm font-medium text-text-primary">
+              {isArabic ? 'الفلاتر والبحث' : 'Filters & Search'}
+            </span>
           </div>
           <Icon
             name="ChevronDownIcon"

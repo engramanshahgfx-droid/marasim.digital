@@ -1,8 +1,8 @@
 'use client'
 
+import LocaleSwitch from '@/components/common/LocaleSwitch'
 import Icon from '@/components/ui/AppIcon'
 import AppImage from '@/components/ui/AppImage'
-import LocaleSwitch from '@/components/common/LocaleSwitch'
 import { getCurrentUser } from '@/lib/auth'
 import { supabase } from '@/lib/supabase'
 import { useLocale } from 'next-intl'
@@ -143,10 +143,14 @@ const Header = ({ className = '' }: HeaderProps) => {
             href={localizedPath('/event-management-dashboard')}
             className="transition-smooth flex items-center gap-2 hover:opacity-80 md:gap-3"
           >
-            <AppImage src="/logo.png" alt="Marasim logo" width={40} height={40} className="h-8 w-8 rounded-md md:h-10 md:w-10" />
-            <span className="hidden font-heading text-lg font-semibold text-primary sm:inline md:text-xl">
-              Marasim
-            </span>
+            <AppImage
+              src="/logo.png"
+              alt="Marasim logo"
+              width={40}
+              height={40}
+              className="h-8 w-8 rounded-md md:h-10 md:w-10"
+            />
+            <span className="hidden font-heading text-lg font-semibold text-primary sm:inline md:text-xl">Marasim</span>
           </Link>
 
           <div className="relative">
@@ -258,7 +262,9 @@ const Header = ({ className = '' }: HeaderProps) => {
                       <>
                         <p className="mt-2 text-xs text-text-secondary">
                           {isArabic ? 'الخطة:' : 'Plan:'}{' '}
-                          <span className="font-medium capitalize">{user.profile.plan_type || (isArabic ? 'مجانية' : 'Free')}</span>
+                          <span className="font-medium capitalize">
+                            {user.profile.plan_type || (isArabic ? 'مجانية' : 'Free')}
+                          </span>
                         </p>
                         <p className="text-xs text-text-secondary">
                           {isArabic ? 'الحالة:' : 'Status:'}{' '}

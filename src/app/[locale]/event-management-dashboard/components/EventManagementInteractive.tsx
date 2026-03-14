@@ -222,7 +222,9 @@ const EventManagementInteractive = () => {
     setShowUpgradeModal(true)
     setIsCreateModalOpen(false)
     setEditingEvent(null)
-    setError(message || (isArabic ? 'قم بترقية خطتك لإنشاء فعاليات إضافية.' : 'Upgrade your plan to create more events.'))
+    setError(
+      message || (isArabic ? 'قم بترقية خطتك لإنشاء فعاليات إضافية.' : 'Upgrade your plan to create more events.')
+    )
   }
 
   if (!isHydrated || (isLoading && events.length === 0)) {
@@ -679,10 +681,18 @@ const EventManagementInteractive = () => {
                     />
                   </button>
                 </th>
-                <th className="px-6 py-4 text-center text-sm font-semibold text-text-primary">{isArabic ? 'الضيوف' : 'Guests'}</th>
-                <th className="px-6 py-4 text-center text-sm font-semibold text-text-primary">{isArabic ? 'الدعوات' : 'Invitations'}</th>
-                <th className="px-6 py-4 text-center text-sm font-semibold text-text-primary">{isArabic ? 'الحضور' : 'Attendance'}</th>
-                <th className="px-6 py-4 text-left text-sm font-semibold text-text-primary">{isArabic ? 'الإجراءات' : 'Actions'}</th>
+                <th className="px-6 py-4 text-center text-sm font-semibold text-text-primary">
+                  {isArabic ? 'الضيوف' : 'Guests'}
+                </th>
+                <th className="px-6 py-4 text-center text-sm font-semibold text-text-primary">
+                  {isArabic ? 'الدعوات' : 'Invitations'}
+                </th>
+                <th className="px-6 py-4 text-center text-sm font-semibold text-text-primary">
+                  {isArabic ? 'الحضور' : 'Attendance'}
+                </th>
+                <th className="px-6 py-4 text-left text-sm font-semibold text-text-primary">
+                  {isArabic ? 'الإجراءات' : 'Actions'}
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -720,7 +730,9 @@ const EventManagementInteractive = () => {
         {filteredAndSortedEvents.length === 0 && (
           <div className="p-12 text-center">
             <Icon name="CalendarDaysIcon" size={48} className="mx-auto mb-4 text-text-secondary" />
-            <p className="text-text-secondary">{isArabic ? 'لا توجد فعاليات مطابقة لبحثك.' : 'No events found matching your search.'}</p>
+            <p className="text-text-secondary">
+              {isArabic ? 'لا توجد فعاليات مطابقة لبحثك.' : 'No events found matching your search.'}
+            </p>
           </div>
         )}
       </div>

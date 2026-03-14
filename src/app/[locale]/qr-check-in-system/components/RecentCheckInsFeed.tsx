@@ -30,12 +30,13 @@ const RecentCheckInsFeed = ({ guests, className = '' }: RecentCheckInsFeedProps)
               <h2 className="font-heading text-xl font-semibold text-text-primary">
                 {isArabic ? 'آخر عمليات التسجيل' : 'Recent Check-ins'}
               </h2>
-              <p className="text-sm text-text-secondary">
-                {isArabic ? 'أحدث وصول للضيوف' : 'Latest guest arrivals'}
-              </p>
+              <p className="text-sm text-text-secondary">{isArabic ? 'أحدث وصول للضيوف' : 'Latest guest arrivals'}</p>
             </div>
           </div>
-          <button className="text-sm font-medium text-primary hover:underline" aria-label={isArabic ? 'عرض جميع عمليات التسجيل' : 'View all check-ins'}>
+          <button
+            className="text-sm font-medium text-primary hover:underline"
+            aria-label={isArabic ? 'عرض جميع عمليات التسجيل' : 'View all check-ins'}
+          >
             {isArabic ? 'عرض الكل' : 'View All'}
           </button>
         </div>
@@ -43,7 +44,9 @@ const RecentCheckInsFeed = ({ guests, className = '' }: RecentCheckInsFeedProps)
 
       <div className="max-h-[600px] divide-y divide-border overflow-y-auto">
         {checkIns.length === 0 && (
-          <div className="p-6 text-sm text-text-secondary">{isArabic ? 'لا توجد عمليات تسجيل حضور بعد' : 'No guest check-ins yet'}</div>
+          <div className="p-6 text-sm text-text-secondary">
+            {isArabic ? 'لا توجد عمليات تسجيل حضور بعد' : 'No guest check-ins yet'}
+          </div>
         )}
         {checkIns.map((checkIn) => {
           const initials = checkIn.name
@@ -59,7 +62,7 @@ const RecentCheckInsFeed = ({ guests, className = '' }: RecentCheckInsFeedProps)
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-success text-sm font-semibold text-success-foreground">
                     {initials}
                   </div>
-                  <div className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-success/10 text-success">
+                  <div className="bg-success/10 absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full text-success">
                     <Icon name="CheckCircleIcon" size={12} />
                   </div>
                 </div>
@@ -67,9 +70,7 @@ const RecentCheckInsFeed = ({ guests, className = '' }: RecentCheckInsFeedProps)
                 <div className="min-w-0 flex-1">
                   <div className="mb-1 flex items-start justify-between gap-2">
                     <div>
-                      <h3 className="truncate text-sm font-semibold text-text-primary">
-                        {checkIn.name}
-                      </h3>
+                      <h3 className="truncate text-sm font-semibold text-text-primary">{checkIn.name}</h3>
                       <p className="text-xs text-text-secondary">{checkIn.phone}</p>
                     </div>
                     <span className="whitespace-nowrap font-mono text-xs text-text-secondary">
@@ -81,7 +82,7 @@ const RecentCheckInsFeed = ({ guests, className = '' }: RecentCheckInsFeedProps)
                   </div>
 
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="rounded-full bg-success/10 px-2 py-1 text-xs font-medium text-success">
+                    <span className="bg-success/10 rounded-full px-2 py-1 text-xs font-medium text-success">
                       {isArabic ? 'تم التسجيل' : 'Checked In'}
                     </span>
                     <span className="rounded-full bg-muted px-2 py-1 text-xs text-text-primary">

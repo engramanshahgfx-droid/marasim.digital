@@ -57,75 +57,78 @@ export default function AdminDashboard() {
 
   return (
     <AdminLangCtx.Provider value={isArabic}>
-    <div className="flex h-screen bg-gray-100" dir={isArabic ? 'rtl' : 'ltr'}
-      style={isArabic ? { fontFamily: "'Tajawal', sans-serif" } : {}}>
-      {/* Sidebar */}
-      <div className="w-64 bg-gray-900 p-6 text-white">
-        <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-2xl font-bold">{isArabic ? 'لوحة التحكم' : 'Admin Panel'}</h1>
+      <div
+        className="flex h-screen bg-gray-100"
+        dir={isArabic ? 'rtl' : 'ltr'}
+        style={isArabic ? { fontFamily: "'Tajawal', sans-serif" } : {}}
+      >
+        {/* Sidebar */}
+        <div className="w-64 bg-gray-900 p-6 text-white">
+          <div className="mb-6 flex items-center justify-between">
+            <h1 className="text-2xl font-bold">{isArabic ? 'لوحة التحكم' : 'Admin Panel'}</h1>
+            <button
+              onClick={() => setIsArabic(!isArabic)}
+              className="rounded bg-gray-700 px-2 py-1 text-xs text-white hover:bg-gray-600"
+              aria-label="Toggle language"
+            >
+              {isArabic ? 'EN' : 'AR'}
+            </button>
+          </div>
+          <nav className="space-y-2">
+            {[
+              { id: 'overview', label: isArabic ? 'نظرة عامة' : 'Dashboard Overview', icon: '📊' },
+              { id: 'users', label: isArabic ? 'جميع المستخدمين' : 'All Users', icon: '👥' },
+              { id: 'payments', label: isArabic ? 'المدفوعات' : 'Payments', icon: '💳' },
+              { id: 'bank-transfers', label: isArabic ? 'التحويلات البنكية' : 'Bank Transfers', icon: '🏦' },
+              { id: 'contact-messages', label: isArabic ? 'رسائل التواصل' : 'Contact Messages', icon: '💬' },
+              { id: 'plans', label: isArabic ? 'إدارة الخطط' : 'Plans Management', icon: '📋' },
+              { id: 'settings', label: isArabic ? 'الإعدادات' : 'Settings', icon: '⚙️' },
+            ].map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setActiveTab(item.id)}
+                className={`w-full rounded-lg px-4 py-2 text-left transition ${
+                  activeTab === item.id ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-800'
+                }`}
+              >
+                {item.icon} {item.label}
+              </button>
+            ))}
+          </nav>
+
           <button
-            onClick={() => setIsArabic(!isArabic)}
-            className="rounded bg-gray-700 px-2 py-1 text-xs text-white hover:bg-gray-600"
-            aria-label="Toggle language"
+            onClick={handleLogout}
+            className="mt-12 w-full rounded-lg bg-red-600 px-4 py-2 text-white transition hover:bg-red-700"
           >
-            {isArabic ? 'EN' : 'AR'}
+            🚪 {isArabic ? 'تسجيل الخروج' : 'Logout'}
           </button>
         </div>
-        <nav className="space-y-2">
-          {[
-            { id: 'overview', label: isArabic ? 'نظرة عامة' : 'Dashboard Overview', icon: '📊' },
-            { id: 'users', label: isArabic ? 'جميع المستخدمين' : 'All Users', icon: '👥' },
-            { id: 'payments', label: isArabic ? 'المدفوعات' : 'Payments', icon: '💳' },
-            { id: 'bank-transfers', label: isArabic ? 'التحويلات البنكية' : 'Bank Transfers', icon: '🏦' },
-            { id: 'contact-messages', label: isArabic ? 'رسائل التواصل' : 'Contact Messages', icon: '💬' },
-            { id: 'plans', label: isArabic ? 'إدارة الخطط' : 'Plans Management', icon: '📋' },
-            { id: 'settings', label: isArabic ? 'الإعدادات' : 'Settings', icon: '⚙️' },
-          ].map((item) => (
-            <button
-              key={item.id}
-              onClick={() => setActiveTab(item.id)}
-              className={`w-full rounded-lg px-4 py-2 text-left transition ${
-                activeTab === item.id ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-800'
-              }`}
-            >
-              {item.icon} {item.label}
-            </button>
-          ))}
-        </nav>
 
-        <button
-          onClick={handleLogout}
-          className="mt-12 w-full rounded-lg bg-red-600 px-4 py-2 text-white transition hover:bg-red-700"
-        >
-          🚪 {isArabic ? 'تسجيل الخروج' : 'Logout'}
-        </button>
-      </div>
+        {/* Main Content */}
+        <div className="flex-1 overflow-auto">
+          <div className="p-8">
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold text-gray-900">
+                {activeTab === 'overview' && (isArabic ? 'نظرة عامة' : 'Dashboard Overview')}
+                {activeTab === 'users' && (isArabic ? 'جميع المستخدمين' : 'All Users')}
+                {activeTab === 'payments' && (isArabic ? 'إدارة المدفوعات' : 'Payment Management')}
+                {activeTab === 'bank-transfers' && (isArabic ? 'اعتماد التحويلات' : 'Bank Transfer Approvals')}
+                {activeTab === 'contact-messages' && (isArabic ? 'رسائل التواصل' : 'Contact Messages')}
+                {activeTab === 'plans' && (isArabic ? 'إدارة الخطط' : 'Plans Management')}
+                {activeTab === 'settings' && (isArabic ? 'الإعدادات' : 'Settings')}
+              </h2>
+            </div>
 
-      {/* Main Content */}
-      <div className="flex-1 overflow-auto">
-        <div className="p-8">
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold text-gray-900">
-              {activeTab === 'overview' && (isArabic ? 'نظرة عامة' : 'Dashboard Overview')}
-              {activeTab === 'users' && (isArabic ? 'جميع المستخدمين' : 'All Users')}
-              {activeTab === 'payments' && (isArabic ? 'إدارة المدفوعات' : 'Payment Management')}
-              {activeTab === 'bank-transfers' && (isArabic ? 'اعتماد التحويلات' : 'Bank Transfer Approvals')}
-              {activeTab === 'contact-messages' && (isArabic ? 'رسائل التواصل' : 'Contact Messages')}
-              {activeTab === 'plans' && (isArabic ? 'إدارة الخطط' : 'Plans Management')}
-              {activeTab === 'settings' && (isArabic ? 'الإعدادات' : 'Settings')}
-            </h2>
+            {activeTab === 'overview' && <DashboardOverview />}
+            {activeTab === 'users' && <UsersManagement />}
+            {activeTab === 'payments' && <PaymentsManagement />}
+            {activeTab === 'bank-transfers' && <BankTransfersManagement />}
+            {activeTab === 'contact-messages' && <ContactMessagesPanel />}
+            {activeTab === 'plans' && <PlansManagement />}
+            {activeTab === 'settings' && <SettingsPanel />}
           </div>
-
-          {activeTab === 'overview' && <DashboardOverview />}
-          {activeTab === 'users' && <UsersManagement />}
-          {activeTab === 'payments' && <PaymentsManagement />}
-          {activeTab === 'bank-transfers' && <BankTransfersManagement />}
-          {activeTab === 'contact-messages' && <ContactMessagesPanel />}
-          {activeTab === 'plans' && <PlansManagement />}
-          {activeTab === 'settings' && <SettingsPanel />}
         </div>
       </div>
-    </div>
     </AdminLangCtx.Provider>
   )
 }
@@ -334,7 +337,9 @@ function UsersManagement() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-gray-900">{isArabic ? 'إجمالي المستخدمين:' : 'Total Users:'} {users.length}</h3>
+        <h3 className="text-lg font-semibold text-gray-900">
+          {isArabic ? 'إجمالي المستخدمين:' : 'Total Users:'} {users.length}
+        </h3>
         <button
           onClick={handleRefresh}
           disabled={refreshing}
@@ -348,13 +353,23 @@ function UsersManagement() {
         <table className="w-full">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-900">{isArabic ? 'البريد الإلكتروني' : 'Email'}</th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-900">{isArabic ? 'الاسم الكامل' : 'Full Name'}</th>
+              <th className="px-6 py-3 text-left text-sm font-medium text-gray-900">
+                {isArabic ? 'البريد الإلكتروني' : 'Email'}
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-medium text-gray-900">
+                {isArabic ? 'الاسم الكامل' : 'Full Name'}
+              </th>
               <th className="px-6 py-3 text-left text-sm font-medium text-gray-900">{isArabic ? 'الدور' : 'Role'}</th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-900">{isArabic ? 'الحالة' : 'Status'}</th>
+              <th className="px-6 py-3 text-left text-sm font-medium text-gray-900">
+                {isArabic ? 'الحالة' : 'Status'}
+              </th>
               <th className="px-6 py-3 text-left text-sm font-medium text-gray-900">{isArabic ? 'الخطة' : 'Plan'}</th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-900">{isArabic ? 'تاريخ الانضمام' : 'Joined'}</th>
-              <th className="px-6 py-3 text-left text-sm font-medium text-gray-900">{isArabic ? 'إجراءات' : 'Actions'}</th>
+              <th className="px-6 py-3 text-left text-sm font-medium text-gray-900">
+                {isArabic ? 'تاريخ الانضمام' : 'Joined'}
+              </th>
+              <th className="px-6 py-3 text-left text-sm font-medium text-gray-900">
+                {isArabic ? 'إجراءات' : 'Actions'}
+              </th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
@@ -396,7 +411,9 @@ function UsersManagement() {
       {upgradeModal.shown && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="mx-4 w-full max-w-sm rounded-lg bg-white p-6 shadow-lg">
-            <h3 className="mb-4 text-xl font-bold text-gray-900">{isArabic ? 'اختر الخطة للترقية' : 'Select Plan to Upgrade'}</h3>
+            <h3 className="mb-4 text-xl font-bold text-gray-900">
+              {isArabic ? 'اختر الخطة للترقية' : 'Select Plan to Upgrade'}
+            </h3>
 
             <div className="mb-6 space-y-3">
               {plans.map((plan) => (
@@ -454,7 +471,7 @@ function UsersManagement() {
                 disabled={upgrading || !selectedPlan}
                 className="flex-1 rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
               >
-                {upgrading ? (isArabic ? 'جارٍ الترقية...' : 'Upgrading...') : (isArabic ? 'تأكيد' : 'Confirm')}
+                {upgrading ? (isArabic ? 'جارٍ الترقية...' : 'Upgrading...') : isArabic ? 'تأكيد' : 'Confirm'}
               </button>
             </div>
           </div>
@@ -507,7 +524,8 @@ function PaymentsManagement() {
     }
   }
 
-  if (loading) return <div className="text-gray-600">{isArabic ? 'جارٍ تحميل المدفوعات...' : 'Loading payments...'}</div>
+  if (loading)
+    return <div className="text-gray-600">{isArabic ? 'جارٍ تحميل المدفوعات...' : 'Loading payments...'}</div>
 
   if (error) {
     return (
@@ -515,7 +533,9 @@ function PaymentsManagement() {
         <p className="font-semibold text-red-800">{isArabic ? 'خطأ في تحميل المدفوعات' : 'Error loading payments'}</p>
         <p className="mt-1 text-sm text-red-700">{error}</p>
         <p className="mt-2 text-xs text-red-600">
-          {isArabic ? 'تحقق من وحدة التحكم في المتصفح (F12) لمزيد من التفاصيل' : 'Check browser console (F12) for more details'}
+          {isArabic
+            ? 'تحقق من وحدة التحكم في المتصفح (F12) لمزيد من التفاصيل'
+            : 'Check browser console (F12) for more details'}
         </p>
       </div>
     )
@@ -527,7 +547,9 @@ function PaymentsManagement() {
         <div className="rounded-lg bg-white p-8 text-center text-gray-600 shadow">
           <p className="text-lg">{isArabic ? 'لا توجد مدفوعات' : 'No payments found'}</p>
           <p className="mt-2 text-sm">
-            {isArabic ? 'ستظهر المدفوعات هنا بمجرد إتمام المستخدمين للشراء' : 'Payments will appear here once users make purchases'}
+            {isArabic
+              ? 'ستظهر المدفوعات هنا بمجرد إتمام المستخدمين للشراء'
+              : 'Payments will appear here once users make purchases'}
           </p>
         </div>
       ) : (
@@ -535,8 +557,12 @@ function PaymentsManagement() {
           <table className="w-full text-sm">
             <thead className="border-b bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left font-semibold text-gray-900">{isArabic ? 'البريد الإلكتروني' : 'Email'}</th>
-                <th className="px-6 py-3 text-left font-semibold text-gray-900">{isArabic ? 'الاسم الكامل' : 'Full Name'}</th>
+                <th className="px-6 py-3 text-left font-semibold text-gray-900">
+                  {isArabic ? 'البريد الإلكتروني' : 'Email'}
+                </th>
+                <th className="px-6 py-3 text-left font-semibold text-gray-900">
+                  {isArabic ? 'الاسم الكامل' : 'Full Name'}
+                </th>
                 <th className="px-6 py-3 text-left font-semibold text-gray-900">{isArabic ? 'الخطة' : 'Plan'}</th>
                 <th className="px-6 py-3 text-left font-semibold text-gray-900">{isArabic ? 'المبلغ' : 'Amount'}</th>
                 <th className="px-6 py-3 text-left font-semibold text-gray-900">{isArabic ? 'الطريقة' : 'Method'}</th>
@@ -552,7 +578,9 @@ function PaymentsManagement() {
                 return (
                   <tr key={payment.id} className="transition hover:bg-gray-50">
                     <td className="px-6 py-4 text-gray-600">{user?.email || (isArabic ? 'غير متوفر' : 'N/A')}</td>
-                    <td className="px-6 py-4 font-medium text-gray-900">{user?.full_name || (isArabic ? 'غير معروف' : 'Unknown')}</td>
+                    <td className="px-6 py-4 font-medium text-gray-900">
+                      {user?.full_name || (isArabic ? 'غير معروف' : 'Unknown')}
+                    </td>
                     <td className="px-6 py-4 text-gray-600">{plan?.name || (isArabic ? 'غير متوفر' : 'N/A')}</td>
                     <td className="px-6 py-4 font-semibold text-green-600">${parseFloat(payment.amount).toFixed(2)}</td>
                     <td className="px-6 py-4">
@@ -564,7 +592,9 @@ function PaymentsManagement() {
                         }
                       >
                         {payment.payment_method === 'bank_transfer'
-                          ? (isArabic ? 'تحويل بنكي' : 'Bank Transfer')
+                          ? isArabic
+                            ? 'تحويل بنكي'
+                            : 'Bank Transfer'
                           : payment.payment_method === 'paypal'
                             ? 'PayPal'
                             : payment.payment_method}
@@ -581,10 +611,16 @@ function PaymentsManagement() {
                         }`}
                       >
                         {payment.status === 'paid'
-                          ? (isArabic ? '✅ مدفوع' : '✅ Paid')
+                          ? isArabic
+                            ? '✅ مدفوع'
+                            : '✅ Paid'
                           : payment.status === 'pending'
-                            ? (isArabic ? '⏳ قيد الانتظار' : '⏳ Pending')
-                            : (isArabic ? '❌ فشل' : '❌ Failed')}
+                            ? isArabic
+                              ? '⏳ قيد الانتظار'
+                              : '⏳ Pending'
+                            : isArabic
+                              ? '❌ فشل'
+                              : '❌ Failed'}
                       </span>
                     </td>
                     <td className="px-6 py-4 text-gray-600">{formatDate(payment.created_at)}</td>
@@ -715,11 +751,19 @@ function BankTransfersManagement() {
   }
 
   if (loading) {
-    return <div className="text-gray-600">{isArabic ? 'جارٍ تحميل التحويلات المعلقة...' : 'Loading pending transfers...'}</div>
+    return (
+      <div className="text-gray-600">
+        {isArabic ? 'جارٍ تحميل التحويلات المعلقة...' : 'Loading pending transfers...'}
+      </div>
+    )
   }
 
   if (payments.length === 0) {
-    return <div className="py-8 text-center text-gray-600">{isArabic ? 'لا توجد تحويلات بنكية معلقة' : 'No pending bank transfer payments'}</div>
+    return (
+      <div className="py-8 text-center text-gray-600">
+        {isArabic ? 'لا توجد تحويلات بنكية معلقة' : 'No pending bank transfer payments'}
+      </div>
+    )
   }
 
   return (
@@ -729,12 +773,22 @@ function BankTransfersManagement() {
         <table className="w-full">
           <thead className="border-b bg-gray-100">
             <tr>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">{isArabic ? 'البريد الإلكتروني' : 'Email'}</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">{isArabic ? 'الاسم الكامل' : 'Full Name'}</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">{isArabic ? 'المبلغ' : 'Amount'}</th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                {isArabic ? 'البريد الإلكتروني' : 'Email'}
+              </th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                {isArabic ? 'الاسم الكامل' : 'Full Name'}
+              </th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                {isArabic ? 'المبلغ' : 'Amount'}
+              </th>
               <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">{isArabic ? 'الخطة' : 'Plan'}</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">{isArabic ? 'تاريخ الإرسال' : 'Submitted'}</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">{isArabic ? 'إجراءات' : 'Actions'}</th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                {isArabic ? 'تاريخ الإرسال' : 'Submitted'}
+              </th>
+              <th className="px-6 py-4 text-left text-sm font-semibold text-gray-900">
+                {isArabic ? 'إجراءات' : 'Actions'}
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -745,11 +799,15 @@ function BankTransfersManagement() {
               return (
                 <tr key={payment.id} className="border-b transition hover:bg-gray-50">
                   <td className="px-6 py-4 text-sm text-gray-600">{user?.email}</td>
-                  <td className="px-6 py-4 text-sm font-medium text-gray-900">{user?.full_name || (isArabic ? 'غير معروف' : 'Unknown')}</td>
+                  <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                    {user?.full_name || (isArabic ? 'غير معروف' : 'Unknown')}
+                  </td>
                   <td className="px-6 py-4 text-sm font-bold text-green-600">
                     ${parseFloat(payment.amount).toFixed(2)}
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-600">{plan?.name || (isArabic ? 'غير معروف' : 'Unknown')}</td>
+                  <td className="px-6 py-4 text-sm text-gray-600">
+                    {plan?.name || (isArabic ? 'غير معروف' : 'Unknown')}
+                  </td>
                   <td className="px-6 py-4 text-sm text-gray-600">{formatDate(payment.created_at)}</td>
                   <td className="flex space-x-2 px-6 py-4 text-sm">
                     <button
@@ -763,14 +821,14 @@ function BankTransfersManagement() {
                       disabled={processing === payment.id}
                       className="rounded bg-green-600 px-3 py-1 text-xs font-semibold text-white transition hover:bg-green-700 disabled:opacity-50"
                     >
-                      {processing === payment.id ? '...' : (isArabic ? '✅ اعتماد' : '✅ Approve')}
+                      {processing === payment.id ? '...' : isArabic ? '✅ اعتماد' : '✅ Approve'}
                     </button>
                     <button
                       onClick={() => handleReject(payment.id)}
                       disabled={processing === payment.id}
                       className="rounded bg-red-600 px-3 py-1 text-xs font-semibold text-white transition hover:bg-red-700 disabled:opacity-50"
                     >
-                      {processing === payment.id ? '...' : (isArabic ? '❌ رفض' : '❌ Reject')}
+                      {processing === payment.id ? '...' : isArabic ? '❌ رفض' : '❌ Reject'}
                     </button>
                   </td>
                 </tr>
@@ -787,7 +845,9 @@ function BankTransfersManagement() {
             {/* Modal Header */}
             <div className="sticky top-0 flex items-center justify-between border-b bg-gray-100 px-6 py-4">
               <div>
-                <h3 className="text-lg font-bold text-gray-900">{isArabic ? 'مراجعة إثبات الدفع' : 'Payment Proof Review'}</h3>
+                <h3 className="text-lg font-bold text-gray-900">
+                  {isArabic ? 'مراجعة إثبات الدفع' : 'Payment Proof Review'}
+                </h3>
                 <p className="text-sm text-gray-600">
                   {selectedPayment.users?.[0]?.full_name || selectedPayment.users?.full_name} -{' '}
                   {selectedPayment.users?.[0]?.email || selectedPayment.users?.email}
@@ -811,19 +871,25 @@ function BankTransfersManagement() {
                   <p className="text-lg font-bold text-blue-600">{selectedPayment.subscription_plans?.name}</p>
                 </div>
                 <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-                  <p className="text-xs font-semibold uppercase text-gray-600">{isArabic ? 'تاريخ الإرسال' : 'Date Submitted'}</p>
+                  <p className="text-xs font-semibold uppercase text-gray-600">
+                    {isArabic ? 'تاريخ الإرسال' : 'Date Submitted'}
+                  </p>
                   <p className="text-sm text-gray-900">{formatDate(selectedPayment.created_at)}</p>
                 </div>
               </div>
 
               {/* Payment Proof Image */}
               <div className="space-y-2">
-                <h4 className="font-semibold text-gray-900">{isArabic ? 'صورة إثبات الدفع' : 'Payment Proof Screenshot'}</h4>
+                <h4 className="font-semibold text-gray-900">
+                  {isArabic ? 'صورة إثبات الدفع' : 'Payment Proof Screenshot'}
+                </h4>
                 <div className="overflow-hidden rounded-lg border-2 border-gray-300 bg-gray-100">
                   {selectedPayment.receipt_url ? (
                     <img src={selectedPayment.receipt_url} alt="Payment Proof" className="h-auto w-full" />
                   ) : (
-                    <div className="flex h-48 w-full items-center justify-center text-gray-400">{isArabic ? 'لم يتم رفع صورة' : 'No image uploaded'}</div>
+                    <div className="flex h-48 w-full items-center justify-center text-gray-400">
+                      {isArabic ? 'لم يتم رفع صورة' : 'No image uploaded'}
+                    </div>
                   )}
                 </div>
               </div>
@@ -833,23 +899,31 @@ function BankTransfersManagement() {
                 <h4 className="mb-3 font-semibold text-gray-900">{isArabic ? 'تفاصيل العميل' : 'Customer Details'}</h4>
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <div>
-                    <p className="text-xs font-semibold uppercase text-gray-600">{isArabic ? 'الاسم الكامل' : 'Full Name'}</p>
+                    <p className="text-xs font-semibold uppercase text-gray-600">
+                      {isArabic ? 'الاسم الكامل' : 'Full Name'}
+                    </p>
                     <p className="text-gray-900">
                       {selectedPayment.users?.[0]?.full_name || selectedPayment.users?.full_name}
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs font-semibold uppercase text-gray-600">{isArabic ? 'البريد الإلكتروني' : 'Email'}</p>
+                    <p className="text-xs font-semibold uppercase text-gray-600">
+                      {isArabic ? 'البريد الإلكتروني' : 'Email'}
+                    </p>
                     <p className="text-gray-900">{selectedPayment.users?.[0]?.email || selectedPayment.users?.email}</p>
                   </div>
                   <div>
                     <p className="text-xs font-semibold uppercase text-gray-600">{isArabic ? 'الهاتف' : 'Phone'}</p>
                     <p className="text-gray-900">
-                      {selectedPayment.users?.[0]?.phone || selectedPayment.users?.phone || (isArabic ? 'لا يوجد رقم' : 'No phone')}
+                      {selectedPayment.users?.[0]?.phone ||
+                        selectedPayment.users?.phone ||
+                        (isArabic ? 'لا يوجد رقم' : 'No phone')}
                     </p>
                   </div>
                   <div>
-                    <p className="text-xs font-semibold uppercase text-gray-600">{isArabic ? 'الخطة الحالية' : 'Current Plan'}</p>
+                    <p className="text-xs font-semibold uppercase text-gray-600">
+                      {isArabic ? 'الخطة الحالية' : 'Current Plan'}
+                    </p>
                     <p className="text-gray-900">
                       {selectedPayment.users?.[0]?.plan_type || selectedPayment.users?.plan_type}
                     </p>
@@ -868,7 +942,13 @@ function BankTransfersManagement() {
                 disabled={processing === selectedPayment.id}
                 className="flex-1 rounded-lg bg-green-600 px-4 py-2 font-semibold text-white transition hover:bg-green-700 disabled:opacity-50"
               >
-                {processing === selectedPayment.id ? (isArabic ? '⏳ جارٍ المعالجة...' : '⏳ Processing...') : (isArabic ? '✅ اعتماد وترقية' : '✅ Approve & Upgrade')}
+                {processing === selectedPayment.id
+                  ? isArabic
+                    ? '⏳ جارٍ المعالجة...'
+                    : '⏳ Processing...'
+                  : isArabic
+                    ? '✅ اعتماد وترقية'
+                    : '✅ Approve & Upgrade'}
               </button>
               <button
                 onClick={() => {
@@ -878,7 +958,13 @@ function BankTransfersManagement() {
                 disabled={processing === selectedPayment.id}
                 className="flex-1 rounded-lg bg-red-600 px-4 py-2 font-semibold text-white transition hover:bg-red-700 disabled:opacity-50"
               >
-                {processing === selectedPayment.id ? (isArabic ? '⏳ جارٍ المعالجة...' : '⏳ Processing...') : (isArabic ? '❌ رفض' : '❌ Reject')}
+                {processing === selectedPayment.id
+                  ? isArabic
+                    ? '⏳ جارٍ المعالجة...'
+                    : '⏳ Processing...'
+                  : isArabic
+                    ? '❌ رفض'
+                    : '❌ Reject'}
               </button>
               <button
                 onClick={() => setShowModal(false)}
@@ -932,7 +1018,7 @@ function ContactMessagesPanel() {
                 msg.status === 'read' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'
               }`}
             >
-              {msg.status === 'read' ? (isArabic ? 'مقروء' : 'read') : (isArabic ? 'غير مقروء' : 'unread')}
+              {msg.status === 'read' ? (isArabic ? 'مقروء' : 'read') : isArabic ? 'غير مقروء' : 'unread'}
             </span>
           </div>
         </div>
@@ -1048,7 +1134,9 @@ function PlansManagement() {
   const getLocalizedPlanName = (plan: any) => {
     if (!isArabic) return plan.name
 
-    const name = String(plan.name || '').trim().toLowerCase()
+    const name = String(plan.name || '')
+      .trim()
+      .toLowerCase()
     const planNameMap: Record<string, string> = {
       basic: 'الأساسية',
       pro: 'الاحترافية',
@@ -1061,7 +1149,9 @@ function PlansManagement() {
   const getLocalizedPlanDescription = (plan: any) => {
     if (!isArabic) return plan.description
 
-    const name = String(plan.name || '').trim().toLowerCase()
+    const name = String(plan.name || '')
+      .trim()
+      .toLowerCase()
     const descriptionMap: Record<string, string> = {
       basic: 'مثالية للبدء',
       pro: 'للشركات في مرحلة النمو',
@@ -1084,7 +1174,9 @@ function PlansManagement() {
             {editingPlanId === plan.id ? (
               <div className="space-y-3">
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-gray-700">{isArabic ? 'اسم الخطة' : 'Plan Name'}</label>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">
+                    {isArabic ? 'اسم الخطة' : 'Plan Name'}
+                  </label>
                   <input
                     value={form.name}
                     onChange={(e) => setForm((prev) => ({ ...prev, name: e.target.value }))}
@@ -1093,7 +1185,9 @@ function PlansManagement() {
                 </div>
 
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-gray-700">{isArabic ? 'السعر (دولار / شهر)' : 'Price (USD / month)'}</label>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">
+                    {isArabic ? 'السعر (دولار / شهر)' : 'Price (USD / month)'}
+                  </label>
                   <input
                     type="number"
                     min="0"
@@ -1119,7 +1213,9 @@ function PlansManagement() {
                 </div>
 
                 <div>
-                  <label className="mb-1 block text-sm font-medium text-gray-700">{isArabic ? 'الوصف' : 'Description'}</label>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">
+                    {isArabic ? 'الوصف' : 'Description'}
+                  </label>
                   <textarea
                     value={form.description}
                     onChange={(e) => setForm((prev) => ({ ...prev, description: e.target.value }))}
@@ -1143,7 +1239,7 @@ function PlansManagement() {
                     disabled={saving}
                     className="flex-1 rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
                   >
-                    {saving ? (isArabic ? 'جارٍ الحفظ...' : 'Saving...') : (isArabic ? 'حفظ التغييرات' : 'Save Changes')}
+                    {saving ? (isArabic ? 'جارٍ الحفظ...' : 'Saving...') : isArabic ? 'حفظ التغييرات' : 'Save Changes'}
                   </button>
                   <button
                     onClick={handleCancelEdit}
@@ -1158,15 +1254,23 @@ function PlansManagement() {
               <>
                 <h3 className="text-lg font-bold text-gray-900">{getLocalizedPlanName(plan)}</h3>
                 <p className="mt-2 text-2xl font-bold text-blue-600">
-                  ${plan.price_paypal ?? plan.price_monthly ?? 0}{isArabic ? '/شهريا' : '/mo'}
+                  ${plan.price_paypal ?? plan.price_monthly ?? 0}
+                  {isArabic ? '/شهريا' : '/mo'}
                 </p>
                 <p className="mt-4 text-sm text-gray-600">{getLocalizedPlanDescription(plan)}</p>
                 <div className="mt-4 space-y-2">
                   <p className="text-sm text-gray-700">
                     {isArabic ? 'الفعاليات:' : 'Events:'}{' '}
-                    {plan.event_limit === null || plan.event_limit === undefined ? (isArabic ? 'غير محدود' : 'Unlimited') : plan.event_limit}
+                    {plan.event_limit === null || plan.event_limit === undefined
+                      ? isArabic
+                        ? 'غير محدود'
+                        : 'Unlimited'
+                      : plan.event_limit}
                   </p>
-                  <p className="text-sm text-gray-700">{isArabic ? 'الحالة:' : 'Status:'} {plan.is_active ? (isArabic ? 'نشطة' : 'Active') : (isArabic ? 'غير نشطة' : 'Inactive')}</p>
+                  <p className="text-sm text-gray-700">
+                    {isArabic ? 'الحالة:' : 'Status:'}{' '}
+                    {plan.is_active ? (isArabic ? 'نشطة' : 'Active') : isArabic ? 'غير نشطة' : 'Inactive'}
+                  </p>
                 </div>
                 <button
                   onClick={() => handleStartEdit(plan)}
@@ -1191,14 +1295,23 @@ function SettingsPanel() {
       <h3 className="mb-4 text-xl font-bold text-gray-900">{isArabic ? 'إعدادات الإدارة' : 'Admin Settings'}</h3>
       <div className="space-y-4">
         <div>
-          <label className="mb-2 block text-sm font-medium text-gray-700">{isArabic ? 'معلومات الحساب البنكي' : 'Bank Account Information'}</label>
-          <p className="text-sm text-gray-600">{isArabic ? 'إدارة تفاصيل التحويل البنكي في قاعدة البيانات' : 'Manage bank transfer details in database'}</p>
+          <label className="mb-2 block text-sm font-medium text-gray-700">
+            {isArabic ? 'معلومات الحساب البنكي' : 'Bank Account Information'}
+          </label>
+          <p className="text-sm text-gray-600">
+            {isArabic ? 'إدارة تفاصيل التحويل البنكي في قاعدة البيانات' : 'Manage bank transfer details in database'}
+          </p>
         </div>
         <div>
-          <label className="mb-2 block text-sm font-medium text-gray-700">{isArabic ? 'إشعارات البريد الإلكتروني' : 'Email Notifications'}</label>
-          <input type="checkbox" defaultChecked className="rounded" /> {isArabic ? 'تفعيل تنبيهات البريد للاعتمادات المعلقة' : 'Enable email alerts for pending approvals'}
+          <label className="mb-2 block text-sm font-medium text-gray-700">
+            {isArabic ? 'إشعارات البريد الإلكتروني' : 'Email Notifications'}
+          </label>
+          <input type="checkbox" defaultChecked className="rounded" />{' '}
+          {isArabic ? 'تفعيل تنبيهات البريد للاعتمادات المعلقة' : 'Enable email alerts for pending approvals'}
         </div>
-        <button className="rounded-lg bg-blue-600 px-6 py-2 text-white hover:bg-blue-700">{isArabic ? 'حفظ الإعدادات' : 'Save Settings'}</button>
+        <button className="rounded-lg bg-blue-600 px-6 py-2 text-white hover:bg-blue-700">
+          {isArabic ? 'حفظ الإعدادات' : 'Save Settings'}
+        </button>
       </div>
     </div>
   )

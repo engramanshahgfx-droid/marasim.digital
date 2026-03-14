@@ -22,7 +22,13 @@ interface EventSelectorDropdownProps {
   className?: string
 }
 
-const EventSelectorDropdown = ({ events, selectedEventId, onEventChange, isLoading = false, className = '' }: EventSelectorDropdownProps) => {
+const EventSelectorDropdown = ({
+  events,
+  selectedEventId,
+  onEventChange,
+  isLoading = false,
+  className = '',
+}: EventSelectorDropdownProps) => {
   const locale = useLocale()
   const isArabic = locale === 'ar'
   const [isOpen, setIsOpen] = useState(false)
@@ -86,18 +92,14 @@ const EventSelectorDropdown = ({ events, selectedEventId, onEventChange, isLoadi
           </div>
           <div className="text-left">
             <div className="flex items-center gap-2">
-              <h3 className="text-lg font-semibold text-text-primary">
-                {selectedEvent.name}
-              </h3>
+              <h3 className="text-lg font-semibold text-text-primary">{selectedEvent.name}</h3>
               <span
                 className={`rounded-full px-2 py-1 text-xs ${getStatusBadge(selectedEvent.status).color} font-medium`}
               >
                 {getStatusBadge(selectedEvent.status).label}
               </span>
             </div>
-            <p className="text-sm text-text-secondary">
-              {selectedEvent.venue}
-            </p>
+            <p className="text-sm text-text-secondary">{selectedEvent.venue}</p>
             <div className="mt-1 flex items-center gap-4 text-xs text-text-secondary">
               <span className="flex items-center gap-1">
                 <Icon name="MapPinIcon" size={14} />
@@ -135,9 +137,7 @@ const EventSelectorDropdown = ({ events, selectedEventId, onEventChange, isLoadi
                   >
                     <div className="mb-2 flex items-start justify-between gap-2">
                       <div>
-                        <h4 className="text-sm font-semibold text-text-primary">
-                          {event.name}
-                        </h4>
+                        <h4 className="text-sm font-semibold text-text-primary">{event.name}</h4>
                         <p className="text-xs text-text-secondary">{event.venue}</p>
                       </div>
                       <span className={`rounded-full px-2 py-1 text-xs ${badge.color} whitespace-nowrap font-medium`}>

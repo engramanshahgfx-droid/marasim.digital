@@ -61,13 +61,14 @@ export async function POST(request: NextRequest) {
       ? `https://quickchart.io/qr?size=320&text=${encodeURIComponent(guestData.qr_token)}`
       : null
 
-    const replyMessage = responseStatus === 'confirmed'
-      ? guestData?.qr_token
-        ? `Thanks, your attendance is confirmed. Your check-in code: ${guestData.qr_token}. Show this QR at entry: ${qrLink}`
-        : 'Thanks, your attendance is confirmed.'
-      : responseStatus === 'declined'
-        ? 'Understood, we have marked you as unable to attend.'
-        : 'Reply with Confirm to accept or Decline if you cannot attend.'
+    const replyMessage =
+      responseStatus === 'confirmed'
+        ? guestData?.qr_token
+          ? `Thanks, your attendance is confirmed. Your check-in code: ${guestData.qr_token}. Show this QR at entry: ${qrLink}`
+          : 'Thanks, your attendance is confirmed.'
+        : responseStatus === 'declined'
+          ? 'Understood, we have marked you as unable to attend.'
+          : 'Reply with Confirm to accept or Decline if you cannot attend.'
 
     const twiml = `<?xml version="1.0" encoding="UTF-8"?><Response><Message>${replyMessage}</Message></Response>`
     return new NextResponse(twiml, {

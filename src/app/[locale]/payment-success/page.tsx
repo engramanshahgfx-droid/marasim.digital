@@ -17,7 +17,9 @@ export default function PaymentSuccessPage() {
   const content = {
     verifying: isArabic ? 'جارٍ التحقق من الدفع...' : 'Verifying your payment...',
     title: isArabic ? 'تم الدفع بنجاح!' : 'Payment Successful!',
-    subtitle: isArabic ? 'شكرًا لشرائك. اشتراكك مفعل الآن.' : 'Thank you for your purchase. Your subscription is now active.',
+    subtitle: isArabic
+      ? 'شكرًا لشرائك. اشتراكك مفعل الآن.'
+      : 'Thank you for your purchase. Your subscription is now active.',
     verified: isArabic ? '✓ تم التحقق من الدفع وتفعيل الاشتراك' : '✓ Payment verified and subscribed',
     dashboard: isArabic ? 'الذهاب إلى لوحة التحكم' : 'Go to Dashboard',
     home: isArabic ? 'العودة إلى الرئيسية' : 'Back to Home',

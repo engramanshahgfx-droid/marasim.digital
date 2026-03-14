@@ -87,7 +87,10 @@ export async function GET(request: NextRequest) {
 
     // Fetch message statuses for these guests (latest message per guest)
     const guestIds = guests?.map((g) => g.id) || []
-    const messageStatuses: Record<string, { messageId?: string; deliveryStatus: string; sentAt: string | null; errorMessage?: string | null }> = {}
+    const messageStatuses: Record<
+      string,
+      { messageId?: string; deliveryStatus: string; sentAt: string | null; errorMessage?: string | null }
+    > = {}
 
     if (guestIds.length > 0) {
       const { data: messages } = await supabase
@@ -124,7 +127,11 @@ export async function GET(request: NextRequest) {
         }
 
         const normalizedStatus = normalizeDeliveryStatus(latest.status)
-        if (normalizedStatus === normalizeDeliveryStatus(current.deliveryStatus) && !latest.errorHint && !latest.errorMessage) {
+        if (
+          normalizedStatus === normalizeDeliveryStatus(current.deliveryStatus) &&
+          !latest.errorHint &&
+          !latest.errorMessage
+        ) {
           return null
         }
 
@@ -140,7 +147,8 @@ export async function GET(request: NextRequest) {
             .from('messages')
             .update({
               status: normalizedStatus,
-              delivered_at: normalizedStatus === 'delivered' || normalizedStatus === 'read' ? new Date().toISOString() : null,
+              delivered_at:
+                normalizedStatus === 'delivered' || normalizedStatus === 'read' ? new Date().toISOString() : null,
               error_message: latest.errorMessage || latest.errorHint || null,
             })
             .eq('id', current.messageId)

@@ -20,7 +20,11 @@ function LocaleSwitch() {
   }
 
   return (
-    <div className="inline-flex items-center rounded-lg border border-gray-200 bg-white p-1 shadow-sm" role="group" aria-label="Language switch">
+    <div
+      className="inline-flex items-center rounded-lg border border-gray-200 bg-white p-1 shadow-sm"
+      role="group"
+      aria-label="Language switch"
+    >
       {supportedLocales.map((supportedLocale) => {
         const isActive = locale === supportedLocale
         const label = supportedLocale === 'en' ? 'EN' : 'ع'

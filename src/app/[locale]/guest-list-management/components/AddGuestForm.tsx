@@ -62,7 +62,9 @@ const AddGuestForm = ({ eventId, token, onSuccess, onClose, guestToUpdate }: Add
     if (!formData.phone.trim()) {
       errors.phone = isArabic ? 'رقم الجوال مطلوب' : 'Phone number is required'
     } else if (!/^\+?\d{10,15}$/.test(formData.phone.replace(/[\s().-]/g, ''))) {
-      errors.phone = isArabic ? 'صيغة رقم الجوال غير صحيحة. أضف رمز الدولة مثل +966' : 'Invalid phone format. Include country code (e.g., +966)'
+      errors.phone = isArabic
+        ? 'صيغة رقم الجوال غير صحيحة. أضف رمز الدولة مثل +966'
+        : 'Invalid phone format. Include country code (e.g., +966)'
     }
 
     // Email validation
@@ -131,7 +133,12 @@ const AddGuestForm = ({ eventId, token, onSuccess, onClose, guestToUpdate }: Add
       const data = await response.json()
 
       if (!response.ok) {
-        setError(data.error || (isArabic ? `فشل ${isUpdateMode ? 'تحديث' : 'إضافة'} الضيف` : `Failed to ${isUpdateMode ? 'update' : 'add'} guest`))
+        setError(
+          data.error ||
+            (isArabic
+              ? `فشل ${isUpdateMode ? 'تحديث' : 'إضافة'} الضيف`
+              : `Failed to ${isUpdateMode ? 'update' : 'add'} guest`)
+        )
         return
       }
 
@@ -174,7 +181,13 @@ const AddGuestForm = ({ eventId, token, onSuccess, onClose, guestToUpdate }: Add
         <div className="flex items-center justify-between border-b border-gray-200 p-6">
           <div>
             <h2 className="font-heading text-2xl font-semibold text-text-primary">
-              {isUpdateMode ? (isArabic ? 'تحديث الضيف' : 'Update Guest') : isArabic ? 'إضافة ضيف جديد' : 'Add New Guest'}
+              {isUpdateMode
+                ? isArabic
+                  ? 'تحديث الضيف'
+                  : 'Update Guest'
+                : isArabic
+                  ? 'إضافة ضيف جديد'
+                  : 'Add New Guest'}
             </h2>
             <p className="mt-1 text-sm text-text-secondary">
               {isUpdateMode
@@ -241,7 +254,9 @@ const AddGuestForm = ({ eventId, token, onSuccess, onClose, guestToUpdate }: Add
               disabled={isSubmitting}
             />
             {validationErrors.phone && <p className="mt-1 text-sm text-red-600">{validationErrors.phone}</p>}
-            <p className="mt-1 text-xs text-text-secondary">{isArabic ? 'أدخل رمز الدولة مثل +966 للسعودية' : 'Include country code (e.g., +966 for Saudi Arabia)'}</p>
+            <p className="mt-1 text-xs text-text-secondary">
+              {isArabic ? 'أدخل رمز الدولة مثل +966 للسعودية' : 'Include country code (e.g., +966 for Saudi Arabia)'}
+            </p>
           </div>
 
           {/* Email Field */}
@@ -281,7 +296,9 @@ const AddGuestForm = ({ eventId, token, onSuccess, onClose, guestToUpdate }: Add
               disabled={isSubmitting}
             />
             {validationErrors.plusOnes && <p className="mt-1 text-sm text-red-600">{validationErrors.plusOnes}</p>}
-            <p className="mt-1 text-xs text-text-secondary">{isArabic ? 'عدد الضيوف المرافقين لهذا الشخص' : 'Number of additional guests accompanying this person'}</p>
+            <p className="mt-1 text-xs text-text-secondary">
+              {isArabic ? 'عدد الضيوف المرافقين لهذا الشخص' : 'Number of additional guests accompanying this person'}
+            </p>
           </div>
 
           {/* Notes Field */}
@@ -295,7 +312,11 @@ const AddGuestForm = ({ eventId, token, onSuccess, onClose, guestToUpdate }: Add
               onChange={(e) => handleChange('notes', e.target.value)}
               className="focus:ring-primary-500 w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:outline-none focus:ring-2"
               rows={3}
-              placeholder={isArabic ? 'مثال: قيود غذائية أو تفضيلات الجلوس وغيرها' : 'e.g., Dietary restrictions, seating preferences, etc.'}
+              placeholder={
+                isArabic
+                  ? 'مثال: قيود غذائية أو تفضيلات الجلوس وغيرها'
+                  : 'e.g., Dietary restrictions, seating preferences, etc.'
+              }
               disabled={isSubmitting}
             />
           </div>
@@ -318,7 +339,13 @@ const AddGuestForm = ({ eventId, token, onSuccess, onClose, guestToUpdate }: Add
               {isSubmitting ? (
                 <>
                   <Icon name="ArrowPathIcon" className="h-4 w-4 animate-spin" ariaLabel="Loading" />
-                  {isUpdateMode ? (isArabic ? 'جارٍ التحديث...' : 'Updating...') : isArabic ? 'جارٍ الإضافة...' : 'Adding...'}
+                  {isUpdateMode
+                    ? isArabic
+                      ? 'جارٍ التحديث...'
+                      : 'Updating...'
+                    : isArabic
+                      ? 'جارٍ الإضافة...'
+                      : 'Adding...'}
                 </>
               ) : (
                 <>

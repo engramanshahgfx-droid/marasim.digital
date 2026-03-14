@@ -16,7 +16,9 @@ export default function PaymentCancelledPage() {
       : 'Your payment has been cancelled. You can review your plans and try again.',
     pricing: isArabic ? 'العودة إلى الأسعار' : 'Back to Pricing',
     home: isArabic ? 'العودة إلى الرئيسية' : 'Back to Home',
-    support: isArabic ? 'إذا كانت لديك أسئلة، يرجى التواصل مع فريق الدعم.' : 'If you have questions, please contact our support team.',
+    support: isArabic
+      ? 'إذا كانت لديك أسئلة، يرجى التواصل مع فريق الدعم.'
+      : 'If you have questions, please contact our support team.',
   }
 
   return (

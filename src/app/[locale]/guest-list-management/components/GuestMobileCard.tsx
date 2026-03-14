@@ -98,7 +98,15 @@ const GuestMobileCard = ({ guest, isSelected, onSelect, onUpdate, onDelete }: Gu
             <button
               onClick={() => setIsExpanded(!isExpanded)}
               className="transition-smooth rounded-md p-1 hover:bg-muted"
-              aria-label={isArabic ? (isExpanded ? 'طي التفاصيل' : 'توسيع التفاصيل') : isExpanded ? 'Collapse details' : 'Expand details'}
+              aria-label={
+                isArabic
+                  ? isExpanded
+                    ? 'طي التفاصيل'
+                    : 'توسيع التفاصيل'
+                  : isExpanded
+                    ? 'Collapse details'
+                    : 'Expand details'
+              }
             >
               <Icon
                 name="ChevronDownIcon"
@@ -124,14 +132,18 @@ const GuestMobileCard = ({ guest, isSelected, onSelect, onUpdate, onDelete }: Gu
           {isExpanded && (
             <div className="mt-4 animate-slide-up space-y-3 border-t border-border pt-4">
               <div className="flex items-center justify-between">
-                <span className="text-xs text-text-secondary">{isArabic ? 'حالة تسجيل الحضور:' : 'Check-in Status:'}</span>
+                <span className="text-xs text-text-secondary">
+                  {isArabic ? 'حالة تسجيل الحضور:' : 'Check-in Status:'}
+                </span>
                 {guest.checkInTime ? (
                   <div className="flex items-center gap-1">
                     <Icon name="CheckBadgeIcon" size={14} className="text-success" />
                     <span className="font-mono text-xs text-text-primary">{guest.checkInTime}</span>
                   </div>
                 ) : (
-                  <span className="text-xs text-text-secondary">{isArabic ? 'لم يتم تسجيل الحضور' : 'Not checked in'}</span>
+                  <span className="text-xs text-text-secondary">
+                    {isArabic ? 'لم يتم تسجيل الحضور' : 'Not checked in'}
+                  </span>
                 )}
               </div>
               <div className="flex items-center justify-between">

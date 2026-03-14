@@ -155,7 +155,9 @@ const QRScannerViewport = ({ onScanSuccess, isActive, exampleCode }: QRScannerVi
       setLastScanResult(
         buildScanResult('N/A', {
           status: 'error',
-          message: isArabic ? 'لا يوجد رمز متاح للاختبار في هذه الفعالية' : 'No available guest QR code to test for this event',
+          message: isArabic
+            ? 'لا يوجد رمز متاح للاختبار في هذه الفعالية'
+            : 'No available guest QR code to test for this event',
         })
       )
       return
@@ -208,9 +210,7 @@ const QRScannerViewport = ({ onScanSuccess, isActive, exampleCode }: QRScannerVi
               aria-label={isArabic ? 'تبديل الإدخال اليدوي' : 'Toggle manual input'}
             >
               <Icon name="PencilSquareIcon" size={20} />
-              <span className="hidden text-sm font-medium md:inline">
-                {isArabic ? 'إدخال يدوي' : 'Manual Entry'}
-              </span>
+              <span className="hidden text-sm font-medium md:inline">{isArabic ? 'إدخال يدوي' : 'Manual Entry'}</span>
             </button>
             <button
               onClick={simulateScan}
@@ -218,9 +218,7 @@ const QRScannerViewport = ({ onScanSuccess, isActive, exampleCode }: QRScannerVi
               aria-label={isArabic ? 'محاكاة مسح' : 'Simulate scan'}
             >
               <Icon name="BoltIcon" size={20} />
-              <span className="hidden text-sm font-medium md:inline">
-                {isArabic ? 'اختبار المسح' : 'Test Scan'}
-              </span>
+              <span className="hidden text-sm font-medium md:inline">{isArabic ? 'اختبار المسح' : 'Test Scan'}</span>
             </button>
           </div>
         </div>

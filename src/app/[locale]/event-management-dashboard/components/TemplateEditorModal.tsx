@@ -186,7 +186,9 @@ const TemplateEditorModal = ({ isOpen, onClose, onSave, eventId, eventData }: Te
   const handleClose = () => {
     if (hasUnsavedChanges) {
       const confirmClose = window.confirm(
-        isArabic ? 'لديك تغييرات غير محفوظة. هل تريد الإغلاق؟' : 'You have unsaved changes. Are you sure you want to close?'
+        isArabic
+          ? 'لديك تغييرات غير محفوظة. هل تريد الإغلاق؟'
+          : 'You have unsaved changes. Are you sure you want to close?'
       )
       if (!confirmClose) return
     }
@@ -194,7 +196,9 @@ const TemplateEditorModal = ({ isOpen, onClose, onSave, eventId, eventData }: Te
   }
 
   const handleResetToDefault = () => {
-    const confirmReset = window.confirm(isArabic ? 'هل أنت متأكد من إعادة تعيين القالب الافتراضي؟' : 'Are you sure you want to reset to default template?')
+    const confirmReset = window.confirm(
+      isArabic ? 'هل أنت متأكد من إعادة تعيين القالب الافتراضي؟' : 'Are you sure you want to reset to default template?'
+    )
     if (confirmReset) {
       setTemplate({
         ...defaultTemplate,
@@ -211,24 +215,23 @@ const TemplateEditorModal = ({ isOpen, onClose, onSave, eventId, eventData }: Te
   }
 
   // Preview content based on app locale
-  const previewContent =
-    isArabic
-      ? {
-          title: template.titleAr || 'أنت مدعو!',
-          message: template.messageAr || 'يسعدنا دعوتك للاحتفال بهذه المناسبة الخاصة معنا. حضورك سيعني لنا الكثير.',
-          dateLabel: 'التاريخ',
-          timeLabel: 'الوقت',
-          venueLabel: 'المكان',
-          footerText: template.footerTextAr || 'يرجى تأكيد حضورك عن طريق مسح رمز QR أدناه.',
-        }
-      : {
-          title: template.title,
-          message: template.message,
-          dateLabel: 'Date',
-          timeLabel: 'Time',
-          venueLabel: 'Venue',
-          footerText: template.footerText,
-        }
+  const previewContent = isArabic
+    ? {
+        title: template.titleAr || 'أنت مدعو!',
+        message: template.messageAr || 'يسعدنا دعوتك للاحتفال بهذه المناسبة الخاصة معنا. حضورك سيعني لنا الكثير.',
+        dateLabel: 'التاريخ',
+        timeLabel: 'الوقت',
+        venueLabel: 'المكان',
+        footerText: template.footerTextAr || 'يرجى تأكيد حضورك عن طريق مسح رمز QR أدناه.',
+      }
+    : {
+        title: template.title,
+        message: template.message,
+        dateLabel: 'Date',
+        timeLabel: 'Time',
+        venueLabel: 'Venue',
+        footerText: template.footerText,
+      }
 
   // Format date for display
   const formatDate = (dateString: string) => {
@@ -277,13 +280,17 @@ const TemplateEditorModal = ({ isOpen, onClose, onSave, eventId, eventData }: Te
                 <Icon name="PaintBrushIcon" size={20} className="text-primary" />
               </div>
               <div>
-                <h2 className="font-heading text-xl font-semibold text-text-primary">{isArabic ? 'محرر قالب الدعوة' : 'Invitation Template Editor'}</h2>
+                <h2 className="font-heading text-xl font-semibold text-text-primary">
+                  {isArabic ? 'محرر قالب الدعوة' : 'Invitation Template Editor'}
+                </h2>
                 {eventData?.name && <p className="text-sm text-text-secondary">{eventData.name}</p>}
               </div>
             </div>
             <div className="flex items-center gap-2">
               {hasUnsavedChanges && (
-                <span className="bg-warning/10 rounded px-2 py-1 text-xs text-warning">{isArabic ? 'تغييرات غير محفوظة' : 'Unsaved changes'}</span>
+                <span className="bg-warning/10 rounded px-2 py-1 text-xs text-warning">
+                  {isArabic ? 'تغييرات غير محفوظة' : 'Unsaved changes'}
+                </span>
               )}
               <button
                 onClick={handleClose}
@@ -346,7 +353,11 @@ const TemplateEditorModal = ({ isOpen, onClose, onSave, eventId, eventData }: Te
                       className="transition-smooth w-full rounded-md border border-input bg-background px-4 py-3 text-text-primary focus:outline-none focus:ring-3 focus:ring-ring focus:ring-offset-2"
                       placeholder="https://example.com/image.jpg"
                     />
-                    <p className="mt-1 text-xs text-text-secondary">{isArabic ? 'يُنصح باستخدام: 1200×600 بكسل، صيغة JPG أو PNG' : 'Recommended: 1200x600 pixels, JPG or PNG format'}</p>
+                    <p className="mt-1 text-xs text-text-secondary">
+                      {isArabic
+                        ? 'يُنصح باستخدام: 1200×600 بكسل، صيغة JPG أو PNG'
+                        : 'Recommended: 1200x600 pixels, JPG or PNG format'}
+                    </p>
                   </div>
 
                   {/* Invitation Title (English) */}
@@ -413,7 +424,9 @@ const TemplateEditorModal = ({ isOpen, onClose, onSave, eventId, eventData }: Te
 
                   {/* Event Details */}
                   <div className="border-t border-border pt-6">
-                    <h3 className="mb-4 text-sm font-semibold text-text-primary">{isArabic ? 'تفاصيل الفعالية' : 'Event Details'}</h3>
+                    <h3 className="mb-4 text-sm font-semibold text-text-primary">
+                      {isArabic ? 'تفاصيل الفعالية' : 'Event Details'}
+                    </h3>
                     <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
                       <div>
                         <label htmlFor="eventDate" className="mb-2 block text-sm font-medium text-text-primary">
@@ -526,8 +539,12 @@ const TemplateEditorModal = ({ isOpen, onClose, onSave, eventId, eventData }: Te
               {/* Preview Panel */}
               <div className="overflow-y-auto bg-muted p-6">
                 <div className="sticky top-0 mb-4 bg-muted pb-2">
-                  <h3 className="mb-1 text-lg font-semibold text-text-primary">{isArabic ? 'معاينة حية' : 'Live Preview'}</h3>
-                  <p className="text-sm text-text-secondary">{isArabic ? 'تنسيق رسالة واتساب' : 'WhatsApp Message Format'}</p>
+                  <h3 className="mb-1 text-lg font-semibold text-text-primary">
+                    {isArabic ? 'معاينة حية' : 'Live Preview'}
+                  </h3>
+                  <p className="text-sm text-text-secondary">
+                    {isArabic ? 'تنسيق رسالة واتساب' : 'WhatsApp Message Format'}
+                  </p>
                 </div>
 
                 <div

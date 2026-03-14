@@ -121,7 +121,9 @@ const StatusIndicatorBar = ({ className = '', eventId }: StatusIndicatorBarProps
                   <Icon name={metric.icon as any} size={20} />
                 </div>
                 <div className="flex flex-col">
-                  <span className="font-caption text-xs text-text-secondary">{isArabic ? metric.labelAr : metric.label}</span>
+                  <span className="font-caption text-xs text-text-secondary">
+                    {isArabic ? metric.labelAr : metric.label}
+                  </span>
                   <span className="font-mono text-lg font-semibold text-text-primary">{metric.value}</span>
                 </div>
               </div>
@@ -137,7 +139,9 @@ const StatusIndicatorBar = ({ className = '', eventId }: StatusIndicatorBarProps
             >
               <div className="flex items-center gap-3">
                 <Icon name="ChartBarIcon" size={20} className="text-primary" />
-                <span className="text-sm font-medium text-text-primary">{isArabic ? 'حالة الفعالية' : 'Event Status'}</span>
+                <span className="text-sm font-medium text-text-primary">
+                  {isArabic ? 'حالة الفعالية' : 'Event Status'}
+                </span>
               </div>
               <Icon
                 name="ChevronDownIcon"
@@ -154,7 +158,9 @@ const StatusIndicatorBar = ({ className = '', eventId }: StatusIndicatorBarProps
                       <Icon name={metric.icon as any} size={16} />
                     </div>
                     <div className="flex flex-col">
-                      <span className="font-caption text-xs text-text-secondary">{isArabic ? metric.labelAr : metric.label}</span>
+                      <span className="font-caption text-xs text-text-secondary">
+                        {isArabic ? metric.labelAr : metric.label}
+                      </span>
                       <span className="font-mono text-base font-semibold text-text-primary">{metric.value}</span>
                     </div>
                   </div>
@@ -166,7 +172,9 @@ const StatusIndicatorBar = ({ className = '', eventId }: StatusIndicatorBarProps
           <div className="hidden items-center gap-2 md:flex">
             <div className="flex items-center gap-1">
               <div className="h-2 w-2 animate-pulse-subtle rounded-full bg-success" />
-              <span className="font-caption text-xs text-text-secondary">{isArabic ? 'تحديثات مباشرة' : 'Live Updates'}</span>
+              <span className="font-caption text-xs text-text-secondary">
+                {isArabic ? 'تحديثات مباشرة' : 'Live Updates'}
+              </span>
             </div>
           </div>
         </div>

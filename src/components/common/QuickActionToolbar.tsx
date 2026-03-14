@@ -192,7 +192,9 @@ const QuickActionToolbar = ({ className = '' }: QuickActionToolbarProps) => {
             <div className="fixed bottom-0 left-0 right-0 z-200 animate-slide-up rounded-t-xl bg-popover shadow-warm-xl">
               <div className="p-4">
                 <div className="mb-4 flex items-center justify-between">
-                  <h3 className="font-heading text-lg font-semibold text-text-primary">{isArabic ? 'إجراءات سريعة' : 'Quick Actions'}</h3>
+                  <h3 className="font-heading text-lg font-semibold text-text-primary">
+                    {isArabic ? 'إجراءات سريعة' : 'Quick Actions'}
+                  </h3>
                   <button
                     onClick={() => setIsOverflowOpen(false)}
                     className="transition-smooth p-2 text-text-secondary hover:text-text-primary"
@@ -212,7 +214,9 @@ const QuickActionToolbar = ({ className = '' }: QuickActionToolbarProps) => {
                       className="transition-smooth hover:bg-muted/80 active:scale-97 flex flex-col items-center gap-2 rounded-md bg-muted p-4"
                     >
                       <Icon name={action.icon as any} size={24} className="text-primary" />
-                      <span className="text-center text-xs font-medium text-text-primary">{isArabic ? action.labelAr : action.label}</span>
+                      <span className="text-center text-xs font-medium text-text-primary">
+                        {isArabic ? action.labelAr : action.label}
+                      </span>
                     </button>
                   ))}
                 </div>

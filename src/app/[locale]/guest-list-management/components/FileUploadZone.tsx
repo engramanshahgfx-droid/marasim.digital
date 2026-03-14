@@ -60,7 +60,9 @@ const FileUploadZone = ({ onFileUpload, isLoading = false, disabled = false }: F
     if (file.size > 10 * 1024 * 1024) {
       setUploadStatus('error')
       setUploadMessage(
-        isArabic ? 'حجم الملف يتجاوز 10MB. يرجى رفع ملف أصغر.' : 'File size exceeds 10MB limit. Please upload a smaller file.'
+        isArabic
+          ? 'حجم الملف يتجاوز 10MB. يرجى رفع ملف أصغر.'
+          : 'File size exceeds 10MB limit. Please upload a smaller file.'
       )
       return
     }
@@ -108,7 +110,9 @@ const FileUploadZone = ({ onFileUpload, isLoading = false, disabled = false }: F
           {isLoading || uploadStatus === 'uploading' ? (
             <div className="flex flex-col items-center gap-3">
               <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-              <p className="text-sm font-medium text-text-primary">{isLoading ? (isArabic ? 'جارٍ الرفع...' : 'Uploading...') : uploadMessage}</p>
+              <p className="text-sm font-medium text-text-primary">
+                {isLoading ? (isArabic ? 'جارٍ الرفع...' : 'Uploading...') : uploadMessage}
+              </p>
             </div>
           ) : uploadStatus === 'success' ? (
             <div className="flex flex-col items-center gap-3">
@@ -146,10 +150,18 @@ const FileUploadZone = ({ onFileUpload, isLoading = false, disabled = false }: F
                 disabled={disabled || isLoading}
                 className="transition-smooth hover:bg-primary/90 active:scale-97 rounded-md bg-primary px-6 py-2.5 font-medium text-primary-foreground focus:outline-none focus:ring-3 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               >
-                {disabled ? (isArabic ? 'اختر الفعالية أولاً' : 'Select Event First') : isArabic ? 'استعراض الملفات' : 'Browse Files'}
+                {disabled
+                  ? isArabic
+                    ? 'اختر الفعالية أولاً'
+                    : 'Select Event First'
+                  : isArabic
+                    ? 'استعراض الملفات'
+                    : 'Browse Files'}
               </button>
               <p className="text-center text-xs text-text-secondary">
-                {isArabic ? 'الصيغة المدعومة: CSV فقط • الحد الأقصى لحجم الملف: 10MB' : 'Supported format: CSV only • Maximum file size: 10MB'}
+                {isArabic
+                  ? 'الصيغة المدعومة: CSV فقط • الحد الأقصى لحجم الملف: 10MB'
+                  : 'Supported format: CSV only • Maximum file size: 10MB'}
               </p>
             </>
           )}

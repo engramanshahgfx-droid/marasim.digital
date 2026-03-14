@@ -1,10 +1,10 @@
 import {
-  formatPhoneNumber,
-  sendBulkWhatsAppTemplates,
-  getInvitationTemplateConfig,
-  formatInvitationTemplateVariables,
   checkWhatsAppMessageStatus,
+  formatInvitationTemplateVariables,
+  formatPhoneNumber,
+  getInvitationTemplateConfig,
   getWhatsAppSenderInfo,
+  sendBulkWhatsAppTemplates,
 } from '@/lib/twilio'
 import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
@@ -50,7 +50,10 @@ export async function POST(request: NextRequest) {
 
     // Allow active, trialing, and free accounts to send
     const allowedStatuses = ['active', 'trialing', 'free', 'trial']
-    if (!allowedStatuses.includes((userData as any).subscription_status) && (userData as any).subscription_status !== null) {
+    if (
+      !allowedStatuses.includes((userData as any).subscription_status) &&
+      (userData as any).subscription_status !== null
+    ) {
       return ErrorResponses.subscriptionRequired()
     }
 
@@ -148,9 +151,7 @@ export async function POST(request: NextRequest) {
 
     const failedByStatusCount = statusChecks.filter((r: any) => normalizeMessageStatus(r.status) === 'failed').length
 
-    const guestByFormattedPhone = new Map(
-      (guests as any).map((g: any) => [formatPhoneNumber(g.phone || ''), g])
-    )
+    const guestByFormattedPhone = new Map((guests as any).map((g: any) => [formatPhoneNumber(g.phone || ''), g]))
 
     // Record message statuses in database
     const messageRecords = statusChecks.map((result: any) => {
@@ -189,10 +190,9 @@ export async function POST(request: NextRequest) {
       errors,
       senderMode: senderInfo.isSandbox ? 'sandbox' : 'registered',
       sender: senderInfo.sender,
-      hint:
-        senderInfo.isSandbox
-          ? 'Twilio Sandbox may queue or delay international WhatsApp delivery. If status stays pending, ensure recipient joined the sandbox and use a registered WhatsApp sender for production reliability.'
-          : 'If status stays pending, check recipient WhatsApp availability and Twilio message logs for carrier restrictions.',
+      hint: senderInfo.isSandbox
+        ? 'Twilio Sandbox may queue or delay international WhatsApp delivery. If status stays pending, ensure recipient joined the sandbox and use a registered WhatsApp sender for production reliability.'
+        : 'If status stays pending, check recipient WhatsApp availability and Twilio message logs for carrier restrictions.',
     })
   } catch (error) {
     return handleAPIError(error)

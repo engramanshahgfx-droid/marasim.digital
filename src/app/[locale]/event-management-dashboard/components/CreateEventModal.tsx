@@ -91,7 +91,13 @@ const CreateEventModal = ({ isOpen, onClose, onSubmit, editingEvent }: CreateEve
         <div className="pointer-events-auto my-8 flex max-h-[calc(100vh-4rem)] w-full max-w-2xl animate-slide-up flex-col rounded-xl bg-card shadow-warm-xl">
           <div className="sticky top-0 flex items-center justify-between border-b border-border bg-card px-6 py-4">
             <h2 className="font-heading text-2xl font-semibold text-text-primary">
-              {editingEvent ? (isArabic ? 'تعديل الفعالية' : 'Edit Event') : isArabic ? 'إنشاء فعالية جديدة' : 'Create New Event'}
+              {editingEvent
+                ? isArabic
+                  ? 'تعديل الفعالية'
+                  : 'Edit Event'
+                : isArabic
+                  ? 'إنشاء فعالية جديدة'
+                  : 'Create New Event'}
             </h2>
             <button
               onClick={onClose}
@@ -203,7 +209,9 @@ const CreateEventModal = ({ isOpen, onClose, onSubmit, editingEvent }: CreateEve
                 onChange={handleChange}
                 rows={4}
                 className="transition-smooth w-full resize-none rounded-md border border-input bg-background px-4 py-3 text-text-primary focus:outline-none focus:ring-3 focus:ring-ring focus:ring-offset-2"
-                placeholder={isArabic ? 'أضف أي تفاصيل إضافية عن فعاليتك...' : 'Add any additional details about your event...'}
+                placeholder={
+                  isArabic ? 'أضف أي تفاصيل إضافية عن فعاليتك...' : 'Add any additional details about your event...'
+                }
               />
             </div>
 
@@ -227,9 +235,15 @@ const CreateEventModal = ({ isOpen, onClose, onSubmit, editingEvent }: CreateEve
                     {isArabic ? 'جارٍ الإنشاء...' : 'Creating...'}
                   </>
                 ) : editingEvent ? (
-                  isArabic ? 'تحديث الفعالية' : 'Update Event'
+                  isArabic ? (
+                    'تحديث الفعالية'
+                  ) : (
+                    'Update Event'
+                  )
+                ) : isArabic ? (
+                  'إنشاء فعالية'
                 ) : (
-                  isArabic ? 'إنشاء فعالية' : 'Create Event'
+                  'Create Event'
                 )}
               </button>
             </div>

@@ -35,7 +35,8 @@ export default function LoginPage() {
         if (user) {
           router.replace(`/${locale}/event-management-dashboard`)
         }
-      } catch {
+      } catch (_error) {
+        return
       }
     }
 

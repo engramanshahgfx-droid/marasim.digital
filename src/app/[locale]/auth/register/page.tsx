@@ -26,8 +26,11 @@ export default function RegisterPage() {
     register: isArabic ? 'إنشاء حساب' : 'Register',
     createFreeAccount: isArabic ? 'أنشئ حسابك المجاني' : 'Create your free account',
     verifyEmail: isArabic ? 'تحقق من بريدك الإلكتروني' : 'Verify your email',
-    startFree: isArabic ? 'ابدأ بإنشاء الدعوات فورًا، بدون بطاقة ائتمان' : 'Start creating invitations instantly — no credit card required',
-    sentCode: (emailAddress: string) => (isArabic ? `أرسلنا رمزًا من 6 أرقام إلى ${emailAddress}` : `We sent a 6-digit code to ${emailAddress}`),
+    startFree: isArabic
+      ? 'ابدأ بإنشاء الدعوات فورًا، بدون بطاقة ائتمان'
+      : 'Start creating invitations instantly — no credit card required',
+    sentCode: (emailAddress: string) =>
+      isArabic ? `أرسلنا رمزًا من 6 أرقام إلى ${emailAddress}` : `We sent a 6-digit code to ${emailAddress}`,
     fullName: isArabic ? 'الاسم الكامل' : 'Full Name',
     fullNamePlaceholder: isArabic ? 'اسمك الكامل' : 'Your full name',
     email: isArabic ? 'البريد الإلكتروني' : 'Email address',
@@ -36,7 +39,9 @@ export default function RegisterPage() {
     sendCode: isArabic ? 'إرسال رمز التحقق' : 'Send Verification Code',
     sendingCode: isArabic ? 'جارٍ إرسال الرمز...' : 'Sending code...',
     hasAccount: isArabic ? 'لديك حساب بالفعل؟' : 'Already have an account?',
-    freeIncludes: isArabic ? 'الحساب المجاني يشمل: فعالية واحدة · 50 ضيفًا · رموز QR · متابعة الردود' : 'Free account includes: 1 Event · 50 Guests · QR Codes · RSVP Tracking',
+    freeIncludes: isArabic
+      ? 'الحساب المجاني يشمل: فعالية واحدة · 50 ضيفًا · رموز QR · متابعة الردود'
+      : 'Free account includes: 1 Event · 50 Guests · QR Codes · RSVP Tracking',
     signInHere: isArabic ? 'سجّل الدخول من هنا ←' : 'Sign in here →',
     verificationCode: isArabic ? 'رمز التحقق' : 'Verification Code',
     verifyCreate: isArabic ? 'تحقق وأنشئ الحساب' : 'Verify & Create Account',
@@ -144,9 +149,7 @@ export default function RegisterPage() {
               {step === 'form' ? content.createFreeAccount : content.verifyEmail}
             </h2>
             <p className="mt-2 text-sm text-gray-600">
-              {step === 'form'
-                ? content.startFree
-                : content.sentCode(email)}
+              {step === 'form' ? content.startFree : content.sentCode(email)}
             </p>
           </div>
 
@@ -221,9 +224,7 @@ export default function RegisterPage() {
               </div>
 
               <div className="rounded-lg bg-blue-50 p-4">
-                <p className="text-center text-xs text-blue-700">
-                  🎉 {content.freeIncludes}
-                </p>
+                <p className="text-center text-xs text-blue-700">🎉 {content.freeIncludes}</p>
               </div>
             </form>
           ) : (
@@ -243,7 +244,6 @@ export default function RegisterPage() {
                   )}
                 </div>
               )}
-
               <div>
                 <label htmlFor="otp" className="block text-sm font-medium text-gray-700">
                   {content.verificationCode}
@@ -261,18 +261,16 @@ export default function RegisterPage() {
                   disabled={loading}
                   autoFocus
                 />
-+                </div>
-+
-+                <div className="text-sm text-gray-600">{content.signInHere}</div>
-+
-+              <button
+                +{' '}
+              </div>
+              + + <div className="text-sm text-gray-600">{content.signInHere}</div>+ +{' '}
+              <button
                 type="submit"
                 disabled={loading || otp.length < 6}
                 className="flex w-full justify-center rounded-md border border-transparent bg-blue-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
               >
                 {loading ? content.verifying : content.verifyCreate}
               </button>
-
               <div className="flex items-center justify-between text-sm">
                 <button type="button" onClick={() => setStep('form')} className="text-gray-500 hover:text-gray-700">
                   {content.changeEmail}

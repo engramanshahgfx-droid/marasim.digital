@@ -104,7 +104,15 @@ const EventTableMobileCard = ({
           <button
             onClick={() => setIsExpanded(!isExpanded)}
             className="transition-smooth p-2 text-text-secondary hover:text-text-primary"
-            aria-label={isArabic ? (isExpanded ? 'طي التفاصيل' : 'توسيع التفاصيل') : isExpanded ? 'Collapse details' : 'Expand details'}
+            aria-label={
+              isArabic
+                ? isExpanded
+                  ? 'طي التفاصيل'
+                  : 'توسيع التفاصيل'
+                : isExpanded
+                  ? 'Collapse details'
+                  : 'Expand details'
+            }
           >
             <Icon name="ChevronDownIcon" size={20} className={`transition-smooth ${isExpanded ? 'rotate-180' : ''}`} />
           </button>

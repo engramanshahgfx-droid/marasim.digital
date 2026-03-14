@@ -47,7 +47,11 @@ const QRCheckInInteractive = () => {
       setEvents((current) =>
         current.map((event) =>
           event.id === eventId
-            ? { ...event, checkedIn: nextGuests.filter((guest) => guest.checkInTime).length, totalGuests: nextGuests.length }
+            ? {
+                ...event,
+                checkedIn: nextGuests.filter((guest) => guest.checkInTime).length,
+                totalGuests: nextGuests.length,
+              }
             : event
         )
       )
@@ -106,7 +110,11 @@ const QRCheckInInteractive = () => {
     initialize()
   }, [])
 
-  const submitCheckIn = async (payload: { guestId?: string; qrToken?: string; method: 'manual' | 'qr_scan' }): Promise<ScanSubmissionResult> => {
+  const submitCheckIn = async (payload: {
+    guestId?: string
+    qrToken?: string
+    method: 'manual' | 'qr_scan'
+  }): Promise<ScanSubmissionResult> => {
     if (!token || !selectedEventId) {
       return {
         status: 'error',
@@ -190,7 +198,9 @@ const QRCheckInInteractive = () => {
         isLoading={isLoadingEvents}
       />
 
-      {checkInError && <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{checkInError}</div>}
+      {checkInError && (
+        <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{checkInError}</div>
+      )}
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">

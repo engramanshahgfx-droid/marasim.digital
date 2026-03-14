@@ -127,7 +127,11 @@ const ManualCheckInSearch = ({ guests, isLoading = false, onCheckIn, className =
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder={isArabic ? 'البحث بالاسم أو الإيميل أو الهاتف أو رمز الدعوة...' : 'Search by name, email, phone, or invitation code...'}
+            placeholder={
+              isArabic
+                ? 'البحث بالاسم أو الإيميل أو الهاتف أو رمز الدعوة...'
+                : 'Search by name, email, phone, or invitation code...'
+            }
             className="w-full rounded-md border border-input bg-muted py-3 pl-12 pr-4 text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-3 focus:ring-ring"
           />
 
@@ -141,7 +145,9 @@ const ManualCheckInSearch = ({ guests, isLoading = false, onCheckIn, className =
         {searchQuery.trim() && searchResults.length === 0 && !isSearching && !isLoading && (
           <div className="mt-4 p-8 text-center">
             <Icon name="UserIcon" size={48} className="mx-auto mb-3 text-text-secondary" />
-            <p className="text-text-secondary">{isArabic ? 'لا يوجد ضيوف مطابقون لبحثك' : 'No guests found matching your search'}</p>
+            <p className="text-text-secondary">
+              {isArabic ? 'لا يوجد ضيوف مطابقون لبحثك' : 'No guests found matching your search'}
+            </p>
           </div>
         )}
 
@@ -171,9 +177,7 @@ const ManualCheckInSearch = ({ guests, isLoading = false, onCheckIn, className =
                     <div className="min-w-0 flex-1">
                       <div className="mb-1 flex items-start justify-between gap-2">
                         <div>
-                          <h3 className="text-sm font-semibold text-text-primary">
-                            {guest.name}
-                          </h3>
+                          <h3 className="text-sm font-semibold text-text-primary">{guest.name}</h3>
                         </div>
                         <span className={`rounded-full px-2 py-1 text-xs ${badge.color} whitespace-nowrap font-medium`}>
                           {badge.label}
@@ -192,7 +196,9 @@ const ManualCheckInSearch = ({ guests, isLoading = false, onCheckIn, className =
                       </div>
 
                       <div className="mt-2 flex items-center gap-2">
-                        <span className="text-xs text-text-secondary">{isArabic ? 'الرمز:' : 'Code:'} {guest.qrCode}</span>
+                        <span className="text-xs text-text-secondary">
+                          {isArabic ? 'الرمز:' : 'Code:'} {guest.qrCode}
+                        </span>
                         <span className="rounded-full bg-card px-2 py-1 text-xs text-text-primary">
                           {isArabic ? `المرافقون ${guest.plusOnes}` : `Plus ones ${guest.plusOnes}`}
                         </span>
@@ -228,8 +234,12 @@ const ManualCheckInSearch = ({ guests, isLoading = false, onCheckIn, className =
             <div className="flex items-center gap-3">
               <Icon name="CheckCircleIcon" size={24} className="text-success" />
               <div>
-                <p className="font-semibold text-success">{isArabic ? 'تم تسجيل الحضور بنجاح' : 'Check-in Successful'}</p>
-                <p className="text-sm text-text-secondary">{selectedGuest.name} {isArabic ? 'تم تسجيل دخوله' : 'has been checked in'}</p>
+                <p className="font-semibold text-success">
+                  {isArabic ? 'تم تسجيل الحضور بنجاح' : 'Check-in Successful'}
+                </p>
+                <p className="text-sm text-text-secondary">
+                  {selectedGuest.name} {isArabic ? 'تم تسجيل دخوله' : 'has been checked in'}
+                </p>
               </div>
             </div>
           </div>

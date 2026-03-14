@@ -42,8 +42,12 @@ export default function ForgotPasswordPage() {
     invalidOtp: isArabic ? 'رمز التحقق غير صالح' : 'Invalid OTP',
     failedReset: isArabic ? 'فشل إعادة تعيين كلمة المرور' : 'Failed to reset password',
     otpSent: isArabic ? '✅ تم إرسال رمز التحقق إلى بريدك الإلكتروني' : '✅ OTP sent to your email! Use: 123456',
-    otpVerified: isArabic ? '✅ تم التحقق من الرمز، الآن أدخل كلمة المرور الجديدة' : '✅ OTP verified! Now set your new password',
-    resetSuccess: isArabic ? '✅ تم تغيير كلمة المرور بنجاح، سيتم تحويلك إلى تسجيل الدخول' : '✅ Password reset successfully! Redirecting to login...',
+    otpVerified: isArabic
+      ? '✅ تم التحقق من الرمز، الآن أدخل كلمة المرور الجديدة'
+      : '✅ OTP verified! Now set your new password',
+    resetSuccess: isArabic
+      ? '✅ تم تغيير كلمة المرور بنجاح، سيتم تحويلك إلى تسجيل الدخول'
+      : '✅ Password reset successfully! Redirecting to login...',
     passwordsMismatch: isArabic ? 'كلمتا المرور غير متطابقتين' : 'Passwords do not match',
     passwordLength: isArabic ? 'كلمة المرور يجب أن تكون 6 أحرف على الأقل' : 'Password must be at least 6 characters',
   }

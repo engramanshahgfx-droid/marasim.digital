@@ -7,7 +7,9 @@ export default async function FeaturesPage({ params }: { params: Promise<{ local
 
   const content = {
     title: isArabic ? 'مميزات قوية' : 'Powerful Features',
-    description: isArabic ? 'كل ما تحتاجه لإدارة الدعوات بسهولة' : 'Everything you need to manage invitations effortlessly',
+    description: isArabic
+      ? 'كل ما تحتاجه لإدارة الدعوات بسهولة'
+      : 'Everything you need to manage invitations effortlessly',
     ctaTitle: isArabic ? 'جاهز للبدء؟' : 'Ready to get started?',
     ctaDescription: isArabic ? 'أنشئ أول دعوة لك اليوم' : 'Create your first invitation today!',
     ctaButton: isArabic ? 'سجّل مجانًا' : 'Sign Up Free',
@@ -15,32 +17,44 @@ export default async function FeaturesPage({ params }: { params: Promise<{ local
       {
         icon: '🎉',
         title: isArabic ? 'إدارة الفعاليات' : 'Event Management',
-        description: isArabic ? 'أنشئ وأدر فعالياتك مع كل التفاصيل في مكان واحد.' : 'Create and manage unlimited events with all details in one place.',
+        description: isArabic
+          ? 'أنشئ وأدر فعالياتك مع كل التفاصيل في مكان واحد.'
+          : 'Create and manage unlimited events with all details in one place.',
       },
       {
         icon: '👥',
         title: isArabic ? 'قوائم الضيوف' : 'Guest Lists',
-        description: isArabic ? 'أضف الضيوف وتابع الردود وأدر الحضور بسهولة.' : 'Add guests, track RSVPs, and manage attendance effortlessly.',
+        description: isArabic
+          ? 'أضف الضيوف وتابع الردود وأدر الحضور بسهولة.'
+          : 'Add guests, track RSVPs, and manage attendance effortlessly.',
       },
       {
         icon: '📱',
         title: isArabic ? 'دعوات واتساب' : 'WhatsApp Invitations',
-        description: isArabic ? 'أرسل دعوات جميلة عبر واتساب مباشرة للضيوف.' : 'Send beautiful invitations via WhatsApp directly to guests.',
+        description: isArabic
+          ? 'أرسل دعوات جميلة عبر واتساب مباشرة للضيوف.'
+          : 'Send beautiful invitations via WhatsApp directly to guests.',
       },
       {
         icon: '🎟️',
         title: isArabic ? 'تسجيل حضور QR' : 'QR Code Check-in',
-        description: isArabic ? 'تسجيل حضور سريع عبر QR مع متابعة فورية للحضور.' : 'Fast check-in using QR codes. Real-time attendance tracking.',
+        description: isArabic
+          ? 'تسجيل حضور سريع عبر QR مع متابعة فورية للحضور.'
+          : 'Fast check-in using QR codes. Real-time attendance tracking.',
       },
       {
         icon: '📊',
         title: isArabic ? 'التحليلات والتقارير' : 'Analytics & Reports',
-        description: isArabic ? 'اطلع على تقارير الحضور وإحصائيات الضيوف بالتفصيل.' : 'View detailed attendance reports and guest statistics.',
+        description: isArabic
+          ? 'اطلع على تقارير الحضور وإحصائيات الضيوف بالتفصيل.'
+          : 'View detailed attendance reports and guest statistics.',
       },
       {
         icon: '🎨',
         title: isArabic ? 'قوالب مخصصة' : 'Custom Templates',
-        description: isArabic ? 'صمّم دعوات أنيقة بهويتك الخاصة.' : 'Design beautiful invitation templates with your branding.',
+        description: isArabic
+          ? 'صمّم دعوات أنيقة بهويتك الخاصة.'
+          : 'Design beautiful invitation templates with your branding.',
       },
       {
         icon: '🌍',
@@ -50,7 +64,9 @@ export default async function FeaturesPage({ params }: { params: Promise<{ local
       {
         icon: '📧',
         title: isArabic ? 'إشعارات البريد' : 'Email Notifications',
-        description: isArabic ? 'تذكيرات ورسائل تأكيد تلقائية عبر البريد الإلكتروني.' : 'Automated email reminders and confirmations.',
+        description: isArabic
+          ? 'تذكيرات ورسائل تأكيد تلقائية عبر البريد الإلكتروني.'
+          : 'Automated email reminders and confirmations.',
       },
       {
         icon: '🔒',

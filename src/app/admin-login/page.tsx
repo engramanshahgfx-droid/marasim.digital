@@ -67,12 +67,8 @@ export default function AdminLoginPage() {
 
         <div className="rounded-lg bg-white p-8 shadow-xl">
           <div className="mb-8 text-center">
-            <h1 className="text-3xl font-bold text-gray-900">
-              {isArabic ? 'لوحة الإدارة' : 'Admin Panel'}
-            </h1>
-            <p className="mt-2 text-gray-600">
-              {isArabic ? 'تسجيل دخول المشرف العام' : 'Super Admin Login'}
-            </p>
+            <h1 className="text-3xl font-bold text-gray-900">{isArabic ? 'لوحة الإدارة' : 'Admin Panel'}</h1>
+            <p className="mt-2 text-gray-600">{isArabic ? 'تسجيل دخول المشرف العام' : 'Super Admin Login'}</p>
           </div>
 
           {error && <div className="mb-4 rounded-lg bg-red-100 p-4 text-sm text-red-700">{error}</div>}
@@ -109,16 +105,13 @@ export default function AdminLoginPage() {
               disabled={loading}
               className="w-full rounded-lg bg-blue-600 px-4 py-2 font-semibold text-white transition-colors hover:bg-blue-700 disabled:opacity-50"
             >
-              {loading
-                ? (isArabic ? 'جارٍ تسجيل الدخول...' : 'Logging in...')
-                : (isArabic ? 'تسجيل الدخول' : 'Login')}
+              {loading ? (isArabic ? 'جارٍ تسجيل الدخول...' : 'Logging in...') : isArabic ? 'تسجيل الدخول' : 'Login'}
             </button>
           </form>
 
           <div className="mt-6 rounded-lg bg-blue-50 p-4 text-sm text-blue-700">
             <p>
-              ⚠️{' '}
-              <strong>{isArabic ? 'منطقة آمنة:' : 'Secure Area:'}</strong>{' '}
+              ⚠️ <strong>{isArabic ? 'منطقة آمنة:' : 'Secure Area:'}</strong>{' '}
               {isArabic
                 ? 'يمكن فقط للمشرفين العامين الوصول إلى هذه اللوحة. يتم تسجيل جميع الأنشطة لأغراض الأمان.'
                 : 'Only super admin users can access this panel. All activities are logged for security.'}

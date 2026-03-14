@@ -452,14 +452,21 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
         if (response.status === 409 && data.duplicates) {
           setDuplicates(data.duplicates)
           setPendingFile(file)
-          setUploadError(data.message || (isArabic ? 'تم اكتشاف ضيوف مكررين. هل تريد استبدال القائمة بالكامل؟' : 'Duplicate guests detected. Would you like to replace the entire guest list?'))
+          setUploadError(
+            data.message ||
+              (isArabic
+                ? 'تم اكتشاف ضيوف مكررين. هل تريد استبدال القائمة بالكامل؟'
+                : 'Duplicate guests detected. Would you like to replace the entire guest list?')
+          )
           return
         }
         throw new Error(data.error || 'Failed to upload file')
       }
 
       console.log('Upload successful:', data)
-      setUploadSuccess(isArabic ? `تم استيراد ${data.guestsCount} ضيف بنجاح!` : `Successfully imported ${data.guestsCount} guests!`)
+      setUploadSuccess(
+        isArabic ? `تم استيراد ${data.guestsCount} ضيف بنجاح!` : `Successfully imported ${data.guestsCount} guests!`
+      )
       setPendingFile(null)
       setDuplicates([])
 
@@ -490,7 +497,13 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
       return
     }
 
-    if (!confirm(isArabic ? 'هل أنت متأكد من حذف جميع الضيوف من هذه الفعالية؟ لا يمكن التراجع عن ذلك.' : 'Are you sure you want to delete all guests from this event? This cannot be undone.')) {
+    if (
+      !confirm(
+        isArabic
+          ? 'هل أنت متأكد من حذف جميع الضيوف من هذه الفعالية؟ لا يمكن التراجع عن ذلك.'
+          : 'Are you sure you want to delete all guests from this event? This cannot be undone.'
+      )
+    ) {
       return
     }
 
@@ -572,7 +585,9 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
       {/* Event Selector and Upload Status */}
       <div className="mb-6 space-y-4">
         <div className="rounded-lg border border-border bg-card p-6">
-          <label className="mb-3 block text-sm font-medium text-text-primary">{isArabic ? 'اختر الفعالية لرفع الضيوف' : 'Select Event for Guest Upload'}</label>
+          <label className="mb-3 block text-sm font-medium text-text-primary">
+            {isArabic ? 'اختر الفعالية لرفع الضيوف' : 'Select Event for Guest Upload'}
+          </label>
           <select
             value={selectedEventId}
             onChange={(e) => {
@@ -591,7 +606,11 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
               </option>
             ))}
           </select>
-          {isLoadingEvents && <p className="mt-2 text-sm text-text-secondary">{isArabic ? 'جارٍ تحميل الفعاليات...' : 'Loading events...'}</p>}
+          {isLoadingEvents && (
+            <p className="mt-2 text-sm text-text-secondary">
+              {isArabic ? 'جارٍ تحميل الفعاليات...' : 'Loading events...'}
+            </p>
+          )}
         </div>
 
         {/* Error Message */}
@@ -600,7 +619,9 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
             <p className="text-sm font-medium">{uploadError}</p>
             {duplicates.length > 0 && (
               <div className="mt-3 space-y-2">
-                <p className="text-xs font-semibold">{isArabic ? 'أرقام الجوال المكررة:' : 'Duplicate phone numbers:'}</p>
+                <p className="text-xs font-semibold">
+                  {isArabic ? 'أرقام الجوال المكررة:' : 'Duplicate phone numbers:'}
+                </p>
                 <div className="grid grid-cols-2 gap-2">
                   {duplicates.map((phone, idx) => (
                     <span key={idx} className="rounded bg-red-100 px-2 py-1 text-xs">
@@ -617,7 +638,9 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
                     {isArabic ? 'استبدال جميع الضيوف' : 'Replace All Guests'}
                   </button>
                   <p className="flex items-center text-xs text-red-600">
-                    {isArabic ? 'سيؤدي هذا إلى حذف جميع الضيوف الحاليين واستيراد القائمة الجديدة.' : 'This will delete all existing guests and import the new list.'}
+                    {isArabic
+                      ? 'سيؤدي هذا إلى حذف جميع الضيوف الحاليين واستيراد القائمة الجديدة.'
+                      : 'This will delete all existing guests and import the new list.'}
                   </p>
                 </div>
               </div>
@@ -649,7 +672,11 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
                   ? 'WhatsApp mode: Sandbox (testing)'
                   : 'WhatsApp mode: Registered sender'}
             </p>
-            {whatsAppReport.sender && <p className="mt-1 text-xs">{isArabic ? `المرسل: ${whatsAppReport.sender}` : `Sender: ${whatsAppReport.sender}`}</p>}
+            {whatsAppReport.sender && (
+              <p className="mt-1 text-xs">
+                {isArabic ? `المرسل: ${whatsAppReport.sender}` : `Sender: ${whatsAppReport.sender}`}
+              </p>
+            )}
             <p className="mt-2 text-xs">
               {isArabic
                 ? `المعالجة: ${whatsAppReport.sent || 0} | التسليم: ${whatsAppReport.delivered || 0} | الانتظار: ${whatsAppReport.pending || 0} | الفشل: ${whatsAppReport.failed || 0}`
@@ -657,7 +684,7 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
             </p>
             {whatsAppReport.hint && <p className="mt-2 text-xs">{whatsAppReport.hint}</p>}
             {!!whatsAppReport.results?.length && (
-              <div className="mt-3 max-h-36 overflow-y-auto rounded border border-current/20 bg-white/60 p-2">
+              <div className="border-current/20 mt-3 max-h-36 overflow-y-auto rounded border bg-white/60 p-2">
                 {whatsAppReport.results.slice(0, 8).map((result, idx) => (
                   <p key={`${result.sid || result.phone}-${idx}`} className="text-xs">
                     {result.phone} - {(result.status || 'pending').toUpperCase()}
@@ -679,7 +706,11 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
               <Icon name="DocumentArrowUpIcon" className="h-5 w-5 text-primary" ariaLabel="Upload" />
               {isArabic ? 'استيراد جماعي من CSV' : 'Bulk Import from CSV'}
             </h3>
-            <p className="text-sm text-text-secondary">{isArabic ? 'ارفع ملف CSV لإضافة عدة ضيوف دفعة واحدة' : 'Upload a CSV file to add multiple guests at once'}</p>
+            <p className="text-sm text-text-secondary">
+              {isArabic
+                ? 'ارفع ملف CSV لإضافة عدة ضيوف دفعة واحدة'
+                : 'Upload a CSV file to add multiple guests at once'}
+            </p>
           </div>
           <FileUploadZone
             onFileUpload={handleFileUpload}
@@ -695,13 +726,17 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
               <Icon name="UserPlusIcon" className="h-5 w-5 text-primary" ariaLabel="Add" />
               {isArabic ? 'إضافة ضيف يدويًا' : 'Add Guest Manually'}
             </h3>
-            <p className="mb-4 text-sm text-text-secondary">{isArabic ? 'أدخل بيانات الضيف واحدًا تلو الآخر' : 'Enter guest details one by one'}</p>
+            <p className="mb-4 text-sm text-text-secondary">
+              {isArabic ? 'أدخل بيانات الضيف واحدًا تلو الآخر' : 'Enter guest details one by one'}
+            </p>
           </div>
           <div className="flex flex-col items-center justify-center py-8">
             <div className="bg-primary/10 mb-4 flex h-16 w-16 items-center justify-center rounded-full">
               <Icon name="UserPlusIcon" size={32} className="text-primary" ariaLabel="Add Guest" />
             </div>
-            <p className="mb-4 text-center text-sm text-text-secondary">{isArabic ? 'اضغط بالأسفل لإضافة ضيف واحد' : 'Click below to add a single guest'}</p>
+            <p className="mb-4 text-center text-sm text-text-secondary">
+              {isArabic ? 'اضغط بالأسفل لإضافة ضيف واحد' : 'Click below to add a single guest'}
+            </p>
             <button
               onClick={() => setShowAddGuestForm(true)}
               disabled={!selectedEventId || isUploading}

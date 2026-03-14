@@ -88,11 +88,7 @@ export async function sendWhatsAppMessage(toPhoneNumber: string, message: string
  * @param contentSid - Twilio template SID (e.g. 'HXb5b62575e6e4ff6129ad7c8efe1f983e')
  * @param contentVariables - JSON string with template variables (e.g. '{"1":"12/1","2":"3pm"}')
  */
-export async function sendWhatsAppTemplate(
-  toPhoneNumber: string,
-  contentSid: string,
-  contentVariables?: string
-) {
+export async function sendWhatsAppTemplate(toPhoneNumber: string, contentSid: string, contentVariables?: string) {
   try {
     const whatsappSender = process.env.TWILIO_WHATSAPP_NUMBER || process.env.TWILIO_PHONE_NUMBER
     if (!whatsappSender) {
@@ -247,7 +243,7 @@ export async function getLatestWhatsAppStatusForRecipient(toPhoneNumber: string)
 
 export function formatPhoneNumber(phone: string): string {
   const cleaned = phone.replace(/[^\d+]/g, '')
-  
+
   if (!cleaned.startsWith('+')) {
     return `+966${cleaned.slice(-9)}`
   }
@@ -278,16 +274,14 @@ export function getWhatsAppSenderInfo(): { sender: string | null; isSandbox: boo
   }
 }
 
-// ── Twilio Verify (OTP) 
+// ── Twilio Verify (OTP)
 
 export async function sendOTP(toPhoneNumber: string): Promise<{ success: boolean; error?: string }> {
   try {
     const serviceSid = process.env.TWILIO_VERIFY_SERVICE_SID
     if (!serviceSid) throw new Error('TWILIO_VERIFY_SERVICE_SID is not configured')
 
-    await getTwilioClient()
-      .verify.v2.services(serviceSid)
-      .verifications.create({ to: toPhoneNumber, channel: 'sms' })
+    await getTwilioClient().verify.v2.services(serviceSid).verifications.create({ to: toPhoneNumber, channel: 'sms' })
 
     return { success: true }
   } catch (error) {

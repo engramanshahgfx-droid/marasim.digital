@@ -31,10 +31,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Return stats for specific event
-    const { data: guests, error } = await supabase
-      .from('guests')
-      .select('status, checked_in')
-      .eq('event_id', eventId)
+    const { data: guests, error } = await supabase.from('guests').select('status, checked_in').eq('event_id', eventId)
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 400 })

@@ -31,7 +31,9 @@ export default function PricingPage() {
     processingFailed: isArabic ? 'فشلت العملية، حاول مرة أخرى.' : 'Failed to process. Please try again.',
     loading: isArabic ? 'جارٍ تحميل الخطط...' : 'Loading pricing plans...',
     title: isArabic ? 'أسعار بسيطة وواضحة' : 'Simple, Transparent Pricing',
-    description: isArabic ? 'اختر الخطة المناسبة لاحتياجات دعواتك' : 'Choose the perfect plan for your invitation needs',
+    description: isArabic
+      ? 'اختر الخطة المناسبة لاحتياجات دعواتك'
+      : 'Choose the perfect plan for your invitation needs',
     mostPopular: isArabic ? 'الأكثر شيوعًا' : 'Most Popular',
     month: isArabic ? '/شهريًا' : '/month',
     unlimitedEvents: isArabic ? 'فعاليات غير محدودة' : 'Unlimited Events',
@@ -40,11 +42,15 @@ export default function PricingPage() {
     bankTransfer: isArabic ? 'تحويل بنكي' : 'Bank Transfer',
     processing: isArabic ? 'جارٍ المعالجة...' : 'Processing...',
     paymentOptionsTitle: isArabic ? 'خيارات دفع مرنة' : 'Flexible Payment Options',
-    paypalDescription: isArabic ? 'تفعيل فوري وآمن عبر PayPal.' : 'Instant automatic activation. Pay securely with PayPal.',
+    paypalDescription: isArabic
+      ? 'تفعيل فوري وآمن عبر PayPal.'
+      : 'Instant automatic activation. Pay securely with PayPal.',
     paypalItems: isArabic
       ? ['معالجة دفع فورية', 'تفعيل تلقائي للاشتراك', 'دفع آمن ومشفّر']
       : ['Instant payment processing', 'Automatic subscription activation', 'Secure & encrypted'],
-    bankDescription: isArabic ? 'تحويل بنكي مباشر مع مراجعة يدوية من الإدارة.' : 'Direct bank transfer with manual admin approval.',
+    bankDescription: isArabic
+      ? 'تحويل بنكي مباشر مع مراجعة يدوية من الإدارة.'
+      : 'Direct bank transfer with manual admin approval.',
     bankItems: isArabic
       ? ['إيداع بنكي مباشر', 'تحقق من الإدارة', 'الموافقة خلال 24 ساعة']
       : ['Direct bank deposit', 'Admin verification', 'Approval within 24 hours'],

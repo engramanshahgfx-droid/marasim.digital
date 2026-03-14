@@ -19,7 +19,9 @@ export default function PayPalCheckoutPage() {
   const [processing, setProcessing] = useState(false)
 
   const content = {
-    failed: isArabic ? 'فشلت عملية الدفع عبر PayPal. حاول مرة أخرى.' : 'Failed to process PayPal payment. Please try again.',
+    failed: isArabic
+      ? 'فشلت عملية الدفع عبر PayPal. حاول مرة أخرى.'
+      : 'Failed to process PayPal payment. Please try again.',
     loading: isArabic ? 'جارٍ تحميل صفحة الدفع...' : 'Loading checkout...',
     title: isArabic ? 'الدفع' : 'Checkout',
     total: isArabic ? 'الإجمالي:' : 'Total:',
