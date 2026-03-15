@@ -89,167 +89,167 @@ const CreateEventModal = ({ isOpen, onClose, onSubmit, editingEvent }: CreateEve
       <div className="animate-fade-in fixed inset-0 z-[999] bg-black/50" onClick={onClose} aria-hidden="true" />
       <div className="pointer-events-none fixed inset-0 z-[9999] overflow-y-auto">
         <div className="pointer-events-none flex min-h-full items-center justify-center p-4">
-        <div className="pointer-events-auto my-8 w-full max-w-2xl animate-slide-up flex flex-col rounded-xl bg-card shadow-warm-xl">
-          <div className="sticky top-0 flex items-center justify-between border-b border-border bg-card px-6 py-4">
-            <h2 className="font-heading text-2xl font-semibold text-text-primary">
-              {editingEvent
-                ? isArabic
-                  ? 'تعديل الفعالية'
-                  : 'Edit Event'
-                : isArabic
-                  ? 'إنشاء فعالية جديدة'
-                  : 'Create New Event'}
-            </h2>
-            <button
-              onClick={onClose}
-              className="transition-smooth rounded-md p-2 text-text-secondary hover:bg-muted hover:text-text-primary"
-              aria-label={isArabic ? 'إغلاق النافذة' : 'Close modal'}
-            >
-              <Icon name="XMarkIcon" size={24} />
-            </button>
-          </div>
-
-          <form onSubmit={handleSubmit} className="space-y-6 p-6">
-            {error && <div className="rounded-md border border-red-400 bg-red-100 p-4 text-red-700">{error}</div>}
-
-            <div>
-              <label htmlFor="name" className="mb-2 block text-sm font-medium text-text-primary">
-                {isArabic ? 'اسم الفعالية' : 'Event Name'} *
-              </label>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-                autoFocus
-                className="transition-smooth w-full rounded-md border border-input bg-background px-4 py-3 text-text-primary focus:outline-none focus:ring-3 focus:ring-ring focus:ring-offset-2"
-                placeholder={isArabic ? 'مثال: حفل زفاف - سارة وأحمد' : 'e.g., Wedding - Sarah & Ahmed'}
-              />
+          <div className="pointer-events-auto my-8 flex w-full max-w-2xl animate-slide-up flex-col rounded-xl bg-card shadow-warm-xl">
+            <div className="sticky top-0 flex items-center justify-between border-b border-border bg-card px-6 py-4">
+              <h2 className="font-heading text-2xl font-semibold text-text-primary">
+                {editingEvent
+                  ? isArabic
+                    ? 'تعديل الفعالية'
+                    : 'Edit Event'
+                  : isArabic
+                    ? 'إنشاء فعالية جديدة'
+                    : 'Create New Event'}
+              </h2>
+              <button
+                onClick={onClose}
+                className="transition-smooth rounded-md p-2 text-text-secondary hover:bg-muted hover:text-text-primary"
+                aria-label={isArabic ? 'إغلاق النافذة' : 'Close modal'}
+              >
+                <Icon name="XMarkIcon" size={24} />
+              </button>
             </div>
 
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            <form onSubmit={handleSubmit} className="space-y-6 p-6">
+              {error && <div className="rounded-md border border-red-400 bg-red-100 p-4 text-red-700">{error}</div>}
+
               <div>
-                <label htmlFor="date" className="mb-2 block text-sm font-medium text-text-primary">
-                  {isArabic ? 'تاريخ الفعالية' : 'Event Date'} *
+                <label htmlFor="name" className="mb-2 block text-sm font-medium text-text-primary">
+                  {isArabic ? 'اسم الفعالية' : 'Event Name'} *
                 </label>
                 <input
-                  type="date"
-                  id="date"
-                  name="date"
-                  value={formData.date}
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                  autoFocus
+                  className="transition-smooth w-full rounded-md border border-input bg-background px-4 py-3 text-text-primary focus:outline-none focus:ring-3 focus:ring-ring focus:ring-offset-2"
+                  placeholder={isArabic ? 'مثال: حفل زفاف - سارة وأحمد' : 'e.g., Wedding - Sarah & Ahmed'}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                <div>
+                  <label htmlFor="date" className="mb-2 block text-sm font-medium text-text-primary">
+                    {isArabic ? 'تاريخ الفعالية' : 'Event Date'} *
+                  </label>
+                  <input
+                    type="date"
+                    id="date"
+                    name="date"
+                    value={formData.date}
+                    onChange={handleChange}
+                    required
+                    className="transition-smooth w-full rounded-md border border-input bg-background px-4 py-3 text-text-primary focus:outline-none focus:ring-3 focus:ring-ring focus:ring-offset-2"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="eventType" className="mb-2 block text-sm font-medium text-text-primary">
+                    {isArabic ? 'نوع الفعالية' : 'Event Type'} *
+                  </label>
+                  <select
+                    id="eventType"
+                    name="eventType"
+                    value={formData.eventType}
+                    onChange={handleChange}
+                    required
+                    className="transition-smooth w-full rounded-md border border-input bg-background px-4 py-3 text-text-primary focus:outline-none focus:ring-3 focus:ring-ring focus:ring-offset-2"
+                  >
+                    <option value="wedding">{isArabic ? 'زفاف' : 'Wedding'}</option>
+                    <option value="corporate">{isArabic ? 'فعالية مؤسسية' : 'Corporate Event'}</option>
+                    <option value="birthday">{isArabic ? 'حفلة عيد ميلاد' : 'Birthday Party'}</option>
+                    <option value="conference">{isArabic ? 'مؤتمر' : 'Conference'}</option>
+                    <option value="other">{isArabic ? 'أخرى' : 'Other'}</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label htmlFor="venue" className="mb-2 block text-sm font-medium text-text-primary">
+                  {isArabic ? 'المكان' : 'Venue'} *
+                </label>
+                <input
+                  type="text"
+                  id="venue"
+                  name="venue"
+                  value={formData.venue}
                   onChange={handleChange}
                   required
                   className="transition-smooth w-full rounded-md border border-input bg-background px-4 py-3 text-text-primary focus:outline-none focus:ring-3 focus:ring-ring focus:ring-offset-2"
+                  placeholder={isArabic ? 'مثال: القاعة الكبرى، الرياض' : 'e.g., Grand Ballroom, Riyadh'}
                 />
               </div>
 
               <div>
-                <label htmlFor="eventType" className="mb-2 block text-sm font-medium text-text-primary">
-                  {isArabic ? 'نوع الفعالية' : 'Event Type'} *
+                <label htmlFor="expectedGuests" className="mb-2 block text-sm font-medium text-text-primary">
+                  {isArabic ? 'العدد المتوقع للضيوف' : 'Expected Number of Guests'} *
                 </label>
-                <select
-                  id="eventType"
-                  name="eventType"
-                  value={formData.eventType}
+                <input
+                  type="number"
+                  id="expectedGuests"
+                  name="expectedGuests"
+                  value={formData.expectedGuests}
                   onChange={handleChange}
                   required
+                  min="1"
                   className="transition-smooth w-full rounded-md border border-input bg-background px-4 py-3 text-text-primary focus:outline-none focus:ring-3 focus:ring-ring focus:ring-offset-2"
-                >
-                  <option value="wedding">{isArabic ? 'زفاف' : 'Wedding'}</option>
-                  <option value="corporate">{isArabic ? 'فعالية مؤسسية' : 'Corporate Event'}</option>
-                  <option value="birthday">{isArabic ? 'حفلة عيد ميلاد' : 'Birthday Party'}</option>
-                  <option value="conference">{isArabic ? 'مؤتمر' : 'Conference'}</option>
-                  <option value="other">{isArabic ? 'أخرى' : 'Other'}</option>
-                </select>
+                  placeholder={isArabic ? 'مثال: 250' : 'e.g., 250'}
+                />
               </div>
-            </div>
 
-            <div>
-              <label htmlFor="venue" className="mb-2 block text-sm font-medium text-text-primary">
-                {isArabic ? 'المكان' : 'Venue'} *
-              </label>
-              <input
-                type="text"
-                id="venue"
-                name="venue"
-                value={formData.venue}
-                onChange={handleChange}
-                required
-                className="transition-smooth w-full rounded-md border border-input bg-background px-4 py-3 text-text-primary focus:outline-none focus:ring-3 focus:ring-ring focus:ring-offset-2"
-                placeholder={isArabic ? 'مثال: القاعة الكبرى، الرياض' : 'e.g., Grand Ballroom, Riyadh'}
-              />
-            </div>
+              <div>
+                <label htmlFor="description" className="mb-2 block text-sm font-medium text-text-primary">
+                  {isArabic ? 'وصف الفعالية' : 'Event Description'}
+                </label>
+                <textarea
+                  id="description"
+                  name="description"
+                  value={formData.description}
+                  onChange={handleChange}
+                  rows={4}
+                  className="transition-smooth w-full resize-none rounded-md border border-input bg-background px-4 py-3 text-text-primary focus:outline-none focus:ring-3 focus:ring-ring focus:ring-offset-2"
+                  placeholder={
+                    isArabic ? 'أضف أي تفاصيل إضافية عن فعاليتك...' : 'Add any additional details about your event...'
+                  }
+                />
+              </div>
 
-            <div>
-              <label htmlFor="expectedGuests" className="mb-2 block text-sm font-medium text-text-primary">
-                {isArabic ? 'العدد المتوقع للضيوف' : 'Expected Number of Guests'} *
-              </label>
-              <input
-                type="number"
-                id="expectedGuests"
-                name="expectedGuests"
-                value={formData.expectedGuests}
-                onChange={handleChange}
-                required
-                min="1"
-                className="transition-smooth w-full rounded-md border border-input bg-background px-4 py-3 text-text-primary focus:outline-none focus:ring-3 focus:ring-ring focus:ring-offset-2"
-                placeholder={isArabic ? 'مثال: 250' : 'e.g., 250'}
-              />
-            </div>
-
-            <div>
-              <label htmlFor="description" className="mb-2 block text-sm font-medium text-text-primary">
-                {isArabic ? 'وصف الفعالية' : 'Event Description'}
-              </label>
-              <textarea
-                id="description"
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                rows={4}
-                className="transition-smooth w-full resize-none rounded-md border border-input bg-background px-4 py-3 text-text-primary focus:outline-none focus:ring-3 focus:ring-ring focus:ring-offset-2"
-                placeholder={
-                  isArabic ? 'أضف أي تفاصيل إضافية عن فعاليتك...' : 'Add any additional details about your event...'
-                }
-              />
-            </div>
-
-            <div className="flex items-center gap-3 border-t border-border pt-4">
-              <button
-                type="button"
-                onClick={onClose}
-                disabled={isLoading}
-                className="transition-smooth hover:bg-muted/80 flex-1 rounded-md bg-muted px-6 py-3 font-medium text-text-primary focus:outline-none focus:ring-3 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                {isArabic ? 'إلغاء' : 'Cancel'}
-              </button>
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="transition-smooth hover:bg-primary/90 active:scale-97 flex flex-1 items-center justify-center gap-2 rounded-md bg-primary px-6 py-3 font-medium text-primary-foreground shadow-warm-md hover:shadow-warm-lg focus:outline-none focus:ring-3 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                {isLoading ? (
-                  <>
-                    <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent" />
-                    {isArabic ? 'جارٍ الإنشاء...' : 'Creating...'}
-                  </>
-                ) : editingEvent ? (
-                  isArabic ? (
-                    'تحديث الفعالية'
+              <div className="flex items-center gap-3 border-t border-border pt-4">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  disabled={isLoading}
+                  className="transition-smooth hover:bg-muted/80 flex-1 rounded-md bg-muted px-6 py-3 font-medium text-text-primary focus:outline-none focus:ring-3 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {isArabic ? 'إلغاء' : 'Cancel'}
+                </button>
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="transition-smooth hover:bg-primary/90 active:scale-97 flex flex-1 items-center justify-center gap-2 rounded-md bg-primary px-6 py-3 font-medium text-primary-foreground shadow-warm-md hover:shadow-warm-lg focus:outline-none focus:ring-3 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {isLoading ? (
+                    <>
+                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent" />
+                      {isArabic ? 'جارٍ الإنشاء...' : 'Creating...'}
+                    </>
+                  ) : editingEvent ? (
+                    isArabic ? (
+                      'تحديث الفعالية'
+                    ) : (
+                      'Update Event'
+                    )
+                  ) : isArabic ? (
+                    'إنشاء فعالية'
                   ) : (
-                    'Update Event'
-                  )
-                ) : isArabic ? (
-                  'إنشاء فعالية'
-                ) : (
-                  'Create Event'
-                )}
-              </button>
-            </div>
-          </form>
-        </div>
+                    'Create Event'
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </>

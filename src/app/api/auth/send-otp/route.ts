@@ -23,7 +23,9 @@ const resend = resendApiKey ? new Resend(resendApiKey) : null
 export async function POST(request: NextRequest) {
   try {
     const { email } = await request.json()
-    const normalizedEmail = String(email || '').trim().toLowerCase()
+    const normalizedEmail = String(email || '')
+      .trim()
+      .toLowerCase()
 
     if (!normalizedEmail) {
       return NextResponse.json({ error: 'Email is required' }, { status: 400 })
@@ -61,7 +63,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Also check public.users table
-    const { data: existingProfile } = await supabaseAdmin.from('users').select('id').eq('email', normalizedEmail).single()
+    const { data: existingProfile } = await supabaseAdmin
+      .from('users')
+      .select('id')
+      .eq('email', normalizedEmail)
+      .single()
 
     if (existingProfile) {
       return NextResponse.json({ error: 'This email already exists. Please sign in instead.' }, { status: 400 })

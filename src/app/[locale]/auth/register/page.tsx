@@ -261,9 +261,8 @@ export default function RegisterPage() {
                   disabled={loading}
                   autoFocus
                 />
-                {' '}
               </div>
-               <div className="text-sm text-gray-600">{content.signInHere}</div> {' '}
+              <div className="text-sm text-gray-600">{content.signInHere}</div>
               <button
                 type="submit"
                 disabled={loading || otp.length < 6}

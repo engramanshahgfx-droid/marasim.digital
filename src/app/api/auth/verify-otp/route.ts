@@ -36,7 +36,9 @@ function formatPhoneE164(phone: string | undefined): string | undefined {
 export async function POST(request: NextRequest) {
   try {
     const { email, code, fullName, phone } = await request.json()
-    const normalizedEmail = String(email || '').trim().toLowerCase()
+    const normalizedEmail = String(email || '')
+      .trim()
+      .toLowerCase()
 
     if (!normalizedEmail || !code) {
       return NextResponse.json({ error: 'Email and code are required' }, { status: 400 })
