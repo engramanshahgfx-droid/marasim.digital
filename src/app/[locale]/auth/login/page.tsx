@@ -6,6 +6,7 @@ import { useLocale } from 'next-intl'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import Icon from '@/components/ui/AppIcon'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -13,6 +14,7 @@ export default function LoginPage() {
   const isArabic = locale === 'ar'
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -65,13 +67,16 @@ export default function LoginPage() {
       {/* Navigation Header */}
       <nav className="fixed left-0 right-0 top-0 z-50 border-b border-gray-100 bg-white/95 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
-            <Link href={`/${locale}`} className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-blue-600">
-                <img src="/logo.png" alt="Marasim Logo" className="h-6 w-6 object-contain" />
+          <div className="flex h-20 items-center justify-between">
+            <button
+              type="button"
+              onClick={() => router.push('/en')}
+              className="flex items-center"
+            >
+              <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-lg">
+                <img src="/logo.png" alt="Marasim Logo" className="h-16 w-16 object-contain" />
               </div>
-              <span className="text-lg font-bold text-gray-900 sm:text-xl">Marasim</span>
-            </Link>
+            </button>
             <div className="flex items-center gap-2 sm:gap-3">
               <LocaleSwitch />
               <Link
@@ -121,22 +126,30 @@ export default function LoginPage() {
                   disabled={loading}
                 />
               </div>
-              <div>
+              <div className="relative">
                 <label htmlFor="password" className="sr-only">
                   {content.password}
                 </label>
                 <input
                   id="password"
                   name="password"
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   autoComplete="current-password"
                   required
-                  className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
+                  className="relative block w-full appearance-none rounded-none rounded-b-md border border-gray-300 px-3 py-2 pr-10 text-gray-900 placeholder-gray-500 focus:z-10 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
                   placeholder={content.password}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={loading}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  <Icon name={showPassword ? 'EyeSlashIcon' : 'EyeIcon'} size={20} />
+                </button>
               </div>
             </div>
 

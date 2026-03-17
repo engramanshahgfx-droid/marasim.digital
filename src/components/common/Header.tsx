@@ -137,21 +137,13 @@ const Header = ({ className = '' }: HeaderProps) => {
 
   return (
     <header className={`fixed left-0 right-0 top-0 z-100 bg-card shadow-warm-md ${className}`}>
-      <div className="flex h-16 items-center justify-between px-3 sm:px-4 md:h-20 md:px-8">
+      <div className="flex h-20 items-center justify-between px-3 sm:px-4 md:h-24 md:px-8">
         <div className="flex items-center gap-2 sm:gap-4 md:gap-8">
-          <Link
-            href={localizedPath('/event-management-dashboard')}
-            className="transition-smooth flex items-center gap-2 hover:opacity-80 md:gap-3"
-          >
-            <AppImage
-              src="/logo.png"
-              alt="Marasim logo"
-              width={40}
-              height={40}
-              className="h-8 w-8 rounded-md md:h-10 md:w-10"
-            />
-            <span className="hidden font-heading text-lg font-semibold text-primary sm:inline md:text-xl">Marasim</span>
-          </Link>
+          <Link href={`/${locale}`} className="flex items-center">
+              <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-lg">
+                <img src="/logo.png" alt="Marasim Logo" className="h-20 w-20 object-contain" />
+              </div>
+            </Link>
 
           <div className="relative">
             <button

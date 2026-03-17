@@ -19,31 +19,18 @@ function LocaleSwitch() {
     router.push(nextPath === pathname ? `/${nextLocale}` : nextPath)
   }
 
-  return (
-    <div
-      className="inline-flex items-center rounded-lg border border-gray-200 bg-white p-1 shadow-sm"
-      role="group"
-      aria-label="Language switch"
-    >
-      {supportedLocales.map((supportedLocale) => {
-        const isActive = locale === supportedLocale
-        const label = supportedLocale === 'en' ? 'EN' : 'ع'
+  const nextLocale = locale === 'en' ? 'ar' : 'en'
+  const label = nextLocale === 'en' ? 'EN' : 'ع'
 
-        return (
-          <button
-            key={supportedLocale}
-            type="button"
-            onClick={() => handleLocaleChange(supportedLocale)}
-            className={`rounded-md px-3 py-1.5 text-xs font-semibold transition-colors sm:text-sm ${
-              isActive ? 'bg-blue-600 text-white' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-            }`}
-            aria-pressed={isActive}
-          >
-            {label}
-          </button>
-        )
-      })}
-    </div>
+  return (
+    <button
+      type="button"
+      onClick={() => handleLocaleChange(nextLocale)}
+      className="inline-flex items-center rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold text-gray-600 shadow-sm transition-colors hover:bg-gray-100 hover:text-gray-900 sm:text-sm"
+      aria-label="Toggle language"
+    >
+      {label}
+    </button>
   )
 }
 

@@ -5,6 +5,7 @@ import { useLocale } from 'next-intl'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import Icon from '@/components/ui/AppIcon'
 
 export default function ForgotPasswordPage() {
   const router = useRouter()
@@ -15,6 +16,8 @@ export default function ForgotPasswordPage() {
   const [otp, setOtp] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [showNewPassword, setShowNewPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
@@ -30,8 +33,9 @@ export default function ForgotPasswordPage() {
     otp: isArabic ? 'أدخل رمز التحقق' : 'Enter OTP',
     verifyOtp: isArabic ? 'تحقق من الرمز' : 'Verify OTP',
     verifying: isArabic ? 'جارٍ التحقق...' : 'Verifying...',
-    otpHint: isArabic ? 'رمز الاختبار: 123456' : 'Fixed OTP: 123456',
+    otpHint: isArabic ? '' : '',
     newPassword: isArabic ? 'كلمة المرور الجديدة' : 'New Password',
+
     newPasswordPlaceholder: isArabic ? 'أدخل كلمة المرور الجديدة' : 'Enter new password',
     confirmPassword: isArabic ? 'تأكيد كلمة المرور' : 'Confirm Password',
     confirmPasswordPlaceholder: isArabic ? 'أكد كلمة المرور' : 'Confirm password',
@@ -41,7 +45,7 @@ export default function ForgotPasswordPage() {
     failedSend: isArabic ? 'فشل إرسال الرمز' : 'Failed to send OTP',
     invalidOtp: isArabic ? 'رمز التحقق غير صالح' : 'Invalid OTP',
     failedReset: isArabic ? 'فشل إعادة تعيين كلمة المرور' : 'Failed to reset password',
-    otpSent: isArabic ? '✅ تم إرسال رمز التحقق إلى بريدك الإلكتروني' : '✅ OTP sent to your email! Use: 123456',
+    otpSent: isArabic ? '✅ تم إرسال رمز التحقق إلى بريدك الإلكتروني' : '✅ OTP sent to your email.',
     otpVerified: isArabic
       ? '✅ تم التحقق من الرمز، الآن أدخل كلمة المرور الجديدة'
       : '✅ OTP verified! Now set your new password',
@@ -153,12 +157,11 @@ export default function ForgotPasswordPage() {
       {/* Navigation Header */}
       <nav className="fixed left-0 right-0 top-0 z-50 border-b border-gray-100 bg-white/95 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
-            <Link href={`/${locale}`} className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center overflow-hidden rounded-lg bg-blue-600">
-                <img src="/logo.png" alt="Marasim Logo" className="h-6 w-6 object-contain" />
+          <div className="flex h-24 items-center justify-between">
+            <Link href={`/${locale}`} className="flex items-center">
+              <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-lg">
+                <img src="/logo.png" alt="Marasim Logo" className="h-20 w-20 object-contain" />
               </div>
-              <span className="text-lg font-bold text-gray-900 sm:text-xl">Marasim</span>
             </Link>
             <div className="flex items-center gap-2 sm:gap-3">
               <LocaleSwitch />
@@ -256,36 +259,52 @@ export default function ForgotPasswordPage() {
 
           {step === 'reset' && (
             <form onSubmit={handleResetPassword} className="mt-8 space-y-6">
-              <div>
+              <div className="relative">
                 <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700">
                   {content.newPassword}
                 </label>
                 <input
                   id="newPassword"
-                  type="password"
+                  type={showNewPassword ? 'text' : 'password'}
                   required
-                  className="relative mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
+                  className="relative mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 pr-10 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
                   placeholder={content.newPasswordPlaceholder}
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   disabled={loading}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowNewPassword((prev) => !prev)}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  aria-label={showNewPassword ? 'Hide password' : 'Show password'}
+                >
+                  <Icon name={showNewPassword ? 'EyeSlashIcon' : 'EyeIcon'} size={20} />
+                </button>
               </div>
 
-              <div>
+              <div className="relative">
                 <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
                   {content.confirmPassword}
                 </label>
                 <input
                   id="confirmPassword"
-                  type="password"
+                  type={showConfirmPassword ? 'text' : 'password'}
                   required
-                  className="relative mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
+                  className="relative mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 pr-10 text-gray-900 placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-blue-500 sm:text-sm"
                   placeholder={content.confirmPasswordPlaceholder}
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   disabled={loading}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword((prev) => !prev)}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                >
+                  <Icon name={showConfirmPassword ? 'EyeSlashIcon' : 'EyeIcon'} size={20} />
+                </button>
               </div>
 
               <button

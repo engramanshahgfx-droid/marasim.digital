@@ -1,4 +1,8 @@
+import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,10 +12,30 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Email and OTP are required' }, { status: 400 })
     }
 
-    // Fixed OTP for demo: 123456
-    if (otp !== '123456') {
-      return NextResponse.json({ error: 'Invalid OTP. Please use: 123456' }, { status: 401 })
+    const normalizedEmail = String(email || '').trim().toLowerCase()
+
+    const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
+      auth: { autoRefreshToken: false, persistSession: false },
+    })
+
+    const { data: otpRecord, error: otpError } = await supabaseAdmin
+      .from('verification_codes')
+      .select('*')
+      .eq('email', normalizedEmail)
+      .eq('code', otp)
+      .single()
+
+    if (otpError || !otpRecord) {
+      return NextResponse.json({ error: 'Invalid OTP' }, { status: 401 })
     }
+
+    if (new Date(otpRecord.expires_at) < new Date()) {
+      await supabaseAdmin.from('verification_codes').delete().eq('email', normalizedEmail)
+      return NextResponse.json({ error: 'OTP has expired' }, { status: 401 })
+    }
+
+    // Delete used code
+    await supabaseAdmin.from('verification_codes').delete().eq('email', normalizedEmail)
 
     return NextResponse.json({
       success: true,
