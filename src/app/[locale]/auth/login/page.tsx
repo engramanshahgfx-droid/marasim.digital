@@ -1,12 +1,12 @@
 'use client'
 
 import LocaleSwitch from '@/components/common/LocaleSwitch'
+import Icon from '@/components/ui/AppIcon'
 import { getCurrentUser, signInUser } from '@/lib/auth'
 import { useLocale } from 'next-intl'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import Icon from '@/components/ui/AppIcon'
 
 export default function LoginPage() {
   const router = useRouter()
@@ -68,11 +68,7 @@ export default function LoginPage() {
       <nav className="fixed left-0 right-0 top-0 z-50 border-b border-gray-100 bg-white/95 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-20 items-center justify-between">
-            <button
-              type="button"
-              onClick={() => router.push('/en')}
-              className="flex items-center"
-            >
+            <button type="button" onClick={() => router.push('/en')} className="flex items-center">
               <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-lg">
                 <img src="/logo.png" alt="Marasim Logo" className="h-16 w-16 object-contain" />
               </div>

@@ -26,6 +26,7 @@ interface EventTableMobileCardProps {
   isSelected: boolean
   onSelect: () => void
   onEdit: () => void
+  onSelectTemplate?: () => void
   onDuplicate: () => void
   onViewAnalytics: () => void
   onArchive: () => void
@@ -36,6 +37,7 @@ const EventTableMobileCard = ({
   isSelected,
   onSelect,
   onEdit,
+  onSelectTemplate,
   onDuplicate,
   onViewAnalytics,
   onArchive,
@@ -165,6 +167,16 @@ const EventTableMobileCard = ({
             <Icon name="PencilIcon" size={18} />
             <span className="text-sm font-medium">{isArabic ? 'تعديل' : 'Edit'}</span>
           </button>
+          {onSelectTemplate && (
+            <button
+              onClick={onSelectTemplate}
+              className="transition-smooth hover:bg-accent/90 active:scale-97 flex flex-1 items-center justify-center gap-2 rounded-md bg-accent px-4 py-2 text-accent-foreground"
+              aria-label={isArabic ? `اختيار قالب ${event.name}` : `Choose template for ${event.name}`}
+            >
+              <Icon name="SparklesIcon" size={18} />
+              <span className="text-sm font-medium">{isArabic ? 'القوالب' : 'Templates'}</span>
+            </button>
+          )}
           <button
             onClick={onDuplicate}
             className="transition-smooth hover:bg-secondary/90 active:scale-97 rounded-md bg-secondary p-2 text-secondary-foreground"

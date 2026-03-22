@@ -12,7 +12,9 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Email and OTP are required' }, { status: 400 })
     }
 
-    const normalizedEmail = String(email || '').trim().toLowerCase()
+    const normalizedEmail = String(email || '')
+      .trim()
+      .toLowerCase()
 
     const supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey, {
       auth: { autoRefreshToken: false, persistSession: false },

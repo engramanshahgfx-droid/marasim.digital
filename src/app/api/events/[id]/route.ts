@@ -59,26 +59,32 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     }
 
     const { id } = await params
-    const { name, date, time, venue, description, eventType, expectedGuests, status } = await request.json()
+    const { name, date, time, venue, description, eventType, expectedGuests, status, templateId } = await request.json()
 
     // Validation
     if (!name || !date || !venue) {
       return NextResponse.json({ error: 'name, date, and venue are required' }, { status: 400 })
     }
 
+    const updatePayload: Record<string, unknown> = {
+      name,
+      date,
+      time: time || '18:00',
+      venue,
+      description: description || '',
+      event_type: eventType,
+      expected_guests: expectedGuests,
+      status: status,
+      updated_at: new Date().toISOString(),
+    }
+
+    if (templateId) {
+      updatePayload.template_id = templateId
+    }
+
     const { data: event, error } = await supabase
       .from('events')
-      .update({
-        name,
-        date,
-        time: time || '18:00',
-        venue,
-        description: description || '',
-        event_type: eventType,
-        expected_guests: expectedGuests,
-        status: status,
-        updated_at: new Date().toISOString(),
-      })
+      .update(updatePayload)
       .eq('id', id)
       .eq('user_id', user.id)
       .select()

@@ -47,7 +47,14 @@ export default function UserAuthGuard({ children }: UserAuthGuardProps) {
   }, [locale, router])
 
   if (isChecking) {
-    return <div className="min-h-screen bg-background" />
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <div className="flex flex-col items-center gap-3">
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-200 border-t-indigo-600" />
+          <p className="text-sm text-gray-500">Loading…</p>
+        </div>
+      </div>
+    )
   }
 
   if (!isAllowed) {

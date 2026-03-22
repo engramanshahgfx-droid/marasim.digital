@@ -231,6 +231,8 @@ export interface Database {
           qr_token: string
           checked_in: boolean
           checked_in_at: string | null
+          plus_ones: number
+          notes: string | null
           created_at: string
           updated_at: string
         }
@@ -244,6 +246,8 @@ export interface Database {
           qr_token?: string
           checked_in?: boolean
           checked_in_at?: string | null
+          plus_ones?: number
+          notes?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -257,8 +261,36 @@ export interface Database {
           qr_token?: string
           checked_in?: boolean
           checked_in_at?: string | null
+          plus_ones?: number
+          notes?: string | null
           created_at?: string
           updated_at?: string
+        }
+      }
+      checkins: {
+        Row: {
+          id: string
+          guest_id: string
+          event_id: string
+          checked_in_by: string | null
+          checked_in_at: string
+          check_in_method: 'qr_scan' | 'manual'
+        }
+        Insert: {
+          id?: string
+          guest_id: string
+          event_id: string
+          checked_in_by?: string | null
+          checked_in_at?: string
+          check_in_method?: 'qr_scan' | 'manual'
+        }
+        Update: {
+          id?: string
+          guest_id?: string
+          event_id?: string
+          checked_in_by?: string | null
+          checked_in_at?: string
+          check_in_method?: 'qr_scan' | 'manual'
         }
       }
       invitation_templates: {
@@ -347,32 +379,6 @@ export interface Database {
           error_message?: string | null
           retry_count?: number
           created_at?: string
-        }
-      }
-      checkins: {
-        Row: {
-          id: string
-          guest_id: string
-          event_id: string
-          checked_in_by: string | null
-          checked_in_at: string
-          check_in_method: 'qr_scan' | 'manual'
-        }
-        Insert: {
-          id?: string
-          guest_id: string
-          event_id: string
-          checked_in_by?: string | null
-          checked_in_at?: string
-          check_in_method?: 'qr_scan' | 'manual'
-        }
-        Update: {
-          id?: string
-          guest_id?: string
-          event_id?: string
-          checked_in_by?: string | null
-          checked_in_at?: string
-          check_in_method?: 'qr_scan' | 'manual'
         }
       }
     }

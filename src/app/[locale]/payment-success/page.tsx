@@ -41,6 +41,16 @@ export default function PaymentSuccessPage() {
 
         if (response.ok) {
           setVerified(true)
+          // Refresh user session and subscription data
+          try {
+            await fetch('/api/auth/refresh-session', { method: 'POST' })
+          } catch {
+            // Silently fail - session will refresh on next navigation
+          }
+          // Force reload dashboard after 2 seconds to show updated subscription
+          setTimeout(() => {
+            window.location.href = `/${locale}/event-management-dashboard`
+          }, 2000)
         }
       } catch (error) {
         console.error('Error verifying payment:', error)
@@ -50,12 +60,15 @@ export default function PaymentSuccessPage() {
     }
 
     verifyPayment()
-  }, [sessionId])
+  }, [sessionId, locale])
 
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <div className="text-gray-600">{content.verifying}</div>
+        <div className="text-center">
+          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-4 border-blue-300 border-t-blue-600" />
+          <div className="text-gray-600">{content.verifying}</div>
+        </div>
       </div>
     )
   }
@@ -71,7 +84,12 @@ export default function PaymentSuccessPage() {
           </div>
           <h2 className="mt-4 text-2xl font-extrabold text-gray-900">{content.title}</h2>
           <p className="mt-2 text-gray-600">{content.subtitle}</p>
-          {verified && <p className="mt-4 text-sm font-medium text-green-600">{content.verified}</p>}
+          {verified && (
+            <>
+              <p className="mt-4 text-sm font-medium text-green-600">{content.verified}</p>
+              <p className="mt-4 text-sm text-gray-500">{isArabic ? 'جارٍ إعادة التوجيه...' : 'Redirecting...'}</p>
+            </>
+          )}
           <div className="mt-8 space-y-3">
             <button
               onClick={() => router.push(`/${locale}/event-management-dashboard`)}

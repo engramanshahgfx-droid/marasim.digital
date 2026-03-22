@@ -216,6 +216,14 @@ const CreateEventModal = ({ isOpen, onClose, onSubmit, editingEvent }: CreateEve
                 />
               </div>
 
+              {!editingEvent && (
+                <div className="rounded-lg border border-primary/15 bg-primary/5 px-4 py-3 text-sm text-text-secondary">
+                  {isArabic
+                    ? 'أكمل تفاصيل الفعالية أولاً، ثم سنعرض لك القوالب المناسبة تلقائياً حسب نوع الفعالية.'
+                    : 'Enter the event details first, then we will take you directly to the most relevant invitation templates.'}
+                </div>
+              )}
+
               <div className="flex items-center gap-3 border-t border-border pt-4">
                 <button
                   type="button"
@@ -242,9 +250,9 @@ const CreateEventModal = ({ isOpen, onClose, onSubmit, editingEvent }: CreateEve
                       'Update Event'
                     )
                   ) : isArabic ? (
-                    'إنشاء فعالية'
+                    'متابعة إلى القوالب'
                   ) : (
-                    'Create Event'
+                    'Continue to Templates'
                   )}
                 </button>
               </div>

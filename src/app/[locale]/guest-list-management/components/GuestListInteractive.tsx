@@ -703,7 +703,7 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
         <div className="rounded-lg border border-border bg-card p-6">
           <div className="mb-4">
             <h3 className="mb-1 flex items-center gap-2 text-lg font-semibold text-text-primary">
-              <Icon name="DocumentArrowUpIcon" className="h-5 w-5 text-primary" ariaLabel="Upload" />
+              <Icon name="DocumentArrowUpIcon" className="h-5 w-5 text-primary" aria-label="Upload" />
               {isArabic ? 'استيراد جماعي من CSV' : 'Bulk Import from CSV'}
             </h3>
             <p className="text-sm text-text-secondary">
@@ -723,7 +723,7 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
         <div className="rounded-lg border border-border bg-card p-6">
           <div className="mb-4">
             <h3 className="mb-1 flex items-center gap-2 text-lg font-semibold text-text-primary">
-              <Icon name="UserPlusIcon" className="h-5 w-5 text-primary" ariaLabel="Add" />
+              <Icon name="UserPlusIcon" className="h-5 w-5 text-primary" aria-label="Add" />
               {isArabic ? 'إضافة ضيف يدويًا' : 'Add Guest Manually'}
             </h3>
             <p className="mb-4 text-sm text-text-secondary">
@@ -732,7 +732,7 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
           </div>
           <div className="flex flex-col items-center justify-center py-8">
             <div className="bg-primary/10 mb-4 flex h-16 w-16 items-center justify-center rounded-full">
-              <Icon name="UserPlusIcon" size={32} className="text-primary" ariaLabel="Add Guest" />
+              <Icon name="UserPlusIcon" size={32} className="text-primary" aria-label="Add Guest" />
             </div>
             <p className="mb-4 text-center text-sm text-text-secondary">
               {isArabic ? 'اضغط بالأسفل لإضافة ضيف واحد' : 'Click below to add a single guest'}
@@ -742,7 +742,7 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
               disabled={!selectedEventId || isUploading}
               className="flex items-center gap-2 rounded-lg bg-primary px-6 py-3 font-medium text-primary-foreground shadow-sm transition-colors hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
             >
-              <Icon name="UserPlusIcon" className="h-5 w-5" ariaLabel="Add" />
+              <Icon name="UserPlusIcon" className="h-5 w-5" aria-label="Add" />
               {isArabic ? 'إضافة ضيف' : 'Add Guest'}
             </button>
             {!selectedEventId && (

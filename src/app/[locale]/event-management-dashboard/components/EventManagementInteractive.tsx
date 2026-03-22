@@ -3,12 +3,15 @@
 import UpgradeModal from '@/components/common/UpgradeModal'
 import Icon from '@/components/ui/AppIcon'
 import { getCurrentSession, getCurrentUser } from '@/lib/auth'
+import { normalizeTemplateCategory, type TemplateStyle } from '@/types/invitations'
 import { useLocale } from 'next-intl'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import CreateEventModal from './CreateEventModal'
 import EventSummaryCards from './EventSummaryCards'
 import EventTableMobileCard from './EventTableMobileCard'
 import EventTableRow from './EventTableRow'
+import InvitationsManager from './InvitationsManager'
 import TemplateEditorModal from './TemplateEditorModal'
 
 interface Event {
@@ -20,6 +23,7 @@ interface Event {
   event_type?: string
   expected_guests?: number
   status: 'upcoming' | 'ongoing' | 'completed' | 'draft'
+  template_id?: TemplateStyle
   guestCount?: number
   invitationsSent?: number
   confirmed?: number
@@ -74,6 +78,7 @@ const getEventStatus = (eventDate: string): 'upcoming' | 'ongoing' | 'completed'
 const EventManagementInteractive = () => {
   const locale = useLocale()
   const isArabic = locale === 'ar'
+  const router = useRouter()
   const [isHydrated, setIsHydrated] = useState(false)
   const [userId, setUserId] = useState<string | null>(null)
   const [token, setToken] = useState<string | null>(null)
@@ -89,8 +94,69 @@ const EventManagementInteractive = () => {
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false)
   const [editingEvent, setEditingEvent] = useState<EventFormData | null>(null)
   const [templateEventId, setTemplateEventId] = useState<string | null>(null)
+  const [isInvitationsModalOpen, setIsInvitationsModalOpen] = useState(false)
+  const [invitationsEventId, setInvitationsEventId] = useState<string | null>(null)
   const [showUpgradeModal, setShowUpgradeModal] = useState(false)
   const [upgradeFeature, setUpgradeFeature] = useState('additional events')
+  const [pendingPayment, setPendingPayment] = useState(false)
+
+  const handleAutoApprovePendingPayment = async () => {
+    if (!token) return
+    try {
+      // First check if subscription was already approved by admin
+      const checkResponse = await fetch('/api/auth/check-subscription', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (checkResponse.ok) {
+        const checkData = await checkResponse.json()
+
+        // If subscription was approved by admin, refresh and reload
+        if (checkData.user.subscription_status === 'active' && checkData.user.event_limit > 1) {
+          setError(null)
+          // Page reload to get fresh session data
+          setTimeout(() => window.location.reload(), 500)
+          return
+        }
+
+        // If not yet approved by admin, try auto-verify for pending payments
+        if (checkData.hasApprovedPayment === false) {
+          const response = await fetch('/api/payments/bank-transfer/auto-verify', {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'application/json',
+            },
+          })
+
+          if (response.ok) {
+            setError(null)
+            setTimeout(() => window.location.reload(), 500)
+            return
+          }
+
+          const err = await response.json()
+          setError(
+            err.error ||
+              (isArabic
+                ? 'يرجى الانتظار حتى يوافق الإدارة على الدفع'
+                : 'Awaiting admin approval. Please check back in a moment.')
+          )
+          return
+        }
+      }
+
+      setError(
+        isArabic ? 'يرجى الانتظار حتى يوافق الإدارة على الدفع' : 'Please wait for admin approval of your payment.'
+      )
+    } catch (err) {
+      setError(err instanceof Error ? err.message : isArabic ? 'حدث خطأ' : 'An error occurred')
+    }
+  }
 
   // Fetch current user and events
   useEffect(() => {
@@ -217,7 +283,36 @@ const EventManagementInteractive = () => {
     }
   }
 
-  const handleEventLimitReached = (message?: string) => {
+  const handleEventLimitReached = async (message?: string) => {
+    // First, check if admin has approved the subscription
+    try {
+      if (!token) return
+
+      const checkResponse = await fetch('/api/auth/check-subscription', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (checkResponse.ok) {
+        const checkData = await checkResponse.json()
+
+        // If subscription is now active with higher limit, reload page
+        if (checkData.user.subscription_status === 'active' && checkData.user.event_limit > 1) {
+          console.log('Subscription approved by admin! Reloading...', checkData.user)
+          setError(null)
+          setShowUpgradeModal(false)
+          setTimeout(() => window.location.reload(), 500)
+          return
+        }
+      }
+    } catch (err) {
+      console.error('Error checking subscription:', err)
+    }
+
+    // If not approved, show upgrade modal
     setUpgradeFeature('additional events')
     setShowUpgradeModal(true)
     setIsCreateModalOpen(false)
@@ -299,7 +394,8 @@ const EventManagementInteractive = () => {
                   venue: updatedEvent.venue,
                   description: updatedEvent.description,
                   event_type: updatedEvent.event_type,
-                  status: getEventStatus(updatedEvent.date), // Recalculate status based on updated date
+                  template_id: updatedEvent.template_id,
+                  status: getEventStatus(updatedEvent.date),
                   guestCount: updatedEvent.expected_guests,
                 }
               : e
@@ -330,7 +426,8 @@ const EventManagementInteractive = () => {
           const errorData = await response.json()
 
           if (response.status === 403 && errorData.code === 'EVENT_LIMIT_REACHED') {
-            handleEventLimitReached(errorData.error)
+            await handleEventLimitReached(errorData.error)
+            return
           }
 
           throw new Error(errorData.error || 'Failed to create event')
@@ -339,12 +436,15 @@ const EventManagementInteractive = () => {
         const newEvent = await response.json()
         console.log('Event created:', newEvent)
 
+        const templateCategory = normalizeTemplateCategory(newEvent.event_type || eventData.eventType)
+
         setEvents((prev) => [
           ...prev,
           {
             ...newEvent,
             id: String(newEvent.id),
-            status: getEventStatus(newEvent.date), // Recalculate status based on date
+            template_id: newEvent.template_id || 'modern',
+            status: getEventStatus(newEvent.date),
             guestCount: newEvent.expected_guests,
             invitationsSent: 0,
             confirmed: 0,
@@ -354,8 +454,8 @@ const EventManagementInteractive = () => {
           },
         ])
 
-        // Refresh events from API to ensure sync
-        await fetchEvents(userId, token)
+        router.push(`/${locale}/invitations/templates/${templateCategory}?eventId=${newEvent.id}`)
+        return
       }
 
       setEditingEvent(null)
@@ -412,7 +512,8 @@ const EventManagementInteractive = () => {
         const errorData = await response.json()
 
         if (response.status === 403 && errorData.code === 'EVENT_LIMIT_REACHED') {
-          handleEventLimitReached(errorData.error)
+          await handleEventLimitReached(errorData.error)
+          return
         }
 
         throw new Error(errorData.error || 'Failed to duplicate event')
@@ -484,6 +585,20 @@ const EventManagementInteractive = () => {
   const handleSaveTemplate = (template: TemplateData) => {
     console.log('Template saved:', template)
     // Template is automatically saved by the TemplateEditorModal using the templateService
+  }
+
+  const handleManageInvitations = (event: Event) => {
+    if (!event.template_id) {
+      setError(isArabic ? 'الفعالية لا تملك قالب دعوة محدد' : 'Event does not have a template selected')
+      return
+    }
+    setInvitationsEventId(event.id)
+    setIsInvitationsModalOpen(true)
+  }
+
+  const handleSelectTemplate = (event: Event) => {
+    const templateCategory = normalizeTemplateCategory(event.event_type)
+    router.push(`/${locale}/invitations/templates/${templateCategory}?eventId=${event.id}`)
   }
 
   const handleOpenTemplateEditor = (eventId?: string) => {
@@ -568,7 +683,21 @@ const EventManagementInteractive = () => {
 
   return (
     <div className="space-y-6">
-      {error && <div className="rounded-md border border-red-400 bg-red-100 p-4 text-red-700">{error}</div>}
+      {error && (
+        <div className="rounded-md border border-red-400 bg-red-100 p-4 text-red-700">
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex-1">{error}</div>
+            {error.includes('Your current plan allows only') && (
+              <button
+                onClick={handleAutoApprovePendingPayment}
+                className="whitespace-nowrap rounded-md bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700"
+              >
+                {isArabic ? 'تحديث الآن' : 'Refresh Now'}
+              </button>
+            )}
+          </div>
+        </div>
+      )}
 
       <EventSummaryCards cards={summaryCards} />
 
@@ -703,9 +832,11 @@ const EventManagementInteractive = () => {
                   isSelected={selectedEvents.includes(event.id)}
                   onSelect={() => handleSelectEvent(event.id)}
                   onEdit={() => handleEditEvent(event)}
+                  onSelectTemplate={() => handleSelectTemplate(event)}
                   onDuplicate={() => handleDuplicateEvent(event)}
                   onViewAnalytics={() => handleViewAnalytics(event)}
                   onArchive={() => handleArchiveEvent(event)}
+                  onManageInvitations={() => handleManageInvitations(event)}
                 />
               ))}
             </tbody>
@@ -720,6 +851,7 @@ const EventManagementInteractive = () => {
               isSelected={selectedEvents.includes(event.id)}
               onSelect={() => handleSelectEvent(event.id)}
               onEdit={() => handleEditEvent(event)}
+              onSelectTemplate={() => handleSelectTemplate(event)}
               onDuplicate={() => handleDuplicateEvent(event)}
               onViewAnalytics={() => handleViewAnalytics(event)}
               onArchive={() => handleArchiveEvent(event)}
@@ -765,6 +897,20 @@ const EventManagementInteractive = () => {
             : undefined
         }
       />
+
+      {isInvitationsModalOpen && invitationsEventId && (
+        <InvitationsManager
+          isOpen={isInvitationsModalOpen}
+          eventId={invitationsEventId}
+          templateId={events.find((e) => e.id === invitationsEventId)?.template_id || 'modern'}
+          eventName={events.find((e) => e.id === invitationsEventId)?.name || ''}
+          token={token!}
+          onClose={() => {
+            setIsInvitationsModalOpen(false)
+            setInvitationsEventId(null)
+          }}
+        />
+      )}
 
       {showUpgradeModal && (
         <UpgradeModal

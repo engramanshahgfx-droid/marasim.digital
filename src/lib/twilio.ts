@@ -178,21 +178,25 @@ export function formatInvitationTemplateVariables(
   eventName: string,
   eventDate: string,
   eventTime: string,
-  qrToken?: string
+  qrToken?: string,
+  invitationLink?: string,
+  guestNote?: string | null
 ): string {
   const appUrl = (process.env.NEXT_PUBLIC_APP_URL || '').replace(/\/$/, '')
   const checkInLink = qrToken ? `${appUrl}/check-in?code=${encodeURIComponent(qrToken)}` : ''
   const qrLink = qrToken ? `https://quickchart.io/qr?size=320&text=${encodeURIComponent(qrToken)}` : ''
+  const safeGuestName = guestName || 'Guest'
+  const noteSuffix = guestNote ? ` Note: ${guestNote}.` : ''
+  const inviteSuffix = invitationLink ? ` Your personal invitation: ${invitationLink}.` : ''
 
   // Template uses {{1}} and {{2}} placeholders from Twilio's sample template.
   const variables = {
     1: `${eventDate} at ${eventTime}`,
     2: qrToken
-      ? `Please confirm your attendance. Event: ${eventName}. Your check-in code: ${qrToken}. QR: ${qrLink}${checkInLink ? ` | Link: ${checkInLink}` : ''}`
-      : `Please confirm your attendance. Event: ${eventName}`,
+      ? `Dear ${safeGuestName}, please confirm your attendance for ${eventName}.${noteSuffix} Your check-in code: ${qrToken}. QR: ${qrLink}${checkInLink ? ` | Check-in: ${checkInLink}` : ''}.${inviteSuffix}`
+      : `Dear ${safeGuestName}, please confirm your attendance for ${eventName}.${noteSuffix}${inviteSuffix}`,
   }
 
-  void guestName
   return JSON.stringify(variables)
 }
 

@@ -1,0 +1,8 @@
+src/app/[locale]/500.tsx(92,15): error TS2657: JSX expressions must have one parent element.
+src/app/[locale]/500.tsx(95,13): error TS1128: Declaration or statement expected.
+src/app/[locale]/500.tsx(96,11): error TS1109: Expression expected.
+src/app/[locale]/500.tsx(97,9): error TS1109: Expression expected.
+src/app/[locale]/500.tsx(98,7): error TS1109: Expression expected.
+src/app/[locale]/500.tsx(99,5): error TS1109: Expression expected.
+src/app/[locale]/500.tsx(100,3): error TS1109: Expression expected.
+src/app/[locale]/500.tsx(101,1): error TS1128: Declaration or statement expected.

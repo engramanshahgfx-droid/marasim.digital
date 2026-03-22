@@ -81,10 +81,29 @@ export async function POST(request: NextRequest) {
       return ErrorResponses.notFound('Event')
     }
 
+    // Fetch the latest invitation template for this event so each guest receives a personal card link.
+    const { data: invitationTemplate } = await supabase
+      .from('invitation_templates')
+      .select('id, shareable_link')
+      .eq('event_id', eventId)
+      .order('updated_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+
+    let shareLink = invitationTemplate?.shareable_link || null
+    if (invitationTemplate?.id && !shareLink) {
+      const { data: generatedLink } = await (supabase as any).rpc('generate_shareable_link', {
+        invitation_id: invitationTemplate.id,
+      })
+      shareLink = generatedLink || null
+    }
+
+    const appBaseUrl = (process.env.NEXT_PUBLIC_APP_URL || '').replace(/\/$/, '')
+
     // Get guest details
     const { data: guests, error: guestsError } = await supabase
       .from('guests')
-      .select('id, phone, name, qr_token')
+      .select('id, phone, name, notes, qr_token')
       .in('id', guestIds)
       .eq('event_id', eventId)
 
@@ -100,12 +119,16 @@ export async function POST(request: NextRequest) {
     const messages = (guests as any)
       .filter((guest: any) => Boolean(guest.phone))
       .map((guest: any) => {
+        const invitationLink =
+          appBaseUrl && shareLink ? `${appBaseUrl}/en/invitations/${shareLink}?guestId=${encodeURIComponent(guest.id)}` : ''
         const contentVariables = formatInvitationTemplateVariables(
           guest.name,
           (eventData as any).name,
           (eventData as any).date,
           '14:00', // Default time; can be made dynamic
-          guest.qr_token
+          guest.qr_token,
+          invitationLink,
+          guest.notes
         )
         return {
           phone: formatPhoneNumber(guest.phone),

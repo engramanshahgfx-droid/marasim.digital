@@ -1,4 +1,5 @@
 import Icon from '@/components/ui/AppIcon'
+import type { TemplateStyle } from '@/types/invitations'
 import { useLocale } from 'next-intl'
 
 interface Event {
@@ -16,6 +17,7 @@ interface Event {
   description?: string
   event_type?: string
   expected_guests?: number
+  template_id?: TemplateStyle
 }
 
 interface EventTableRowProps {
@@ -26,6 +28,8 @@ interface EventTableRowProps {
   onDuplicate: () => void
   onViewAnalytics: () => void
   onArchive: () => void
+  onManageInvitations?: () => void
+  onSelectTemplate?: () => void
 }
 
 const EventTableRow = ({
@@ -36,6 +40,8 @@ const EventTableRow = ({
   onDuplicate,
   onViewAnalytics,
   onArchive,
+  onManageInvitations,
+  onSelectTemplate,
 }: EventTableRowProps) => {
   const locale = useLocale()
   const isArabic = locale === 'ar'
@@ -120,6 +126,26 @@ const EventTableRow = ({
           >
             <Icon name="PencilIcon" size={18} />
           </button>
+          {onSelectTemplate && (
+            <button
+              onClick={onSelectTemplate}
+              className="hover:bg-accent/10 transition-smooth rounded-md p-2 text-accent"
+              aria-label={isArabic ? `اختيار قالب ل ${event.name}` : `Select template for ${event.name}`}
+              title={isArabic ? 'اختيار قالب الدعوة' : 'Select Invitation Template'}
+            >
+              <Icon name="SparklesIcon" size={18} />
+            </button>
+          )}
+          {onManageInvitations && (
+            <button
+              onClick={onManageInvitations}
+              className="hover:bg-secondary/10 transition-smooth rounded-md p-2 text-secondary"
+              aria-label={isArabic ? `إدارة دعوات ${event.name}` : `Manage invitations for ${event.name}`}
+              title={isArabic ? 'إدارة الدعوات' : 'Manage Invitations'}
+            >
+              <Icon name="EnvelopeIcon" size={18} />
+            </button>
+          )}
           <button
             onClick={onDuplicate}
             className="hover:bg-secondary/10 transition-smooth rounded-md p-2 text-secondary"

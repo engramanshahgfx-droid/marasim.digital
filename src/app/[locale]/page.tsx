@@ -1,7 +1,6 @@
 'use client'
 
 import LocaleSwitch from '@/components/common/LocaleSwitch'
-import AppImage from '@/components/ui/AppImage'
 import { getCurrentUser } from '@/lib/auth'
 import { useLocale } from 'next-intl'
 import Link from 'next/link'
@@ -64,8 +63,8 @@ const steps = [
     number: '1',
     title: { en: 'Create Your Event', ar: 'أنشئ فعاليتك' },
     description: {
-      en: 'Set up your event details — name, date, venue, and invitation template.',
-      ar: 'أدخل تفاصيل الفعالية مثل الاسم والتاريخ والمكان وقالب الدعوة.',
+      en: 'Set up your event details — name, date, venue, and guest count.',
+      ar: 'أدخل تفاصيل الفعالية مثل الاسم والتاريخ والمكان وعدد الضيوف.',
     },
   },
   {
@@ -188,11 +187,11 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-20 items-center justify-between">
             <div className="flex items-center">
-             <Link href={`/${locale}`} className="flex items-center">
-              <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-lg">
-                <img src="/logo.png" alt="Marasim Logo" className="h-20 w-20 object-contain" />
-              </div>
-            </Link>
+              <Link href={`/${locale}`} className="flex items-center">
+                <div className="flex h-24 w-24 items-center justify-center overflow-hidden rounded-lg">
+                  <img src="/logo.png" alt="Marasim Logo" className="h-20 w-20 object-contain" />
+                </div>
+              </Link>
             </div>
             <div className="hidden items-center gap-6 md:flex">
               <a href="#features" className="text-sm text-gray-600 hover:text-gray-900">

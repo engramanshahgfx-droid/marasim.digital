@@ -1,6 +1,7 @@
 'use client'
 
 import Icon from '@/components/ui/AppIcon'
+import { getCurrentSession } from '@/lib/auth'
 import { useLocale } from 'next-intl'
 import { useEffect, useState } from 'react'
 
@@ -49,6 +50,11 @@ const AddGuestForm = ({ eventId, token, onSuccess, onClose, guestToUpdate }: Add
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [validationErrors, setValidationErrors] = useState<{ [key: string]: string }>({})
+
+  const getAuthToken = async () => {
+    const session = await getCurrentSession().catch(() => null)
+    return session?.access_token || token
+  }
 
   const validateForm = (): boolean => {
     const errors: { [key: string]: string } = {}
@@ -121,20 +127,35 @@ const AddGuestForm = ({ eventId, token, onSuccess, onClose, guestToUpdate }: Add
             notes: formData.notes.trim() || null,
           }
 
-      const response = await fetch(url, {
-        method,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestBody),
-      })
+      const sendRequest = async (authToken: string) =>
+        fetch(url, {
+          method,
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestBody),
+        })
+
+      const initialToken = await getAuthToken()
+      let response = await sendRequest(initialToken)
+
+      if (response.status === 401) {
+        const refreshedToken = await getAuthToken()
+        if (refreshedToken && refreshedToken !== initialToken) {
+          response = await sendRequest(refreshedToken)
+        }
+      }
 
       const data = await response.json()
 
       if (!response.ok) {
         setError(
-          data.error ||
+          (response.status === 401
+            ? isArabic
+              ? 'انتهت الجلسة. يرجى تسجيل الدخول مرة أخرى.'
+              : 'Your session expired. Please sign in again.'
+            : data.error) ||
             (isArabic
               ? `فشل ${isUpdateMode ? 'تحديث' : 'إضافة'} الضيف`
               : `Failed to ${isUpdateMode ? 'update' : 'add'} guest`)
@@ -204,7 +225,7 @@ const AddGuestForm = ({ eventId, token, onSuccess, onClose, guestToUpdate }: Add
             className="rounded-lg p-2 transition-colors hover:bg-gray-100"
             disabled={isSubmitting}
           >
-            <Icon name="XMarkIcon" className="h-6 w-6 text-gray-500" ariaLabel="Close" />
+            <Icon name="XMarkIcon" className="h-6 w-6 text-gray-500" aria-label="Close" />
           </button>
         </div>
 
@@ -213,7 +234,7 @@ const AddGuestForm = ({ eventId, token, onSuccess, onClose, guestToUpdate }: Add
           {/* Error Message */}
           {error && (
             <div className="flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-red-700">
-              <Icon name="ExclamationCircleIcon" className="mt-0.5 h-5 w-5 flex-shrink-0" ariaLabel="Error" />
+              <Icon name="ExclamationCircleIcon" className="mt-0.5 h-5 w-5 flex-shrink-0" aria-label="Error" />
               <span className="text-sm">{error}</span>
             </div>
           )}
@@ -338,7 +359,7 @@ const AddGuestForm = ({ eventId, token, onSuccess, onClose, guestToUpdate }: Add
             >
               {isSubmitting ? (
                 <>
-                  <Icon name="ArrowPathIcon" className="h-4 w-4 animate-spin" ariaLabel="Loading" />
+                  <Icon name="ArrowPathIcon" className="h-4 w-4 animate-spin" aria-label="Loading" />
                   {isUpdateMode
                     ? isArabic
                       ? 'جارٍ التحديث...'
@@ -352,7 +373,7 @@ const AddGuestForm = ({ eventId, token, onSuccess, onClose, guestToUpdate }: Add
                   <Icon
                     name={isUpdateMode ? 'PencilSquareIcon' : 'UserPlusIcon'}
                     className="h-4 w-4"
-                    ariaLabel={isUpdateMode ? (isArabic ? 'تحديث' : 'Update') : isArabic ? 'إضافة' : 'Add'}
+                    aria-label={isUpdateMode ? (isArabic ? 'تحديث' : 'Update') : isArabic ? 'إضافة' : 'Add'}
                   />
                   {isUpdateMode ? (isArabic ? 'تحديث الضيف' : 'Update Guest') : isArabic ? 'إضافة ضيف' : 'Add Guest'}
                 </>

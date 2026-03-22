@@ -1,11 +1,11 @@
 'use client'
 
 import LocaleSwitch from '@/components/common/LocaleSwitch'
+import Icon from '@/components/ui/AppIcon'
 import { useLocale } from 'next-intl'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import Icon from '@/components/ui/AppIcon'
 
 export default function ForgotPasswordPage() {
   const router = useRouter()

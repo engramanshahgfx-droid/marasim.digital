@@ -44,7 +44,15 @@ export async function POST(request: NextRequest) {
     }
 
     // Get plan details
-    const { data: plan } = await supabase.from('subscription_plans').select('*').eq('id', payment.plan_id).single()
+    const { data: plan, error: planError } = (await supabase
+      .from('subscription_plans')
+      .select('*')
+      .eq('id', payment.plan_id)
+      .single()) as any
+
+    if (planError || !plan) {
+      return NextResponse.json({ error: 'Plan not found for this payment' }, { status: 400 })
+    }
 
     // Update payment status
     const { error: updatePaymentError } = await supabase
@@ -61,14 +69,20 @@ export async function POST(request: NextRequest) {
     const expiryDate = new Date()
     expiryDate.setMonth(expiryDate.getMonth() + 1)
 
+    // Determine plan type and limits based on the plan
+    const planName = plan.name.toLowerCase()
+    const isPro = planName.includes('pro')
+    const isEnterprise = planName.includes('enterprise')
+
     const { error: userError } = await supabase
       .from('users')
       .update({
         subscription_status: 'active',
         account_type: 'paid',
-        plan_type: plan.name.toLowerCase().includes('pro') ? 'pro' : 'basic',
+        plan_type: isEnterprise ? 'enterprise' : isPro ? 'pro' : 'basic',
         subscription_expiry: expiryDate.toISOString(),
-        event_limit: plan.event_limit || 999,
+        event_limit: plan.event_limit || (isEnterprise ? 999 : isPro ? 5 : 1),
+        guest_limit: plan.guest_limit || (isEnterprise ? 5000 : isPro ? 1000 : 200),
         updated_at: new Date(),
       })
       .eq('id', payment.user_id)
