@@ -1,6 +1,6 @@
 'use client'
 
-import { Cart, CartItem, AddToCartRequest, UpdateCartItemRequest } from '@/types/marketplace'
+import { AddToCartRequest, Cart, UpdateCartItemRequest } from '@/types/marketplace'
 import { createContext, useCallback, useContext, useEffect, useState } from 'react'
 
 interface CartContextType {
@@ -18,7 +18,15 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined)
 
-export function CartProvider({ children, eventId }: { children: React.ReactNode; eventId: string }) {
+export function CartProvider({
+  children,
+  eventId,
+  guestId,
+}: {
+  children: React.ReactNode
+  eventId: string
+  guestId?: string
+}) {
   const [cart, setCart] = useState<Cart | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -27,7 +35,9 @@ export function CartProvider({ children, eventId }: { children: React.ReactNode;
     setIsLoading(true)
     setError(null)
     try {
-      const response = await fetch(`/api/cart?eventId=${eventId}`)
+      const query = new URLSearchParams({ eventId })
+      if (guestId) query.set('guestId', guestId)
+      const response = await fetch(`/api/cart?${query.toString()}`)
       if (!response.ok) throw new Error('Failed to fetch cart')
       const data = await response.json()
       setCart(data.data)
@@ -43,7 +53,9 @@ export function CartProvider({ children, eventId }: { children: React.ReactNode;
     async (request: AddToCartRequest) => {
       setError(null)
       try {
-        const response = await fetch(`/api/cart/items?eventId=${eventId}`, {
+        const query = new URLSearchParams({ eventId })
+        if (guestId) query.set('guestId', guestId)
+        const response = await fetch(`/api/cart/items?${query.toString()}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(request),
@@ -61,7 +73,9 @@ export function CartProvider({ children, eventId }: { children: React.ReactNode;
     async (cartItemId: string) => {
       setError(null)
       try {
-        const response = await fetch(`/api/cart/items/${cartItemId}`, {
+        const query = new URLSearchParams()
+        if (guestId) query.set('guestId', guestId)
+        const response = await fetch(`/api/cart/items/${cartItemId}?${query.toString()}`, {
           method: 'DELETE',
         })
         if (!response.ok) throw new Error('Failed to remove item from cart')
@@ -77,7 +91,9 @@ export function CartProvider({ children, eventId }: { children: React.ReactNode;
     async (cartItemId: string, request: UpdateCartItemRequest) => {
       setError(null)
       try {
-        const response = await fetch(`/api/cart/items/${cartItemId}`, {
+        const query = new URLSearchParams()
+        if (guestId) query.set('guestId', guestId)
+        const response = await fetch(`/api/cart/items/${cartItemId}?${query.toString()}`, {
           method: 'PATCH',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(request),
@@ -94,7 +110,9 @@ export function CartProvider({ children, eventId }: { children: React.ReactNode;
   const clearCart = useCallback(async () => {
     setError(null)
     try {
-      const response = await fetch(`/api/cart?eventId=${eventId}`, {
+      const query = new URLSearchParams({ eventId })
+      if (guestId) query.set('guestId', guestId)
+      const response = await fetch(`/api/cart?${query.toString()}`, {
         method: 'DELETE',
       })
       if (!response.ok) throw new Error('Failed to clear cart')

@@ -2,7 +2,7 @@
 // Location: src/lib/marketplaceService.ts
 // Usage: Server-side functions for marketplace operations
 
-import { supabase } from '@/lib/supabase'
+import type { Database } from '@/types/database'
 import type {
   Booking,
   CreateBookingRequest,
@@ -12,6 +12,13 @@ import type {
   Service,
   ServiceReview,
 } from '@/types/marketplace'
+import { createClient } from '@supabase/supabase-js'
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || ''
+const supabaseKey =
+  process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY || ''
+
+const supabase = createClient<Database>(supabaseUrl, supabaseKey)
 
 /**
  * Service Management
@@ -80,7 +87,26 @@ export class MarketplaceService {
 
       const { data, error, count } = await query
 
-      if (error) throw error
+      if (error) {
+        const message = String((error as any).message || error).toLowerCase()
+        if (message.includes('could not find the table') || message.includes('table "services" does not exist')) {
+          return {
+            data: [],
+            pagination: {
+              page,
+              limit,
+              total: 0,
+              total_pages: 0,
+            },
+            filters: {
+              categories: [],
+              price_range: [0, 0],
+              ratings: [],
+            },
+          }
+        }
+        throw error
+      }
 
       return {
         data: (data || []) as Service[],

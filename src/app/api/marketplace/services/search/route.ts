@@ -43,11 +43,14 @@ export async function GET(request: NextRequest) {
     )
   } catch (error) {
     console.error('Search services error:', error)
+    const message =
+      error instanceof Error ? error.message : typeof error === 'object' ? JSON.stringify(error) : String(error)
+
     return NextResponse.json(
       {
         success: false,
         error: 'Failed to search services',
-        message: error instanceof Error ? error.message : 'Unknown error',
+        message,
       },
       { status: 500 }
     )

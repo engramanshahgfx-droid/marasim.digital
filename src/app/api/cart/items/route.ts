@@ -11,16 +11,7 @@ export async function POST(request: NextRequest) {
     const eventId = request.nextUrl.searchParams.get('eventId')
 
     if (!eventId) {
-      return NextResponse.json(
-        { error: 'Missing eventId parameter' },
-        { status: 400 }
-      )
-    }
-
-    // Get authenticated user
-    const authHeader = request.headers.get('authorization')
-    if (!authHeader) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Missing eventId parameter' }, { status: 400 })
     }
 
     const supabase = createClient(
@@ -28,22 +19,27 @@ export async function POST(request: NextRequest) {
       process.env.SUPABASE_SERVICE_ROLE_KEY || ''
     )
 
-    const token = authHeader.replace('Bearer ', '')
-    const { data: userData, error: authError } = await supabase.auth.getUser(token)
+    const guestIdParam = request.nextUrl.searchParams.get('guestId')
+    let guestId = guestIdParam || ''
 
-    if (authError || !userData.user) {
+    const authHeader = request.headers.get('authorization')
+    if (authHeader) {
+      const token = authHeader.replace('Bearer ', '')
+      const { data: userData, error: authError } = await supabase.auth.getUser(token)
+      if (!authError && userData.user) {
+        guestId = userData.user.id
+      }
+    }
+
+    if (!guestId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const guestId = userData.user.id
     const body = await request.json()
     const { service_id, quantity = 1, notes } = body
 
     if (!service_id || quantity < 1) {
-      return NextResponse.json(
-        { error: 'Missing or invalid service_id or quantity' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Missing or invalid service_id or quantity' }, { status: 400 })
     }
 
     // Get service details to validate and get price
@@ -54,10 +50,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (serviceError || !service) {
-      return NextResponse.json(
-        { error: 'Service not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Service not found' }, { status: 404 })
     }
 
     const unitPrice = service.final_price || service.price
@@ -84,21 +77,12 @@ export async function POST(request: NextRequest) {
 
     if (upsertError) {
       console.error('Error adding to cart:', upsertError)
-      return NextResponse.json(
-        { error: 'Failed to add item to cart' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Failed to add item to cart' }, { status: 500 })
     }
 
-    return NextResponse.json(
-      { success: true, data: cartItem, message: 'Item added to cart' },
-      { status: 201 }
-    )
+    return NextResponse.json({ success: true, data: cartItem, message: 'Item added to cart' }, { status: 201 })
   } catch (error) {
     console.error('Add to cart error:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

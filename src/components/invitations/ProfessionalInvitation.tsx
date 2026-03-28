@@ -15,8 +15,8 @@ export function ProfessionalInvitation({ data }: ProfessionalInvitationProps) {
   const secondaryColor = data.custom_colors?.secondary || '#0066cc'
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-transparent p-0" dir={isRTL ? 'rtl' : 'ltr'}>
-      <div className="aspect-[8.5/11] w-full max-w-full overflow-hidden rounded bg-transparent shadow-2xl">
+    <div className="flex h-full w-full items-center justify-center bg-transparent p-0" dir={isRTL ? 'rtl' : 'ltr'}>
+      <div className="aspect-[760/560] w-full max-w-[760px] overflow-hidden rounded bg-transparent shadow-2xl" style={{ maxHeight: '80vh' }}>
         {/* Top Bar */}
         <div
           className="h-2"

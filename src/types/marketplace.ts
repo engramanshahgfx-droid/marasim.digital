@@ -88,6 +88,7 @@ export interface Service {
   published_at?: string
   created_at: string
   updated_at: string
+  providers?: Provider | null
 }
 
 export interface ServiceImage {

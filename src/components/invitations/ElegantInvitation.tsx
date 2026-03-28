@@ -16,10 +16,10 @@ export function ElegantInvitation({ data }: ElegantInvitationProps) {
   const accentColor = '#c9a961'
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-transparent p-0" dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className="flex h-full w-full items-center justify-center bg-transparent p-0" dir={isRTL ? 'rtl' : 'ltr'}>
       <div
-        className="aspect-[8.5/11] w-full max-w-full overflow-hidden rounded-lg shadow-2xl"
-        style={{ backgroundColor: 'transparent' }}
+        className="aspect-[760/560] w-full max-w-[760px] overflow-hidden rounded-lg shadow-2xl"
+        style={{ backgroundColor: 'transparent', maxHeight: '80vh' }}
       >
         {/* Header Section */}
         <div

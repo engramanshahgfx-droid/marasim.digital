@@ -21,20 +21,47 @@ interface EventItem {
 type RsvpStatus = 'confirmed' | 'declined' | 'no_response'
 type PaymentStatus = 'pending' | 'paid' | 'unpaid' | 'rejected'
 
+function extractUuidCandidate(input: string): string | null {
+  const uuidPattern = /[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}/
+  const found = input.match(uuidPattern)
+  return found ? found[0] : null
+}
+
 function cleanEventId(input: string | null): string {
   if (!input) return ''
 
-  // Fix malformed query values that may include a concatenated URL or repeated params.
   const trimmed = input.trim()
+
+  // If someone has a malformed query fragment (e.g. eventId=... plus text), prefer first UUID candidate.
+  const explicitMatch = extractUuidCandidate(trimmed)
+  if (explicitMatch) {
+    return explicitMatch
+  }
+
+  // Parse repasted query string segments like "...eventId=...".
+  if (trimmed.includes('eventId=')) {
+    try {
+      const maybeSearch = trimmed.includes('?') ? trimmed.split('?').slice(1).join('?') : trimmed
+      const params = new URLSearchParams(maybeSearch)
+      const paramValue = params.get('eventId')
+      if (paramValue) {
+        const candidate = extractUuidCandidate(paramValue.trim())
+        if (candidate) return candidate
+        return paramValue.trim().split(/[^0-9a-fA-F-]/)[0] || paramValue.trim()
+      }
+    } catch {
+      // fall back to generic extraction
+    }
+  }
+
+  // Fix malformed query values that may include a concatenated URL or repeated params.
   const splitOnHttp = trimmed.split(/https?:\/\//)
   if (splitOnHttp.length > 1) {
-    // Keep only the first valid ID portion before an accidental URL insertion.
     const fallback = splitOnHttp[0]
     const sanitized = fallback.split(/[&?]/)[0]
     return sanitized
   }
 
-  // Common bad concatenation patterns: eventId=<id>http://... or eventId=<id>?eventId=...
   const eventIdMatch = trimmed.match(/^[0-9a-fA-F-]+$/)
   if (eventIdMatch) {
     return eventIdMatch[0]
@@ -45,10 +72,13 @@ function cleanEventId(input: string | null): string {
 }
 
 function getEventSignature(event: Partial<EventItem>) {
-  const normalizedName = String(event.name || '').trim().toLowerCase()
-  const normalizedDate = String(event.date || '').trim()
-  const normalizedVenue = String(event.venue || '').trim().toLowerCase()
-  return `${normalizedName}|${normalizedDate}|${normalizedVenue}`
+  const normalizedName = String(event.name || '')
+    .trim()
+    .toLowerCase()
+  const normalizedVenue = String(event.venue || '')
+    .trim()
+    .toLowerCase()
+  return `${normalizedName}|${normalizedVenue}`
 }
 
 function getEventActivityScore(event: Partial<EventItem>) {
@@ -154,7 +184,7 @@ export default function EventGuestPaymentsPage() {
     [isArabic]
   )
 
-  const loadGuestData = async (targetEventId: string, accessToken: string) => {
+  const loadGuestData = async (targetEventId: string, accessToken: string, fallbackAttempted = false) => {
     if (!targetEventId || !accessToken) return
 
     try {
@@ -173,7 +203,26 @@ export default function EventGuestPaymentsPage() {
       }
 
       const payload = await response.json()
-      setGuests(payload.guests || [])
+      const loadedGuests = payload.guests || []
+
+      if (!fallbackAttempted && loadedGuests.length === 0 && payload.event) {
+        const activeSignature = getEventSignature(payload.event)
+
+        const candidate = events.find(
+          (event) => event.id !== payload.event.id && getEventSignature(event) === activeSignature
+        )
+
+        if (candidate) {
+          setEventId(candidate.id)
+          const url = new URL(window.location.href)
+          url.searchParams.set('eventId', candidate.id)
+          router.replace(url.pathname + url.search)
+          await loadGuestData(candidate.id, accessToken, true)
+          return
+        }
+      }
+
+      setGuests(loadedGuests)
     } catch (fetchError) {
       setError(fetchError instanceof Error ? fetchError.message : isArabic ? 'حدث خطأ' : 'An error occurred')
       setGuests([])
@@ -218,9 +267,18 @@ export default function EventGuestPaymentsPage() {
 
         const dedupedEvents = dedupeEventsBySignature(mapped)
 
+        console.log('payment page events loaded', {
+          mappedCount: mapped.length,
+          dedupedCount: dedupedEvents.length,
+          mapped,
+          dedupedEvents,
+        })
+
         const rawRequestedEventId = searchParams.get('eventId')
         const requestedEventId = cleanEventId(rawRequestedEventId)
-        const requestedSource = requestedEventId ? mapped.find((event: EventItem) => event.id === requestedEventId) : undefined
+        const requestedSource = requestedEventId
+          ? mapped.find((event: EventItem) => event.id === requestedEventId)
+          : undefined
         const requestedSignature = requestedSource ? getEventSignature(requestedSource) : ''
         const resolvedDuplicate = requestedSignature
           ? dedupedEvents.find((event: EventItem) => getEventSignature(event) === requestedSignature)
@@ -228,14 +286,18 @@ export default function EventGuestPaymentsPage() {
 
         let finalEvents = dedupedEvents
         if (requestedSource && !dedupedEvents.some((event: EventItem) => event.id === requestedEventId)) {
-          // Keep the requested legacy event in dropdown for visibility, but route into the best duplicate.
+          // Keep the requested event in dropdown for visibility and link consistency.
           finalEvents = [requestedSource, ...dedupedEvents]
         }
 
         setEvents(finalEvents)
 
         let selectedEventId = ''
-        if (requestedEventId && dedupedEvents.some((event: EventItem) => event.id === requestedEventId)) {
+
+        if (requestedSource && resolvedDuplicate) {
+          // Prefer the most active event row for this signature (if different) to surface actual guest/payment data.
+          selectedEventId = resolvedDuplicate.id
+        } else if (requestedSource) {
           selectedEventId = requestedEventId
         } else if (resolvedDuplicate) {
           selectedEventId = resolvedDuplicate.id
@@ -435,13 +497,21 @@ export default function EventGuestPaymentsPage() {
               disabled={isCheckingIn || !manualQrToken.trim()}
               className="rounded-md bg-emerald-600 px-3 py-2 font-medium text-white hover:bg-emerald-700 disabled:opacity-50"
             >
-              {isCheckingIn ? (isArabic ? 'جارٍ التسجيل...' : 'Checking in...') : isArabic ? 'تسجيل حضور يدوي' : 'Manual Check-In'}
+              {isCheckingIn
+                ? isArabic
+                  ? 'جارٍ التسجيل...'
+                  : 'Checking in...'
+                : isArabic
+                  ? 'تسجيل حضور يدوي'
+                  : 'Manual Check-In'}
             </button>
           </div>
 
           {error && <div className="mb-4 rounded-md border border-red-200 bg-red-50 p-3 text-red-700">{error}</div>}
           {checkInNotice && (
-            <div className="mb-4 rounded-md border border-green-200 bg-green-50 p-3 text-green-700">{checkInNotice}</div>
+            <div className="mb-4 rounded-md border border-green-200 bg-green-50 p-3 text-green-700">
+              {checkInNotice}
+            </div>
           )}
 
           <div className="mb-6 grid grid-cols-1 gap-4 md:grid-cols-4 lg:grid-cols-7">
@@ -482,9 +552,15 @@ export default function EventGuestPaymentsPage() {
                   <th className="px-4 py-3 text-left font-medium text-gray-700">{isArabic ? 'الضيف' : 'Guest'}</th>
                   <th className="px-4 py-3 text-left font-medium text-gray-700">{isArabic ? 'الجوال' : 'Phone'}</th>
                   <th className="px-4 py-3 text-left font-medium text-gray-700">{isArabic ? 'حالة RSVP' : 'RSVP'}</th>
-                  <th className="px-4 py-3 text-left font-medium text-gray-700">{isArabic ? 'تسجيل الوصول' : 'Check-In'}</th>
-                  <th className="px-4 py-3 text-left font-medium text-gray-700">{isArabic ? 'حالة الدفع' : 'Payment'}</th>
-                  <th className="px-4 py-3 text-left font-medium text-gray-700">{isArabic ? 'إثبات الدفع' : 'Payment Proof'}</th>
+                  <th className="px-4 py-3 text-left font-medium text-gray-700">
+                    {isArabic ? 'تسجيل الوصول' : 'Check-In'}
+                  </th>
+                  <th className="px-4 py-3 text-left font-medium text-gray-700">
+                    {isArabic ? 'حالة الدفع' : 'Payment'}
+                  </th>
+                  <th className="px-4 py-3 text-left font-medium text-gray-700">
+                    {isArabic ? 'إثبات الدفع' : 'Payment Proof'}
+                  </th>
                   <th className="px-4 py-3 text-left font-medium text-gray-700">{isArabic ? 'إجراءات' : 'Actions'}</th>
                 </tr>
               </thead>

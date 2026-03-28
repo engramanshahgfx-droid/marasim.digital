@@ -11,16 +11,7 @@ export async function GET(request: NextRequest) {
     const eventId = request.nextUrl.searchParams.get('eventId')
 
     if (!eventId) {
-      return NextResponse.json(
-        { error: 'Missing eventId parameter' },
-        { status: 400 }
-      )
-    }
-
-    // Get authenticated user
-    const authHeader = request.headers.get('authorization')
-    if (!authHeader) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Missing eventId parameter' }, { status: 400 })
     }
 
     const supabase = createClient(
@@ -28,14 +19,21 @@ export async function GET(request: NextRequest) {
       process.env.SUPABASE_SERVICE_ROLE_KEY || ''
     )
 
-    const token = authHeader.replace('Bearer ', '')
-    const { data: userData, error: authError } = await supabase.auth.getUser(token)
+    const guestIdParam = request.nextUrl.searchParams.get('guestId')
+    let guestId = guestIdParam || ''
 
-    if (authError || !userData.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const authHeader = request.headers.get('authorization')
+    if (authHeader) {
+      const token = authHeader.replace('Bearer ', '')
+      const { data: userData, error: authError } = await supabase.auth.getUser(token)
+      if (!authError && userData.user) {
+        guestId = userData.user.id
+      }
     }
 
-    const guestId = userData.user.id
+    if (!guestId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
 
     // Fetch cart items with service details
     const { data: cartItems, error: cartError } = await supabase
@@ -74,8 +72,31 @@ export async function GET(request: NextRequest) {
 
     if (cartError) {
       console.error('Error fetching cart items:', cartError)
+      const message = String(cartError.message || cartError).toLowerCase()
+      if (message.includes('could not find the table') || message.includes('table \"cart_items\" does not exist')) {
+        // Missing migration / table not created yet: return empty cart as fallback.
+        return NextResponse.json(
+          {
+            success: true,
+            data: {
+              items: [],
+              event_id: eventId,
+              guest_id: guestId,
+              subtotal: 0,
+              tax_amount: 0,
+              platform_fee: 0,
+              discount_amount: 0,
+              total: 0,
+              item_count: 0,
+            },
+            warning: 'Cart table not found; cart migration may be missing.',
+          },
+          { status: 200 }
+        )
+      }
+
       return NextResponse.json(
-        { error: 'Failed to fetch cart' },
+        { error: 'Failed to fetch cart', details: cartError.message || cartError },
         { status: 500 }
       )
     }
@@ -101,10 +122,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ success: true, data: cart })
   } catch (error) {
     console.error('Cart GET error:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
 
@@ -114,16 +132,7 @@ export async function DELETE(request: NextRequest) {
     const eventId = request.nextUrl.searchParams.get('eventId')
 
     if (!eventId) {
-      return NextResponse.json(
-        { error: 'Missing eventId parameter' },
-        { status: 400 }
-      )
-    }
-
-    // Get authenticated user
-    const authHeader = request.headers.get('authorization')
-    if (!authHeader) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      return NextResponse.json({ error: 'Missing eventId parameter' }, { status: 400 })
     }
 
     const supabase = createClient(
@@ -131,14 +140,21 @@ export async function DELETE(request: NextRequest) {
       process.env.SUPABASE_SERVICE_ROLE_KEY || ''
     )
 
-    const token = authHeader.replace('Bearer ', '')
-    const { data: userData, error: authError } = await supabase.auth.getUser(token)
+    const guestIdParam = request.nextUrl.searchParams.get('guestId')
+    let guestId = guestIdParam || ''
 
-    if (authError || !userData.user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    const authHeader = request.headers.get('authorization')
+    if (authHeader) {
+      const token = authHeader.replace('Bearer ', '')
+      const { data: userData, error: authError } = await supabase.auth.getUser(token)
+      if (!authError && userData.user) {
+        guestId = userData.user.id
+      }
     }
 
-    const guestId = userData.user.id
+    if (!guestId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
 
     // Delete all cart items for this guest and event
     const { error: deleteError } = await supabase
@@ -149,18 +165,12 @@ export async function DELETE(request: NextRequest) {
 
     if (deleteError) {
       console.error('Error clearing cart:', deleteError)
-      return NextResponse.json(
-        { error: 'Failed to clear cart' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Failed to clear cart' }, { status: 500 })
     }
 
     return NextResponse.json({ success: true, message: 'Cart cleared' })
   } catch (error) {
     console.error('Cart DELETE error:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

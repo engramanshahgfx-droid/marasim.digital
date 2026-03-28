@@ -14,7 +14,7 @@ import { InvitationData, TemplateStyle } from '@/types/invitations'
 import { useLocale } from 'next-intl'
 import dynamic from 'next/dynamic'
 import { useParams, useSearchParams } from 'next/navigation'
-import { type ComponentType, type CSSProperties, useEffect, useMemo, useState } from 'react'
+import { type ComponentType, type CSSProperties, type ReactNode, useEffect, useMemo, useState } from 'react'
 
 // QR code is SVG-based — rendered client-side only
 const QRCodeSVG = dynamic(() => import('qrcode.react').then((mod) => mod.QRCodeSVG), { ssr: false })
@@ -68,6 +68,100 @@ type SharedCanvasItem = {
 function toSafeNumber(value: unknown, fallback: number) {
   const parsed = Number(value)
   return Number.isFinite(parsed) ? parsed : fallback
+}
+
+function renderCanvasItem(item: SharedCanvasItem): ReactNode {
+  const x = toSafeNumber(item?.x, 380)
+  const y = toSafeNumber(item?.y, 280)
+  const left = `${(x / 760) * 100}%`
+  const top = `${(y / 560) * 100}%`
+  const scale = toSafeNumber(item?.scale, 1)
+  const rotation = toSafeNumber(item?.rotation, 0)
+
+  const style: CSSProperties = {
+    position: 'absolute',
+    left,
+    top,
+    transform: `translate(-50%, -50%) rotate(${rotation}deg) scale(${scale})`,
+    transformOrigin: 'center center',
+    zIndex: toSafeNumber(item?.zIndex, 20),
+  }
+
+  if (item.type === 'text') {
+    return (
+      <div
+        key={item.id}
+        style={{
+          ...style,
+          width: 'min(90%, 736px)',
+          maxWidth: '90%',
+          textAlign: 'center',
+          color: item.color || '#1f2937',
+          fontSize: 'clamp(14px, 3vw, 26px)',
+          fontWeight: 600,
+          whiteSpace: 'pre-wrap',
+          wordBreak: 'break-word',
+          padding: 4,
+        }}
+      >
+        {item.text || ''}
+      </div>
+    )
+  }
+
+  if (item.type === 'logo' && item.src) {
+    return (
+      <img
+        key={item.id}
+        src={item.src}
+        alt="Logo"
+        style={{
+          ...style,
+          width: 'min(20vw, 120px)',
+          height: 'min(20vw, 120px)',
+          maxWidth: 120,
+          maxHeight: 120,
+          objectFit: 'contain',
+        }}
+      />
+    )
+  }
+
+  if (item.type === 'sticker') {
+    if (item.stickerImageUrl) {
+      return (
+        <img
+          key={item.id}
+          src={item.stickerImageUrl}
+          alt={item.stickerName || 'Sticker'}
+          style={{
+            ...style,
+            width: 'min(16vw, 96px)',
+            height: 'min(16vw, 96px)',
+            maxWidth: 96,
+            maxHeight: 96,
+            objectFit: 'contain',
+          }}
+        />
+      )
+    }
+
+    return (
+      <div
+        key={item.id}
+        style={{
+          ...style,
+          color: item.color || '#111827',
+          fontSize: 'clamp(18px, 2.8vw, 42px)',
+          lineHeight: 1,
+        }}
+      >
+        {item.stickerGlyph || '✦'}
+      </div>
+    )
+  }
+
+  return null
 }
 
 export default function SharedInvitationPage() {
@@ -150,9 +244,9 @@ export default function SharedInvitationPage() {
     location: '',
     description: '',
   }
-  
+
   return (
-    <CartProvider eventId={data.event_id || ''}>
+    <CartProvider eventId={data.event_id || ''} guestId={guestId || undefined}>
       <div className="bg-white">
         {/* Invitation Template Rendered with Saved Editor Layers */}
         <div className="px-4 py-6 md:px-6">
@@ -166,116 +260,33 @@ export default function SharedInvitationPage() {
                   <img src={customization.header_logo.custom_url} alt="Header logo" className="h-10 object-contain" />
                 ) : (
                   <div className="rounded border border-dashed border-gray-400 bg-white px-4 py-1 text-xs font-semibold tracking-wide text-gray-700">
-                    {customization?.header_logo?.mode === 'classic' ? 'Marasim Logo' : 'Marasim Logo'}
+                    Marasim Logo
                   </div>
                 )}
               </div>
             )}
 
             <div
-              className="relative h-[560px] w-full overflow-hidden rounded-2xl shadow-2xl"
-              style={{ fontFamily: customization.font_family || 'serif' }}
+              className="relative mx-auto w-full max-w-[760px] overflow-hidden rounded-2xl shadow-2xl"
+              style={{ fontFamily: customization.font_family || 'serif', aspectRatio: '760 / 560' }}
             >
-              {activeFrameItem && (
-                <img
-                  src={activeFrameItem.src || activeFrameItem.stickerImageUrl}
-                  alt={activeFrameItem.stickerName || 'Frame'}
-                  className="pointer-events-none absolute inset-0 h-full w-full"
-                  style={{ zIndex: 0, objectFit: 'contain' }}
-                />
-              )}
+              <div className="absolute inset-0">
+                {activeFrameItem && (
+                  <img
+                    src={activeFrameItem.src || activeFrameItem.stickerImageUrl}
+                    alt={activeFrameItem.stickerName || 'Frame'}
+                    className="pointer-events-none h-full w-full object-contain"
+                    style={{ zIndex: 0 }}
+                  />
+                )}
 
-              <div className="relative z-10 h-full w-full">
-                <InvitationComponent data={baseTemplateData} />
-              </div>
+                <div className="relative z-10 h-full w-full">
+                  <InvitationComponent data={baseTemplateData} />
+                </div>
 
-              <div className="pointer-events-none absolute inset-0">
-                {renderItems.map((item) => {
-                  const x = toSafeNumber(item?.x, 380)
-                  const y = toSafeNumber(item?.y, 280)
-                  const scale = toSafeNumber(item?.scale, 1)
-                  const rotation = toSafeNumber(item?.rotation, 0)
-                  const style: CSSProperties = {
-                    position: 'absolute',
-                    left: x,
-                    top: y,
-                    transform: `translate(-50%, -50%) rotate(${rotation}deg) scale(${scale})`,
-                    transformOrigin: 'center center',
-                    zIndex: toSafeNumber(item?.zIndex, 20),
-                  }
-
-                  if (item.type === 'text') {
-                    return (
-                      <div
-                        key={item.id}
-                        style={{
-                          ...style,
-                          width: '100%',
-                          maxWidth: 736,
-                          textAlign: 'center',
-                          color: item.color || '#1f2937',
-                          fontSize: 20,
-                          fontWeight: 600,
-                          whiteSpace: 'pre-wrap',
-                          wordBreak: 'break-word',
-                          padding: 4,
-                        }}
-                      >
-                        {item.text || ''}
-                      </div>
-                    )
-                  }
-
-                  if (item.type === 'logo' && item.src) {
-                    return (
-                      <img
-                        key={item.id}
-                        src={item.src}
-                        alt="Logo"
-                        style={{
-                          ...style,
-                          width: 120,
-                          height: 120,
-                          objectFit: 'contain',
-                        }}
-                      />
-                    )
-                  }
-
-                  if (item.type === 'sticker') {
-                    if (item.stickerImageUrl) {
-                      return (
-                        <img
-                          key={item.id}
-                          src={item.stickerImageUrl}
-                          alt={item.stickerName || 'Sticker'}
-                          style={{
-                            ...style,
-                            width: 96,
-                            height: 96,
-                            objectFit: 'contain',
-                          }}
-                        />
-                      )
-                    }
-
-                    return (
-                      <div
-                        key={item.id}
-                        style={{
-                          ...style,
-                          color: item.color || '#111827',
-                          fontSize: 42,
-                          lineHeight: 1,
-                        }}
-                      >
-                        {item.stickerGlyph || '✦'}
-                      </div>
-                    )
-                  }
-
-                  return null
-                })}
+                <div className="pointer-events-none absolute inset-0">
+                  {renderItems.map(renderCanvasItem)}
+                </div>
               </div>
             </div>
           </div>
@@ -283,7 +294,7 @@ export default function SharedInvitationPage() {
 
         {/* RSVP Buttons */}
         {data.event_id && guestId && (
-          <div className="max-w-4xl mx-auto px-6 py-8">
+          <div className="mx-auto max-w-4xl px-6 py-8">
             <RSVPButtons
               guestId={guestId}
               eventId={data.event_id}
@@ -316,9 +327,7 @@ export default function SharedInvitationPage() {
               <QRCodeSVG value={data.qr_token} size={180} level="M" includeMargin />
             </div>
             <p className="text-xs text-gray-400">
-              {isArabic
-                ? 'أرِ هذا الرمز عند الدخول إلى الحدث'
-                : 'Show this code at the event entrance'}
+              {isArabic ? 'أرِ هذا الرمز عند الدخول إلى الحدث' : 'Show this code at the event entrance'}
             </p>
           </div>
         )}
@@ -326,23 +335,15 @@ export default function SharedInvitationPage() {
         {/* Optional Services Marketplace Widget */}
         {data.event_id && (
           <div className="bg-gray-50 px-6 py-8 md:py-12">
-            <div className="max-w-4xl mx-auto">
-              <MarketplaceWidget 
-                eventId={data.event_id}
-                onCartOpen={() => setIsCartOpen(true)}
-                maxItems={4}
-              />
+            <div className="mx-auto max-w-4xl">
+              <MarketplaceWidget eventId={data.event_id} onCartOpen={() => setIsCartOpen(true)} maxItems={4} />
             </div>
           </div>
         )}
 
         {/* Shopping Cart Sidebar */}
         {data.event_id && (
-          <ShoppingCart 
-            isOpen={isCartOpen}
-            onClose={() => setIsCartOpen(false)}
-            eventId={data.event_id}
-          />
+          <ShoppingCart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} eventId={data.event_id} />
         )}
       </div>
     </CartProvider>

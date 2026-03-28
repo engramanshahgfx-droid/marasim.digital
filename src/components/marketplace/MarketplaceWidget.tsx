@@ -1,12 +1,11 @@
 'use client'
 
 import { useCart } from '@/contexts/CartContext'
-import type { Service } from '@/types/marketplace'
+import type { Provider, Service } from '@/types/marketplace'
 import { useLocale } from 'next-intl'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { AiOutlineStar, AiOutlineShoppingCart } from 'react-icons/ai'
+import { AiOutlineShoppingCart, AiOutlineStar } from 'react-icons/ai'
 import { MdAddShoppingCart } from 'react-icons/md'
 
 interface MarketplaceWidgetProps {
@@ -31,11 +30,17 @@ export default function MarketplaceWidget({ eventId, onCartOpen, maxItems = 4 }:
       try {
         // Fetch featured/popular services for the event category
         const response = await fetch(
-          `/api/marketplace/services?limit=${maxItems}&is_featured=true&sort_by=rating&sort_order=desc`
+          `/api/marketplace/services/search?limit=${maxItems}&is_featured=true&sortBy=rating&sortOrder=desc`
         )
-        if (!response.ok) throw new Error('Failed to fetch services')
+        if (!response.ok) {
+          const text = await response.text()
+          throw new Error(`Failed to fetch services: ${response.status} ${response.statusText} | ${text}`)
+        }
         const data = await response.json()
-        setServices(data.data?.slice(0, maxItems) || [])
+        if (!data?.success || !Array.isArray(data.data)) {
+          throw new Error('Unexpected response format from services API')
+        }
+        setServices(data.data.slice(0, maxItems) || [])
       } catch (err) {
         console.error('Error loading marketplace services:', err)
         setError(isArabic ? 'فشل تحميل الخدمات' : 'Failed to load services')
@@ -68,10 +73,10 @@ export default function MarketplaceWidget({ eventId, onCartOpen, maxItems = 4 }:
   if (isLoading) {
     return (
       <div className="rounded-xl border border-purple-200 bg-gradient-to-br from-purple-50 to-transparent p-6">
-        <div className="flex items-center justify-between mb-6">
+        <div className="mb-6 flex items-center justify-between">
           <h2 className="text-xl font-bold text-gray-900">{isArabic ? 'خدمات إضافية' : 'Optional Services'}</h2>
         </div>
-        <div className="flex items-center justify-center h-32">
+        <div className="flex h-32 items-center justify-center">
           <div className="h-8 w-8 animate-spin rounded-full border-4 border-purple-600 border-t-transparent" />
         </div>
       </div>
@@ -85,24 +90,22 @@ export default function MarketplaceWidget({ eventId, onCartOpen, maxItems = 4 }:
   return (
     <div className="rounded-xl border border-purple-200 bg-gradient-to-br from-purple-50 to-transparent p-6">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="mb-6 flex items-center justify-between">
         <div>
           <h2 className="text-xl font-bold text-gray-900">
             {isArabic ? 'خدمات إضافية للحدث' : 'Optional Services for Your Event'}
           </h2>
-          <p className="text-sm text-gray-600 mt-1">
-            {isArabic
-              ? 'أضف خدمات إضافية لتحسين حدثك'
-              : 'Enhance your event with optional services'}
+          <p className="mt-1 text-sm text-gray-600">
+            {isArabic ? 'أضف خدمات إضافية لتحسين حدثك' : 'Enhance your event with optional services'}
           </p>
         </div>
         <button
           onClick={onCartOpen}
-          className="relative p-2 text-purple-600 hover:bg-purple-100 rounded-lg transition-colors"
+          className="relative rounded-lg p-2 text-purple-600 transition-colors hover:bg-purple-100"
         >
           <AiOutlineShoppingCart className="h-6 w-6" />
           {itemCount > 0 && (
-            <span className="absolute top-0 right-0 h-5 w-5 bg-red-500 rounded-full text-white text-xs font-bold flex items-center justify-center">
+            <span className="absolute right-0 top-0 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
               {itemCount}
             </span>
           )}
@@ -110,11 +113,11 @@ export default function MarketplaceWidget({ eventId, onCartOpen, maxItems = 4 }:
       </div>
 
       {/* Services Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {services.map((service) => (
           <div
             key={service.id}
-            className="rounded-lg border border-gray-200 bg-white overflow-hidden hover:shadow-md transition-shadow"
+            className="overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-md"
           >
             {/* Service Image */}
             {service.images?.[0]?.url && (
@@ -122,10 +125,10 @@ export default function MarketplaceWidget({ eventId, onCartOpen, maxItems = 4 }:
                 <img
                   src={service.images[0].url}
                   alt={service.name}
-                  className="h-full w-full object-cover hover:scale-105 transition-transform duration-300"
+                  className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
                 />
                 {service.discount_percentage && service.discount_percentage > 0 && (
-                  <div className="absolute top-2 left-2 bg-red-500 text-white px-2 py-1 rounded-md text-xs font-bold">
+                  <div className="absolute left-2 top-2 rounded-md bg-red-500 px-2 py-1 text-xs font-bold text-white">
                     -{service.discount_percentage}%
                   </div>
                 )}
@@ -133,17 +136,19 @@ export default function MarketplaceWidget({ eventId, onCartOpen, maxItems = 4 }:
             )}
 
             {/* Service Info */}
-            <div className="p-3 space-y-2">
-              <h3 className="font-semibold text-gray-900 line-clamp-2">
+            <div className="space-y-2 p-3">
+              <h3 className="line-clamp-2 font-semibold text-gray-900">
                 {isArabic && service.name_ar ? service.name_ar : service.name}
               </h3>
 
               {/* Provider Info */}
               {service.providers && (
                 <p className="text-xs text-gray-600">
-                  {isArabic && (service.providers as any).business_name_ar
-                    ? (service.providers as any).business_name_ar
-                    : (service.providers as any).business_name}
+                  {(() => {
+                    const provider = service.providers as Provider | null
+                    if (!provider) return '-'
+                    return isArabic && provider.business_name_ar ? provider.business_name_ar : provider.business_name
+                  })()}
                 </p>
               )}
 
@@ -158,20 +163,14 @@ export default function MarketplaceWidget({ eventId, onCartOpen, maxItems = 4 }:
                     />
                   ))}
                 </div>
-                <span className="text-xs text-gray-600">
-                  ({service.reviews_count})
-                </span>
+                <span className="text-xs text-gray-600">({service.reviews_count})</span>
               </div>
 
               {/* Price */}
               <div className="flex items-center gap-2 pt-2">
-                <span className="text-lg font-bold text-purple-600">
-                  SAR {service.final_price.toFixed(0)}
-                </span>
+                <span className="text-lg font-bold text-purple-600">SAR {service.final_price.toFixed(0)}</span>
                 {service.discount_percentage && service.discount_percentage > 0 && (
-                  <span className="text-xs text-gray-500 line-through">
-                    SAR {service.price.toFixed(0)}
-                  </span>
+                  <span className="text-xs text-gray-500 line-through">SAR {service.price.toFixed(0)}</span>
                 )}
               </div>
 
@@ -179,7 +178,7 @@ export default function MarketplaceWidget({ eventId, onCartOpen, maxItems = 4 }:
               <button
                 onClick={() => handleAddToCart(service)}
                 disabled={addingServiceId === service.id}
-                className="w-full mt-3 flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed text-white font-semibold py-2 px-3 rounded-lg transition-colors duration-200"
+                className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg bg-purple-600 px-3 py-2 font-semibold text-white transition-colors duration-200 hover:bg-purple-700 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <MdAddShoppingCart className="h-4 w-4" />
                 <span className="text-sm">
@@ -196,7 +195,7 @@ export default function MarketplaceWidget({ eventId, onCartOpen, maxItems = 4 }:
               {/* View Details Link */}
               <Link
                 href={`/${locale}/marketplace/${service.id}`}
-                className="block text-center text-xs text-purple-600 hover:text-purple-700 font-semibold mt-2"
+                className="mt-2 block text-center text-xs font-semibold text-purple-600 hover:text-purple-700"
               >
                 {isArabic ? 'عرض التفاصيل' : 'View Details'} →
               </Link>
@@ -208,7 +207,7 @@ export default function MarketplaceWidget({ eventId, onCartOpen, maxItems = 4 }:
       {/* View All Link */}
       <Link
         href={`/${locale}/marketplace`}
-        className="block text-center mt-6 text-purple-600 hover:text-purple-700 font-semibold text-sm"
+        className="mt-6 block text-center text-sm font-semibold text-purple-600 hover:text-purple-700"
       >
         {isArabic ? 'عرض جميع الخدمات' : 'View All Services'} →
       </Link>

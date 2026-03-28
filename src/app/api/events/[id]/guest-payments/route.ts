@@ -4,8 +4,12 @@ import { NextRequest, NextResponse } from 'next/server'
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || '', process.env.SUPABASE_SERVICE_ROLE_KEY || '')
 
 function getEventSignature(event: { name?: string; venue?: string }) {
-  const normalizedName = String(event.name || '').trim().toLowerCase()
-  const normalizedVenue = String(event.venue || '').trim().toLowerCase()
+  const normalizedName = String(event.name || '')
+    .trim()
+    .toLowerCase()
+  const normalizedVenue = String(event.venue || '')
+    .trim()
+    .toLowerCase()
   return `${normalizedName}|${normalizedVenue}`
 }
 
@@ -69,12 +73,22 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
     // Fallback: include all same-name or same-venue events if no direct signature match
     if (eventIds.size === 0) {
-      const normalizedName = String(event.name || '').trim().toLowerCase()
-      const normalizedVenue = String(event.venue || '').trim().toLowerCase()
+      const normalizedName = String(event.name || '')
+        .trim()
+        .toLowerCase()
+      const normalizedVenue = String(event.venue || '')
+        .trim()
+        .toLowerCase()
 
       ;(relatedEvents || []).forEach((item: any) => {
-        const nameMatch = String(item.name || '').trim().toLowerCase() === normalizedName
-        const venueMatch = String(item.venue || '').trim().toLowerCase() === normalizedVenue
+        const nameMatch =
+          String(item.name || '')
+            .trim()
+            .toLowerCase() === normalizedName
+        const venueMatch =
+          String(item.venue || '')
+            .trim()
+            .toLowerCase() === normalizedVenue
         if (nameMatch || venueMatch) {
           eventIds.add(String(item.id))
         }
@@ -217,10 +231,21 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       has_paid: paymentsByGuestId[guest.id]?.status === 'paid',
     }))
 
+    // DEBUG: include eventIds/query metadata when asked
+    const debugInfo = {
+      selectedEventId: String(event.id),
+      eventSignature,
+      eventIds: Array.from(eventIds),
+      totalPayments: (payments || []).length,
+      totalGuests: (allGuests || []).length,
+      parsedGuests: enrichedGuests.length,
+    }
+
     return NextResponse.json({
       payments: payments || [],
       guests: enrichedGuests,
       event,
+      ...(new URL(request.url).searchParams.get('debug') === '1' ? { debug: debugInfo } : {}),
     })
   } catch (error) {
     console.error('Error fetching guest payments:', error)
@@ -280,11 +305,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     const eventIdList = Array.from(eventIds)
 
     // Make sure the payment belongs to one of the merged / related events
-    const paymentCheck = await supabase
-      .from('guest_payments')
-      .select('id, event_id')
-      .eq('id', paymentId)
-      .maybeSingle()
+    const paymentCheck = await supabase.from('guest_payments').select('id, event_id').eq('id', paymentId).maybeSingle()
 
     if (!paymentCheck.data || !eventIdList.includes(String(paymentCheck.data.event_id))) {
       return NextResponse.json({ error: 'Payment not found for this event' }, { status: 404 })

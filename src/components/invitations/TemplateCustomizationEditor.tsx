@@ -1,13 +1,8 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { INVITATION_TEMPLATES, InvitationCustomization, InvitationData, TemplateStyle } from '@/types/invitations'
 import { useLocale } from 'next-intl'
-import {
-  InvitationCustomization,
-  InvitationData,
-  INVITATION_TEMPLATES,
-  TemplateStyle,
-} from '@/types/invitations'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import ElegantInvitation from './ElegantInvitation'
 import MinimalInvitation from './MinimalInvitation'
 import ModernInvitation from './ModernInvitation'
@@ -31,7 +26,7 @@ interface TemplateCustomizationEditorProps {
 }
 
 type ActivePanel = null | 'backdrop' | 'stickers' | 'frames' | 'photos' | 'logo' | 'header' | 'text' | 'colors' | 'font'
- type CanvasItemType = 'sticker' | 'frame' | 'photo' | 'text' | 'logo'
+type CanvasItemType = 'sticker' | 'frame' | 'photo' | 'text' | 'logo'
 
 type CanvasItem = {
   id: string
@@ -70,61 +65,254 @@ const BACKDROP_OPTIONS = [
 ]
 
 const STICKER_OPTIONS = [
-  { id: 1, name: 'Golden Vine Details', imageUrl: 'https://assets.ppassets.com/p-78vZww2jq7BGx2LHkjeScW/flyer/sticker_svg/static_thumb_small' },
-  { id: 2, name: 'Floral Frieze', imageUrl: 'https://assets.ppassets.com/p-43svb4tChjGpGgr73sP3bD/flyer/sticker_svg/static_thumb_small' },
-  { id: 3, name: 'Soft Scroll', imageUrl: 'https://assets.ppassets.com/p-2KA335JyApnsJXVtGq3muf/flyer/sticker_svg/static_thumb_small' },
-  { id: 4, name: 'Teacup', imageUrl: 'https://assets.ppassets.com/p-qtcTl6TATPvSeIBw0bRG0/flyer/sticker_svg/static_thumb_small' },
-  { id: 5, name: 'Floral Cartouche', imageUrl: 'https://assets.ppassets.com/p-3lgGxrBRBPS1k6ihTXzQhm/flyer/sticker_svg/static_thumb_small' },
-  { id: 6, name: 'Save the Date Angled', imageUrl: 'https://assets.ppassets.com/p-4wN8ZmvlrzcxWs8ULIvrG8/flyer/sticker_svg/static_thumb_small' },
-  { id: 7, name: "Trail's End Save the Date", imageUrl: 'https://assets.ppassets.com/p-6bsX0sUSukCTBPUoTVpbPS/flyer/sticker_svg/static_thumb_small' },
-  { id: 8, name: 'Passport to Romance', imageUrl: 'https://assets.ppassets.com/p-545fSVCy4v9v45xuzyLh6F/flyer/sticker_svg/static_thumb_small' },
-  { id: 9, name: 'Calligraphy RSVP', imageUrl: 'https://assets.ppassets.com/p-4n6SccawagsXgn3tKHTSgL/flyer/sticker_svg/static_thumb_small' },
-  { id: 10, name: 'Voice of Joy', imageUrl: 'https://assets.ppassets.com/p-22IqPrLpQPKJSj9wBNRKyP/flyer/sticker_svg/static_thumb_small' },
-  { id: 11, name: 'Tompion', imageUrl: 'https://assets.ppassets.com/p-1PUpMMebZ4JGkS3vucjRae/flyer/sticker_svg/static_thumb_small' },
-  { id: 12, name: 'Together', imageUrl: 'https://assets.ppassets.com/p-6crQHMNWn9Rjm0UYfOVIuL/flyer/sticker_svg/static_thumb_small' },
-  { id: 13, name: 'Rubell', imageUrl: 'https://assets.ppassets.com/p-3xI3tTENF2g4gJVHz2wtV4/flyer/sticker_svg/static_thumb_small' },
-  { id: 14, name: 'Save the Date Typography', imageUrl: 'https://assets.ppassets.com/p-4NvKBnQpcQWtuzkVofS1PL/flyer/sticker_svg/static_thumb_small' },
-  { id: 15, name: 'Sincerely', imageUrl: 'https://assets.ppassets.com/p-ywu39LUV3fBeZulOSiolV/flyer/sticker_svg/static_thumb_small' },
-  { id: 16, name: 'Save the Date Banner', imageUrl: 'https://assets.ppassets.com/p-3iCojUQggmdS9IJpQvTQDz/flyer/sticker_svg/static_thumb_small' },
-  { id: 17, name: 'Invite You To Celebrate Their Marriage', imageUrl: 'https://assets.ppassets.com/p-8q6Tco9Q2pBrDXVIoTbJt/flyer/sticker_svg/static_thumb_small' },
-  { id: 18, name: 'Frame Matting', imageUrl: 'https://assets.ppassets.com/p-26Yl35wFYgjLLpXbTP3a3Y/flyer/sticker_svg/static_thumb_small' },
-  { id: 19, name: 'Vintage Save the Date', imageUrl: 'https://assets.ppassets.com/p-1GQatvhIZvi3mju5bGMbKt/flyer/sticker_svg/static_thumb_small' },
-  { id: 20, name: 'Daguerre', imageUrl: 'https://assets.ppassets.com/p-Gy8mKq2r8uwODKHymB9Qz/flyer/sticker_svg/static_thumb_small' },
-  { id: 21, name: 'Sincerely New', imageUrl: 'https://assets.ppassets.com/p-6X55ucNmQFrKXeOU81A6Tb/flyer/sticker_svg/static_thumb_small' },
-  { id: 22, name: 'Brand New Day', imageUrl: 'https://assets.ppassets.com/p-1yaMoNKHRyps5tOX3cW8C0/flyer/sticker_svg/static_thumb_small' },
-  { id: 23, name: 'Virtual', imageUrl: 'https://assets.ppassets.com/p-4Hyayg3X3xLAxIFMkwhprS/flyer/sticker_svg/static_thumb_small' },
-  { id: 24, name: 'Walker', imageUrl: 'https://assets.ppassets.com/p-4HPaDrx8VJvsgKsVX46eWV/flyer/sticker_svg/static_thumb_small' },
-  { id: 25, name: 'Welcome', imageUrl: 'https://assets.ppassets.com/p-YSHRIFGPRxueT0PnnFZTA/flyer/sticker_svg/static_thumb_small' },
-  { id: 26, name: 'Bridal Shower', imageUrl: 'https://assets.ppassets.com/p-7hy6RvuRemb7SZ5SFHGYzE/flyer/sticker_svg/static_thumb_small' },
-  { id: 27, name: 'Classic Wedding Cake', imageUrl: 'https://assets.ppassets.com/p-lk2DdF6QINk6fSg6DUyK3/flyer/sticker_svg/static_thumb_small' },
-  { id: 28, name: 'Bride and Groom', imageUrl: 'https://assets.ppassets.com/p-1P8z5C6BtCIAObqAZz2SPJ/flyer/sticker_svg/static_thumb_small' },
-  { id: 29, name: "Trail's End And", imageUrl: 'https://assets.ppassets.com/p-3DT7LXwhSDH0KK6DWvuwwI/flyer/sticker_svg/static_thumb_small' },
-  { id: 30, name: 'Wedding Bands', imageUrl: 'https://assets.ppassets.com/p-6tNKMubW6lFtEV7n9hmWNM/flyer/sticker_svg/static_thumb_small' },
-  { id: 31, name: 'Garland', imageUrl: 'https://assets.ppassets.com/p-21CdAg63g3ILr950d72tfu/flyer/sticker_svg/static_thumb_small' },
-  { id: 32, name: 'Bride', imageUrl: 'https://assets.ppassets.com/p-4ZGFDVZep0ihMGLhDtEA5o/flyer/sticker_svg/static_thumb_small' },
-  { id: 33, name: 'Deco Dancers', imageUrl: 'https://assets.ppassets.com/p-U3FjMduXUFeuZ4MLGkWc9/flyer/sticker_svg/static_thumb_small' },
-  { id: 34, name: "YOU'RE INVITED", imageUrl: 'https://assets.ppassets.com/p-osQO1XQs6rA9zkTVVakis/flyer/sticker_svg/static_thumb_small' },
-  { id: 35, name: 'Polka Dot Wedding Cake', imageUrl: 'https://assets.ppassets.com/p-6IXskdGutXODIRwyIz8tvk/flyer/sticker_svg/static_thumb_small' },
-  { id: 36, name: 'Topiary', imageUrl: 'https://assets.ppassets.com/p-2bOsA5eWEXvunc2IzxvDXN/flyer/sticker_svg/static_thumb_small' },
-  { id: 37, name: 'Chandelier', imageUrl: 'https://assets.ppassets.com/p-3ECh0eRzUObnd3eXdsws1e/flyer/sticker_svg/static_thumb_small' },
-  { id: 38, name: 'Parasol', imageUrl: 'https://assets.ppassets.com/p-483AwvY3toT7ahQuqe5CVh/flyer/sticker_svg/static_thumb_small' },
-  { id: 39, name: 'Thick Frame with Thin Frame', imageUrl: 'https://assets.ppassets.com/p-4xPs5dx3DT4J3SjOyHNrDT/flyer/sticker_svg/static_thumb_small' },
-  { id: 40, name: 'Delicate Heart', imageUrl: 'https://assets.ppassets.com/p-1d9JBiDWJAwgSqgI4tT2YD/flyer/sticker_svg/static_thumb_small' },
-  { id: 41, name: 'Itinerary', imageUrl: 'https://assets.ppassets.com/p-5Qal8rGZ9BaGHOAxM4iO5C/flyer/sticker_svg/static_thumb_small' },
-  { id: 42, name: 'Party Tent', imageUrl: 'https://assets.ppassets.com/p-58HVJb31nCG4K0YnaQ4ozG/flyer/sticker_svg/static_thumb_small' },
-  { id: 43, name: 'Timepiece', imageUrl: 'https://assets.ppassets.com/p-3S003yUfJBG88vkyGSMlG8/flyer/sticker_svg/static_thumb_small' },
-  { id: 44, name: 'Flower Vase', imageUrl: 'https://assets.ppassets.com/p-2GVzsQ6vSg6EtEoVy7hSF8/flyer/sticker_svg/static_thumb_small' },
-  { id: 45, name: 'Raw Edge And', imageUrl: 'https://assets.ppassets.com/p-4Id2AxbEClWdYDNv3KMRct/flyer/sticker_svg/static_thumb_small' },
-  { id: 46, name: 'And Script', imageUrl: 'https://assets.ppassets.com/p-4rF12kP28Ne6vIMnbWcfxK/flyer/sticker_svg/static_thumb_small' },
-  { id: 47, name: 'Peace on Earth', imageUrl: 'https://assets.ppassets.com/p-1GPRqZt1jWnFoexdL54dOP/flyer/sticker_svg/static_thumb_small' },
-  { id: 48, name: 'Peony', imageUrl: 'https://assets.ppassets.com/p-2M7X9pNK15ZkzGY81ikyPG/flyer/sticker_svg/static_thumb_small' },
+  {
+    id: 1,
+    name: 'Golden Vine Details',
+    imageUrl: 'https://assets.ppassets.com/p-78vZww2jq7BGx2LHkjeScW/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 2,
+    name: 'Floral Frieze',
+    imageUrl: 'https://assets.ppassets.com/p-43svb4tChjGpGgr73sP3bD/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 3,
+    name: 'Soft Scroll',
+    imageUrl: 'https://assets.ppassets.com/p-2KA335JyApnsJXVtGq3muf/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 4,
+    name: 'Teacup',
+    imageUrl: 'https://assets.ppassets.com/p-qtcTl6TATPvSeIBw0bRG0/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 5,
+    name: 'Floral Cartouche',
+    imageUrl: 'https://assets.ppassets.com/p-3lgGxrBRBPS1k6ihTXzQhm/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 6,
+    name: 'Save the Date Angled',
+    imageUrl: 'https://assets.ppassets.com/p-4wN8ZmvlrzcxWs8ULIvrG8/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 7,
+    name: "Trail's End Save the Date",
+    imageUrl: 'https://assets.ppassets.com/p-6bsX0sUSukCTBPUoTVpbPS/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 8,
+    name: 'Passport to Romance',
+    imageUrl: 'https://assets.ppassets.com/p-545fSVCy4v9v45xuzyLh6F/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 9,
+    name: 'Calligraphy RSVP',
+    imageUrl: 'https://assets.ppassets.com/p-4n6SccawagsXgn3tKHTSgL/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 10,
+    name: 'Voice of Joy',
+    imageUrl: 'https://assets.ppassets.com/p-22IqPrLpQPKJSj9wBNRKyP/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 11,
+    name: 'Tompion',
+    imageUrl: 'https://assets.ppassets.com/p-1PUpMMebZ4JGkS3vucjRae/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 12,
+    name: 'Together',
+    imageUrl: 'https://assets.ppassets.com/p-6crQHMNWn9Rjm0UYfOVIuL/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 13,
+    name: 'Rubell',
+    imageUrl: 'https://assets.ppassets.com/p-3xI3tTENF2g4gJVHz2wtV4/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 14,
+    name: 'Save the Date Typography',
+    imageUrl: 'https://assets.ppassets.com/p-4NvKBnQpcQWtuzkVofS1PL/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 15,
+    name: 'Sincerely',
+    imageUrl: 'https://assets.ppassets.com/p-ywu39LUV3fBeZulOSiolV/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 16,
+    name: 'Save the Date Banner',
+    imageUrl: 'https://assets.ppassets.com/p-3iCojUQggmdS9IJpQvTQDz/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 17,
+    name: 'Invite You To Celebrate Their Marriage',
+    imageUrl: 'https://assets.ppassets.com/p-8q6Tco9Q2pBrDXVIoTbJt/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 18,
+    name: 'Frame Matting',
+    imageUrl: 'https://assets.ppassets.com/p-26Yl35wFYgjLLpXbTP3a3Y/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 19,
+    name: 'Vintage Save the Date',
+    imageUrl: 'https://assets.ppassets.com/p-1GQatvhIZvi3mju5bGMbKt/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 20,
+    name: 'Daguerre',
+    imageUrl: 'https://assets.ppassets.com/p-Gy8mKq2r8uwODKHymB9Qz/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 21,
+    name: 'Sincerely New',
+    imageUrl: 'https://assets.ppassets.com/p-6X55ucNmQFrKXeOU81A6Tb/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 22,
+    name: 'Brand New Day',
+    imageUrl: 'https://assets.ppassets.com/p-1yaMoNKHRyps5tOX3cW8C0/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 23,
+    name: 'Virtual',
+    imageUrl: 'https://assets.ppassets.com/p-4Hyayg3X3xLAxIFMkwhprS/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 24,
+    name: 'Walker',
+    imageUrl: 'https://assets.ppassets.com/p-4HPaDrx8VJvsgKsVX46eWV/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 25,
+    name: 'Welcome',
+    imageUrl: 'https://assets.ppassets.com/p-YSHRIFGPRxueT0PnnFZTA/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 26,
+    name: 'Bridal Shower',
+    imageUrl: 'https://assets.ppassets.com/p-7hy6RvuRemb7SZ5SFHGYzE/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 27,
+    name: 'Classic Wedding Cake',
+    imageUrl: 'https://assets.ppassets.com/p-lk2DdF6QINk6fSg6DUyK3/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 28,
+    name: 'Bride and Groom',
+    imageUrl: 'https://assets.ppassets.com/p-1P8z5C6BtCIAObqAZz2SPJ/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 29,
+    name: "Trail's End And",
+    imageUrl: 'https://assets.ppassets.com/p-3DT7LXwhSDH0KK6DWvuwwI/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 30,
+    name: 'Wedding Bands',
+    imageUrl: 'https://assets.ppassets.com/p-6tNKMubW6lFtEV7n9hmWNM/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 31,
+    name: 'Garland',
+    imageUrl: 'https://assets.ppassets.com/p-21CdAg63g3ILr950d72tfu/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 32,
+    name: 'Bride',
+    imageUrl: 'https://assets.ppassets.com/p-4ZGFDVZep0ihMGLhDtEA5o/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 33,
+    name: 'Deco Dancers',
+    imageUrl: 'https://assets.ppassets.com/p-U3FjMduXUFeuZ4MLGkWc9/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 34,
+    name: "YOU'RE INVITED",
+    imageUrl: 'https://assets.ppassets.com/p-osQO1XQs6rA9zkTVVakis/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 35,
+    name: 'Polka Dot Wedding Cake',
+    imageUrl: 'https://assets.ppassets.com/p-6IXskdGutXODIRwyIz8tvk/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 36,
+    name: 'Topiary',
+    imageUrl: 'https://assets.ppassets.com/p-2bOsA5eWEXvunc2IzxvDXN/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 37,
+    name: 'Chandelier',
+    imageUrl: 'https://assets.ppassets.com/p-3ECh0eRzUObnd3eXdsws1e/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 38,
+    name: 'Parasol',
+    imageUrl: 'https://assets.ppassets.com/p-483AwvY3toT7ahQuqe5CVh/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 39,
+    name: 'Thick Frame with Thin Frame',
+    imageUrl: 'https://assets.ppassets.com/p-4xPs5dx3DT4J3SjOyHNrDT/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 40,
+    name: 'Delicate Heart',
+    imageUrl: 'https://assets.ppassets.com/p-1d9JBiDWJAwgSqgI4tT2YD/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 41,
+    name: 'Itinerary',
+    imageUrl: 'https://assets.ppassets.com/p-5Qal8rGZ9BaGHOAxM4iO5C/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 42,
+    name: 'Party Tent',
+    imageUrl: 'https://assets.ppassets.com/p-58HVJb31nCG4K0YnaQ4ozG/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 43,
+    name: 'Timepiece',
+    imageUrl: 'https://assets.ppassets.com/p-3S003yUfJBG88vkyGSMlG8/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 44,
+    name: 'Flower Vase',
+    imageUrl: 'https://assets.ppassets.com/p-2GVzsQ6vSg6EtEoVy7hSF8/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 45,
+    name: 'Raw Edge And',
+    imageUrl: 'https://assets.ppassets.com/p-4Id2AxbEClWdYDNv3KMRct/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 46,
+    name: 'And Script',
+    imageUrl: 'https://assets.ppassets.com/p-4rF12kP28Ne6vIMnbWcfxK/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 47,
+    name: 'Peace on Earth',
+    imageUrl: 'https://assets.ppassets.com/p-1GPRqZt1jWnFoexdL54dOP/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 48,
+    name: 'Peony',
+    imageUrl: 'https://assets.ppassets.com/p-2M7X9pNK15ZkzGY81ikyPG/flyer/sticker_svg/static_thumb_small',
+  },
 ]
 
 const FRAME_OPTIONS = [
   {
     id: 1,
     name: 'Together in Tradition',
-    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/together%20in%20tradition-1.png?auto=compress',
+    imageUrl:
+      'https://images.greetingsisland.com/images/invitations/wedding/together%20in%20tradition-1.png?auto=compress',
   },
   {
     id: 2,
@@ -134,27 +322,32 @@ const FRAME_OPTIONS = [
   {
     id: 3,
     name: 'Union Time',
-    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/union-time-53144.gif?auto=format,compress&w=932',
+    imageUrl:
+      'https://images.greetingsisland.com/images/invitations/wedding/previews/union-time-53144.gif?auto=format,compress&w=932',
   },
   {
     id: 4,
     name: 'Dance of Two Souls',
-    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/dance-of-two-souls-53200.jpeg?auto=format,compress&w=932',
+    imageUrl:
+      'https://images.greetingsisland.com/images/invitations/wedding/previews/dance-of-two-souls-53200.jpeg?auto=format,compress&w=932',
   },
   {
     id: 5,
     name: 'Terracotta Frame',
-    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/terracotta-frame-33749.jpeg?auto=format,compress&w=932',
+    imageUrl:
+      'https://images.greetingsisland.com/images/invitations/wedding/previews/terracotta-frame-33749.jpeg?auto=format,compress&w=932',
   },
   {
     id: 6,
     name: 'Terracotta Round Frame',
-    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/terracotta-round-frame-34863.gif?auto=format,compress&w=932',
+    imageUrl:
+      'https://images.greetingsisland.com/images/invitations/wedding/previews/terracotta-round-frame-34863.gif?auto=format,compress&w=932',
   },
   {
     id: 7,
     name: 'Double Frame & Leaves',
-    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/double-frame-&-leaves-22133.jpeg?auto=format,compress&w=932',
+    imageUrl:
+      'https://images.greetingsisland.com/images/invitations/wedding/previews/double-frame-&-leaves-22133.jpeg?auto=format,compress&w=932',
   },
 ]
 
@@ -246,6 +439,7 @@ export default function TemplateCustomizationEditor({
 
   const [activePanel, setActivePanel] = useState<ActivePanel>('backdrop')
   const [zoom, setZoom] = useState(100)
+  const [isAutoZoom, setIsAutoZoom] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [saveError, setSaveError] = useState<string | null>(null)
   const [backdropSearch, setBackdropSearch] = useState('')
@@ -279,10 +473,7 @@ export default function TemplateCustomizationEditor({
     [canvasItems, selectedItemId]
   )
 
-  const activeFrameItem = useMemo(
-    () => canvasItems.find((item) => item.type === 'frame') || null,
-    [canvasItems]
-  )
+  const activeFrameItem = useMemo(() => canvasItems.find((item) => item.type === 'frame') || null, [canvasItems])
 
   const createTextItemsFromData = () => {
     const textPairs: Array<{ content: string | undefined; top: number }> = [
@@ -291,8 +482,17 @@ export default function TemplateCustomizationEditor({
       { content: invitationData.date as string | undefined, top: 230 },
       { content: invitationData.time as string | undefined, top: 260 },
       { content: invitationData.location as string | undefined, top: 290 },
-      { content: invitationData.description || (isArabic ? 'نحن ندعوكم بكل سرور للاحتفال' : 'We cordially invite you to celebrate'), top: 340 },
-      { content: invitationData.special_instructions || (isArabic ? 'نتطلع إلى حضوركم' : 'We look forward to your presence'), top: 420 },
+      {
+        content:
+          invitationData.description ||
+          (isArabic ? 'نحن ندعوكم بكل سرور للاحتفال' : 'We cordially invite you to celebrate'),
+        top: 340,
+      },
+      {
+        content:
+          invitationData.special_instructions || (isArabic ? 'نتطلع إلى حضوركم' : 'We look forward to your presence'),
+        top: 420,
+      },
     ]
 
     return textPairs
@@ -310,7 +510,6 @@ export default function TemplateCustomizationEditor({
       })) as CanvasItem[]
   }
 
-
   // Initialize canvas with text items from invitation data once.
   useEffect(() => {
     if (!invitationData || isCanvasInitialized) return
@@ -322,7 +521,6 @@ export default function TemplateCustomizationEditor({
       setIsCanvasInitialized(true)
     }
   }, [invitationData, isCanvasInitialized])
-
 
   useEffect(() => {
     if (!eventData) return
@@ -358,6 +556,22 @@ export default function TemplateCustomizationEditor({
 
     setCanvasItems((prev) => [frameItem, ...prev.filter((item) => item.type !== 'frame')])
   }, [activeFrameItem])
+
+  useEffect(() => {
+    const applyAutoZoom = () => {
+      const availableWidth = Math.max(320, window.innerWidth - 32)
+      const computedZoom = Math.min(100, Math.max(60, Math.round((availableWidth / 760) * 100)))
+      if (isAutoZoom) {
+        setZoom(computedZoom)
+      }
+    }
+
+    applyAutoZoom()
+    window.addEventListener('resize', applyAutoZoom)
+    return () => {
+      window.removeEventListener('resize', applyAutoZoom)
+    }
+  }, [isAutoZoom])
 
   const filteredBackdrops = useMemo(() => {
     const q = backdropSearch.trim().toLowerCase()
@@ -416,11 +630,64 @@ export default function TemplateCustomizationEditor({
       setResizeState(null)
     }
 
+    const onTouchMove = (event: TouchEvent) => {
+      if (!dragState && !resizeState) return
+      event.preventDefault()
+
+      if (resizeState) {
+        const touch = event.touches[0]
+        if (!touch) return
+        const currentDistance = Math.hypot(touch.clientX - resizeState.centerX, touch.clientY - resizeState.centerY)
+        const ratio = currentDistance / Math.max(resizeState.startDistance, 1)
+        const nextScale = clamp(resizeState.initialScale * ratio, 0.4, 4)
+
+        setCanvasItems((prev) =>
+          prev.map((item) =>
+            item.id === resizeState.itemId
+              ? {
+                  ...item,
+                  scale: nextScale,
+                }
+              : item
+          )
+        )
+        return
+      }
+
+      const touch = event.touches[0]
+      if (!touch || !dragState) return
+      const scale = zoom / 100
+      const dx = (touch.clientX - dragState.startX) / scale
+      const dy = (touch.clientY - dragState.startY) / scale
+
+      setCanvasItems((prev) =>
+        prev.map((item) =>
+          item.id === dragState.itemId
+            ? {
+                ...item,
+                x: clamp(dragState.initialX + dx, 0, 680),
+                y: clamp(dragState.initialY + dy, 0, 520),
+              }
+            : item
+        )
+      )
+    }
+
+    const onTouchEnd = () => {
+      setDragState(null)
+      setResizeState(null)
+    }
+
     window.addEventListener('mousemove', onMouseMove)
     window.addEventListener('mouseup', onMouseUp)
+    window.addEventListener('touchmove', onTouchMove, { passive: false })
+    window.addEventListener('touchend', onTouchEnd)
+
     return () => {
       window.removeEventListener('mousemove', onMouseMove)
       window.removeEventListener('mouseup', onMouseUp)
+      window.removeEventListener('touchmove', onTouchMove)
+      window.removeEventListener('touchend', onTouchEnd)
     }
   }, [dragState, resizeState, zoom])
 
@@ -431,10 +698,7 @@ export default function TemplateCustomizationEditor({
     }))
   }
 
-  const handleColorChange = (
-    field: 'primary_color' | 'secondary_color' | 'accent_color',
-    value: string
-  ) => {
+  const handleColorChange = (field: 'primary_color' | 'secondary_color' | 'accent_color', value: string) => {
     setCustomization((prev) => ({
       ...prev,
       [field]: value,
@@ -553,25 +817,33 @@ export default function TemplateCustomizationEditor({
     reader.readAsDataURL(file)
   }
 
-  const onCanvasItemMouseDown = (event: React.MouseEvent, itemId: string) => {
-    event.stopPropagation()
+  const startItemDrag = (itemId: string, clientX: number, clientY: number) => {
     const current = canvasItems.find((item) => item.id === itemId)
     if (!current) return
 
     setSelectedItemId(itemId)
     setDragState({
       itemId,
-      startX: event.clientX,
-      startY: event.clientY,
+      startX: clientX,
+      startY: clientY,
       initialX: current.x,
       initialY: current.y,
     })
   }
 
-  const onResizeHandleMouseDown = (event: React.MouseEvent, itemId: string) => {
+  const onCanvasItemMouseDown = (event: React.MouseEvent, itemId: string) => {
+    event.stopPropagation()
+    startItemDrag(itemId, event.clientX, event.clientY)
+  }
+
+  const onCanvasItemTouchStart = (event: React.TouchEvent, itemId: string) => {
     event.stopPropagation()
     event.preventDefault()
+    const touch = event.touches[0]
+    if (touch) startItemDrag(itemId, touch.clientX, touch.clientY)
+  }
 
+  const startResize = (itemId: string, clientX: number, clientY: number) => {
     const current = canvasItems.find((item) => item.id === itemId)
     const canvasRect = canvasRef.current?.getBoundingClientRect()
     if (!current || !canvasRect) return
@@ -579,7 +851,7 @@ export default function TemplateCustomizationEditor({
     const zoomScale = zoom / 100
     const centerX = canvasRect.left + current.x * zoomScale
     const centerY = canvasRect.top + current.y * zoomScale
-    const startDistance = Math.hypot(event.clientX - centerX, event.clientY - centerY)
+    const startDistance = Math.hypot(clientX - centerX, clientY - centerY)
 
     setResizeState({
       itemId,
@@ -591,11 +863,22 @@ export default function TemplateCustomizationEditor({
     setSelectedItemId(itemId)
   }
 
+  const onResizeHandleMouseDown = (event: React.MouseEvent, itemId: string) => {
+    event.stopPropagation()
+    event.preventDefault()
+    startResize(itemId, event.clientX, event.clientY)
+  }
+
+  const onResizeHandleTouchStart = (event: React.TouchEvent, itemId: string) => {
+    event.stopPropagation()
+    event.preventDefault()
+    const touch = event.touches[0]
+    if (touch) startResize(itemId, touch.clientX, touch.clientY)
+  }
+
   const updateSelectedItem = (patch: Partial<CanvasItem>) => {
     if (!selectedItemId) return
-    setCanvasItems((prev) =>
-      prev.map((item) => (item.id === selectedItemId ? { ...item, ...patch } : item))
-    )
+    setCanvasItems((prev) => prev.map((item) => (item.id === selectedItemId ? { ...item, ...patch } : item)))
   }
 
   const deleteSelectedItem = () => {
@@ -674,6 +957,7 @@ export default function TemplateCustomizationEditor({
       zIndex: item.zIndex,
       cursor: dragState?.itemId === item.id ? 'grabbing' : 'grab',
       userSelect: 'none',
+      touchAction: 'none',
       border: isSelected ? '2px dashed #2563eb' : '2px solid transparent',
       padding: 4,
       borderRadius: 8,
@@ -685,24 +969,28 @@ export default function TemplateCustomizationEditor({
         <button
           type="button"
           onMouseDown={(e) => onResizeHandleMouseDown(e, item.id)}
+          onTouchStart={(e) => onResizeHandleTouchStart(e, item.id)}
           className="absolute -left-2 -top-2 h-3.5 w-3.5 rounded-full border border-blue-700 bg-white"
           style={{ cursor: 'nwse-resize' }}
         />
         <button
           type="button"
           onMouseDown={(e) => onResizeHandleMouseDown(e, item.id)}
+          onTouchStart={(e) => onResizeHandleTouchStart(e, item.id)}
           className="absolute -right-2 -top-2 h-3.5 w-3.5 rounded-full border border-blue-700 bg-white"
           style={{ cursor: 'nesw-resize' }}
         />
         <button
           type="button"
           onMouseDown={(e) => onResizeHandleMouseDown(e, item.id)}
+          onTouchStart={(e) => onResizeHandleTouchStart(e, item.id)}
           className="absolute -bottom-2 -left-2 h-3.5 w-3.5 rounded-full border border-blue-700 bg-white"
           style={{ cursor: 'nesw-resize' }}
         />
         <button
           type="button"
           onMouseDown={(e) => onResizeHandleMouseDown(e, item.id)}
+          onTouchStart={(e) => onResizeHandleTouchStart(e, item.id)}
           className="absolute -bottom-2 -right-2 h-3.5 w-3.5 rounded-full border border-blue-700 bg-white"
           style={{ cursor: 'nwse-resize' }}
         />
@@ -711,12 +999,17 @@ export default function TemplateCustomizationEditor({
 
     if (item.type === 'sticker') {
       return (
-        <div key={item.id} style={commonStyle} onMouseDown={(e) => onCanvasItemMouseDown(e, item.id)}>
+        <div
+          key={item.id}
+          style={commonStyle}
+          onMouseDown={(e) => onCanvasItemMouseDown(e, item.id)}
+          onTouchStart={(e) => onCanvasItemTouchStart(e, item.id)}
+        >
           {item.stickerImageUrl ? (
-            <img 
-              src={item.stickerImageUrl} 
-              alt={item.stickerName || 'Sticker'} 
-              className="h-24 w-24 object-contain drop-shadow-sm" 
+            <img
+              src={item.stickerImageUrl}
+              alt={item.stickerName || 'Sticker'}
+              className="h-24 w-24 object-contain drop-shadow-sm"
             />
           ) : (
             <span style={{ color: item.color || '#111111', fontSize: 40 }}>{item.stickerGlyph || '✦'}</span>
@@ -729,11 +1022,11 @@ export default function TemplateCustomizationEditor({
     if (item.type === 'text') {
       const textStyle: React.CSSProperties = {
         ...commonStyle,
-        width: '100%',
+        width: 'min(90%, 736px)',
         maxWidth: 736,
         margin: '0 auto',
         textAlign: 'center',
-        background: 'transparent',
+        backgroundColor: 'transparent',
         border: isSelected ? '1px dashed #2563eb' : 'none',
         padding: isSelected ? '8px' : '0',
       }
@@ -743,6 +1036,7 @@ export default function TemplateCustomizationEditor({
           key={item.id}
           style={textStyle}
           onMouseDown={(e) => onCanvasItemMouseDown(e, item.id)}
+          onTouchStart={(e) => onCanvasItemTouchStart(e, item.id)}
           onDoubleClick={() => {
             const newText = window.prompt('Edit text', item.text || '')
             if (newText !== null) {
@@ -753,8 +1047,9 @@ export default function TemplateCustomizationEditor({
           <span
             style={{
               color: item.color || '#1f2937',
-              fontSize: 20,
+              fontSize: 'clamp(16px, 2.3vw, 32px)',
               fontWeight: isSelected ? 700 : 600,
+              lineHeight: 1.2,
               whiteSpace: 'pre-wrap',
               wordBreak: 'break-word',
             }}
@@ -771,11 +1066,21 @@ export default function TemplateCustomizationEditor({
       return null
     }
 
-    if (item.type === 'photo') {
+    if (item.type === 'photo' || item.type === 'logo') {
       return (
-        <div key={item.id} style={commonStyle} onMouseDown={(e) => onCanvasItemMouseDown(e, item.id)}>
+        <div
+          key={item.id}
+          style={commonStyle}
+          onMouseDown={(e) => onCanvasItemMouseDown(e, item.id)}
+          onTouchStart={(e) => onCanvasItemTouchStart(e, item.id)}
+        >
           {item.src ? (
-            <img src={item.src} alt="Uploaded" className="h-40 w-40 rounded shadow-md object-cover" />
+            <img
+              src={item.src}
+              alt={item.type === 'logo' ? 'Logo' : 'Uploaded'}
+              className={item.type === 'logo' ? 'h-20 w-20 md:h-24 md:w-24 rounded object-contain shadow-md' : 'h-40 w-40 rounded object-cover shadow-md'}
+              style={{ maxWidth: '90%', maxHeight: '90%' }}
+            />
           ) : (
             <div className="h-40 w-40 rounded bg-gray-200" />
           )}
@@ -785,7 +1090,12 @@ export default function TemplateCustomizationEditor({
     }
 
     return (
-      <div key={item.id} style={commonStyle} onMouseDown={(e) => onCanvasItemMouseDown(e, item.id)}>
+      <div
+        key={item.id}
+        style={commonStyle}
+        onMouseDown={(e) => onCanvasItemMouseDown(e, item.id)}
+        onTouchStart={(e) => onCanvasItemTouchStart(e, item.id)}
+      >
         {item.src ? (
           <img src={item.src} alt="Canvas item" className="h-16 w-16 rounded object-cover shadow-md" />
         ) : (
@@ -828,24 +1138,73 @@ export default function TemplateCustomizationEditor({
         {isSaving ? (isArabic ? 'جاري الحفظ...' : 'Saving...') : isArabic ? 'حفظ' : 'Save'}
       </button>
 
-      {saveError && <div className="mx-4 mt-3 rounded border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700">{saveError}</div>}
+      {saveError && (
+        <div className="mx-4 mt-3 rounded border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700">
+          {saveError}
+        </div>
+      )}
 
-      <div className="flex h-[calc(100vh-62px)]">
-        <div className="w-24 border-r border-gray-300 bg-white px-2 py-4">
+      <div className="flex min-h-[calc(100vh-62px)] flex-col lg:flex-row">
+        <div className="w-full border-b border-gray-300 bg-white px-2 py-4 lg:w-24 lg:border-b-0 lg:border-r lg:pb-4">
           <div className="space-y-2">
-            <ToolButton icon="B" label={isArabic ? 'خلفية' : 'Backdrop'} active={activePanel === 'backdrop'} onClick={() => setActivePanel('backdrop')} />
-            <ToolButton icon="S" label={isArabic ? 'ملصقات' : 'Stickers'} active={activePanel === 'stickers'} onClick={() => setActivePanel('stickers')} />
-            <ToolButton icon="F" label={isArabic ? 'إطارات' : 'Frames'} active={activePanel === 'frames'} onClick={() => setActivePanel('frames')} />
-            <ToolButton icon="P" label={isArabic ? 'صور' : 'Photos'} active={activePanel === 'photos'} onClick={() => setActivePanel('photos')} />
-            <ToolButton icon="L" label={isArabic ? 'شعار' : 'Add logo'} active={activePanel === 'logo'} onClick={() => setActivePanel('logo')} />
-            <ToolButton icon="H" label={isArabic ? 'رأس' : 'Header'} active={activePanel === 'header'} onClick={() => setActivePanel('header')} />
-            <ToolButton icon="T" label={isArabic ? 'نص' : 'Text'} active={activePanel === 'text'} onClick={() => setActivePanel('text')} />
-            <ToolButton icon="C" label={isArabic ? 'ألوان' : 'Colors'} active={activePanel === 'colors'} onClick={() => setActivePanel('colors')} />
-            <ToolButton icon="F" label={isArabic ? 'خط' : 'Font'} active={activePanel === 'font'} onClick={() => setActivePanel('font')} />
+            <ToolButton
+              icon="B"
+              label={isArabic ? 'خلفية' : 'Backdrop'}
+              active={activePanel === 'backdrop'}
+              onClick={() => setActivePanel('backdrop')}
+            />
+            <ToolButton
+              icon="S"
+              label={isArabic ? 'ملصقات' : 'Stickers'}
+              active={activePanel === 'stickers'}
+              onClick={() => setActivePanel('stickers')}
+            />
+            <ToolButton
+              icon="F"
+              label={isArabic ? 'إطارات' : 'Frames'}
+              active={activePanel === 'frames'}
+              onClick={() => setActivePanel('frames')}
+            />
+            <ToolButton
+              icon="P"
+              label={isArabic ? 'صور' : 'Photos'}
+              active={activePanel === 'photos'}
+              onClick={() => setActivePanel('photos')}
+            />
+            <ToolButton
+              icon="L"
+              label={isArabic ? 'شعار' : 'Add logo'}
+              active={activePanel === 'logo'}
+              onClick={() => setActivePanel('logo')}
+            />
+            <ToolButton
+              icon="H"
+              label={isArabic ? 'رأس' : 'Header'}
+              active={activePanel === 'header'}
+              onClick={() => setActivePanel('header')}
+            />
+            <ToolButton
+              icon="T"
+              label={isArabic ? 'نص' : 'Text'}
+              active={activePanel === 'text'}
+              onClick={() => setActivePanel('text')}
+            />
+            <ToolButton
+              icon="C"
+              label={isArabic ? 'ألوان' : 'Colors'}
+              active={activePanel === 'colors'}
+              onClick={() => setActivePanel('colors')}
+            />
+            <ToolButton
+              icon="F"
+              label={isArabic ? 'خط' : 'Font'}
+              active={activePanel === 'font'}
+              onClick={() => setActivePanel('font')}
+            />
           </div>
         </div>
 
-        <div className="w-[340px] border-r border-gray-300 bg-[#f9f9f9] p-4">
+        <div className="w-full border-b border-gray-300 bg-[#f9f9f9] p-4 lg:w-[340px] lg:border-b-0 lg:border-r">
           {activePanel === 'backdrop' && (
             <div>
               <h3 className="mb-3 text-xl font-semibold">{isArabic ? 'الخلفية' : 'Backdrop'}</h3>
@@ -880,31 +1239,31 @@ export default function TemplateCustomizationEditor({
                 placeholder={isArabic ? 'ابحث عن ملصق' : 'Search sticker'}
                 className="mb-4 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
               />
-              <div className="grid grid-cols-2 gap-2 max-h-[calc(100vh-200px)] overflow-y-auto">
+              <div className="grid max-h-[calc(100vh-200px)] grid-cols-2 gap-2 overflow-y-auto">
                 {filteredStickers.map((item) => (
                   <button
                     key={item.id}
                     onClick={() => addSticker(item.id, item.name, item.imageUrl)}
-                    className="rounded-lg border border-gray-300 bg-white p-2 hover:border-blue-500 hover:bg-blue-50 flex flex-col items-center gap-1"
+                    className="flex flex-col items-center gap-1 rounded-lg border border-gray-300 bg-white p-2 hover:border-blue-500 hover:bg-blue-50"
                     title={item.name}
                   >
-                    <img 
-                      src={item.imageUrl} 
-                      alt={item.name}
-                      className="h-12 w-12 object-contain"
-                    />
-                    <span className="text-xs text-gray-600 text-center line-clamp-2">{item.name}</span>
+                    <img src={item.imageUrl} alt={item.name} className="h-12 w-12 object-contain" />
+                    <span className="line-clamp-2 text-center text-xs text-gray-600">{item.name}</span>
                   </button>
                 ))}
               </div>
-              <p className="mt-3 text-xs text-gray-500">{isArabic ? 'أضف الملصق ثم اسحبه مباشرة فوق البطاقة.' : 'Add sticker then drag it directly on the card.'}</p>
+              <p className="mt-3 text-xs text-gray-500">
+                {isArabic
+                  ? 'أضف الملصق ثم اسحبه مباشرة فوق البطاقة.'
+                  : 'Add sticker then drag it directly on the card.'}
+              </p>
             </div>
           )}
 
           {activePanel === 'frames' && (
             <div>
               <h3 className="mb-3 text-xl font-semibold">{isArabic ? 'الإطارات' : 'Frames'}</h3>
-              <div className="grid grid-cols-2 gap-2 max-h-[calc(100vh-220px)] overflow-y-auto">
+              <div className="grid max-h-[calc(100vh-220px)] grid-cols-2 gap-2 overflow-y-auto">
                 {FRAME_OPTIONS.map((item) => (
                   <button
                     key={item.id}
@@ -913,11 +1272,13 @@ export default function TemplateCustomizationEditor({
                     title={item.name}
                   >
                     <img src={item.imageUrl} alt={item.name} className="h-16 w-full object-contain" />
-                    <span className="text-xs mt-1 block text-center text-gray-600">{item.name}</span>
+                    <span className="mt-1 block text-center text-xs text-gray-600">{item.name}</span>
                   </button>
                 ))}
               </div>
-              <p className="mt-3 text-xs text-gray-500">{isArabic ? 'أضف إطارًا لمسة نهائية جذابة.' : 'Add a decorative frame overlay over the invite.'}</p>
+              <p className="mt-3 text-xs text-gray-500">
+                {isArabic ? 'أضف إطارًا لمسة نهائية جذابة.' : 'Add a decorative frame overlay over the invite.'}
+              </p>
             </div>
           )}
 
@@ -936,7 +1297,11 @@ export default function TemplateCustomizationEditor({
                   }}
                 />
               </label>
-              <p className="text-xs text-gray-500">{isArabic ? 'يمكنك إضافة صور الزفاف أو صور الزوجين.' : 'Add a wedding photo or couple portrait directly on the card.'}</p>
+              <p className="text-xs text-gray-500">
+                {isArabic
+                  ? 'يمكنك إضافة صور الزفاف أو صور الزوجين.'
+                  : 'Add a wedding photo or couple portrait directly on the card.'}
+              </p>
             </div>
           )}
 
@@ -944,7 +1309,9 @@ export default function TemplateCustomizationEditor({
             <div className="space-y-4">
               <h3 className="text-xl font-semibold">{isArabic ? 'إضافة شعار' : 'Add Logo'}</h3>
               <label className="block cursor-pointer rounded-lg border-2 border-dashed border-blue-300 bg-white p-5 text-center hover:bg-blue-50">
-                <span className="text-sm font-semibold text-blue-700">{isArabic ? 'رفع صورة الشعار' : 'Upload logo image'}</span>
+                <span className="text-sm font-semibold text-blue-700">
+                  {isArabic ? 'رفع صورة الشعار' : 'Upload logo image'}
+                </span>
                 <input
                   type="file"
                   className="hidden"
@@ -963,7 +1330,10 @@ export default function TemplateCustomizationEditor({
               <h3 className="text-xl font-semibold">{isArabic ? 'شعار الرأس' : 'Header Logo'}</h3>
               <div className="space-y-2">
                 {HEADER_LOGO_OPTIONS.map((opt) => (
-                  <label key={opt.value} className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2">
+                  <label
+                    key={opt.value}
+                    className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-3 py-2"
+                  >
                     <input
                       type="radio"
                       checked={headerLogoMode === opt.value}
@@ -975,7 +1345,9 @@ export default function TemplateCustomizationEditor({
               </div>
               {headerLogoMode === 'custom' && (
                 <label className="block cursor-pointer rounded-lg border-2 border-dashed border-blue-300 bg-white p-4 text-center hover:bg-blue-50">
-                  <span className="text-sm font-semibold text-blue-700">{isArabic ? 'رفع شعار الرأس' : 'Upload header logo'}</span>
+                  <span className="text-sm font-semibold text-blue-700">
+                    {isArabic ? 'رفع شعار الرأس' : 'Upload header logo'}
+                  </span>
                   <input
                     type="file"
                     className="hidden"
@@ -1034,9 +1406,7 @@ export default function TemplateCustomizationEditor({
                 value={invitationData.special_instructions || ''}
                 onChange={(e) => handleTextChange('special_instructions', e.target.value)}
                 placeholder={
-                  isArabic
-                    ? 'تعليمات إضافية أو ملاحظة مخصصة'
-                    : 'Extra instructions or personalized note block'
+                  isArabic ? 'تعليمات إضافية أو ملاحظة مخصصة' : 'Extra instructions or personalized note block'
                 }
                 rows={2}
                 className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm"
@@ -1116,7 +1486,9 @@ export default function TemplateCustomizationEditor({
 
           {selectedItem && (
             <div className="mt-6 rounded-xl border border-blue-200 bg-blue-50 p-3">
-              <h4 className="mb-2 text-sm font-semibold text-blue-900">{isArabic ? 'العنصر المحدد' : 'Selected item'}</h4>
+              <h4 className="mb-2 text-sm font-semibold text-blue-900">
+                {isArabic ? 'العنصر المحدد' : 'Selected item'}
+              </h4>
               {selectedItem.type === 'text' && (
                 <input
                   type="text"
@@ -1158,10 +1530,16 @@ export default function TemplateCustomizationEditor({
                 />
               </div>
               <div className="grid grid-cols-2 gap-2">
-                <button onClick={duplicateSelectedItem} className="rounded bg-white px-2 py-1 text-xs font-semibold text-blue-900">
+                <button
+                  onClick={duplicateSelectedItem}
+                  className="rounded bg-white px-2 py-1 text-xs font-semibold text-blue-900"
+                >
                   {isArabic ? 'نسخ' : 'Duplicate'}
                 </button>
-                <button onClick={deleteSelectedItem} className="rounded bg-white px-2 py-1 text-xs font-semibold text-red-700">
+                <button
+                  onClick={deleteSelectedItem}
+                  className="rounded bg-white px-2 py-1 text-xs font-semibold text-red-700"
+                >
                   {isArabic ? 'حذف' : 'Delete'}
                 </button>
               </div>
@@ -1170,17 +1548,23 @@ export default function TemplateCustomizationEditor({
         </div>
 
         <div className="flex-1 overflow-auto p-6" style={{ background: backgroundCss }}>
-          <div className="mx-auto w-fit">
-            <div className="mb-4 flex items-center justify-center gap-2 rounded-full bg-white px-3 py-2 shadow-sm">
+          <div className="mx-auto w-full max-w-[100%]">
+            <div className="mb-4 flex flex-wrap items-center justify-center gap-2 rounded-full bg-white px-3 py-2 shadow-sm">
               <button
-                onClick={() => setZoom((z) => clamp(z - 10, 60, 170))}
+                onClick={() => {
+                  setIsAutoZoom(false)
+                  setZoom((z) => clamp(z - 10, 60, 170))
+                }}
                 className="rounded bg-gray-100 px-2 py-1 text-sm hover:bg-gray-200"
               >
                 -
               </button>
               <span className="w-14 text-center text-sm font-semibold">{zoom}%</span>
               <button
-                onClick={() => setZoom((z) => clamp(z + 10, 60, 170))}
+                onClick={() => {
+                  setIsAutoZoom(false)
+                  setZoom((z) => clamp(z + 10, 60, 170))
+                }}
                 className="rounded bg-gray-100 px-2 py-1 text-sm hover:bg-gray-200"
               >
                 +
@@ -1203,7 +1587,7 @@ export default function TemplateCustomizationEditor({
               <div
                 ref={canvasRef}
                 onMouseDown={() => setSelectedItemId(null)}
-                className="relative h-[560px] w-[760px] overflow-hidden rounded-2xl bg-transparent shadow-2xl"
+                className="relative mx-auto w-full max-w-[760px] overflow-hidden rounded-2xl bg-transparent shadow-2xl aspect-[760/560] max-h-[80vh]"
                 style={{ fontFamily: customization.font_family || 'serif' }}
               >
                 {activeFrameItem && (
@@ -1217,20 +1601,24 @@ export default function TemplateCustomizationEditor({
 
                 <div className="relative z-10 h-full w-full">
                   <TemplateComponent
-                    data={{
-                      ...invitationData,
-                      template_id: templateId,
-                      event_name: '',
-                      host_name: '',
-                      date: '',
-                      time: '',
-                      location: '',
-                      description: '',
-                    } as InvitationData}
-                    customization={{
-                      ...customization,
-                      template_id: templateId,
-                    } as InvitationCustomization}
+                    data={
+                      {
+                        ...invitationData,
+                        template_id: templateId,
+                        event_name: '',
+                        host_name: '',
+                        date: '',
+                        time: '',
+                        location: '',
+                        description: '',
+                      } as InvitationData
+                    }
+                    customization={
+                      {
+                        ...customization,
+                        template_id: templateId,
+                      } as InvitationCustomization
+                    }
                   />
                 </div>
 
@@ -1256,7 +1644,6 @@ export default function TemplateCustomizationEditor({
                   </button>
                 </div>
               )}
-
             </div>
           </div>
         </div>
