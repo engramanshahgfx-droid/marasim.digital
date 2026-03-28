@@ -57,9 +57,20 @@ export default function GuestPaymentProofCard({ eventId, guestId, shareLink, ban
         body: formData,
       })
 
-      const payload = await response.json()
+      const text = await response.text()
+      let payload: any
+      try {
+        payload = JSON.parse(text)
+      } catch {
+        payload = null
+      }
+
       if (!response.ok) {
-        throw new Error(payload.error || 'Failed to submit proof')
+        const message =
+          payload?.error || payload?.message ||
+          text?.substring(0, 500) ||
+          (isArabic ? 'فشل رفع الإثبات' : 'Failed to submit proof')
+        throw new Error(message)
       }
 
       setMessage(isArabic ? 'تم رفع إثبات الدفع بنجاح وسيتم مراجعته.' : 'Payment proof uploaded successfully and pending review.')

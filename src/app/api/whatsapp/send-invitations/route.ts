@@ -86,14 +86,6 @@ function buildQrMediaUrl(qrToken?: string | null) {
   return `https://quickchart.io/qr?size=360&text=${encodeURIComponent(qrToken)}`
 }
 
-function buildInvitationPdfUrl(appBaseUrl: string, shareLink: string, guestId: string) {
-  if (!appBaseUrl || !shareLink || !guestId) {
-    return ''
-  }
-
-  return `${appBaseUrl}/api/invitations/shared/${shareLink}/export?format=pdf&guestId=${encodeURIComponent(guestId)}`
-}
-
 function buildInvitationImageUrl(appBaseUrl: string, shareLink: string, guestId: string) {
   if (!appBaseUrl || !shareLink || !guestId) {
     return ''
@@ -325,7 +317,6 @@ export async function POST(request: NextRequest) {
       .filter((guest: any) => Boolean(guest.phone))
       .map((guest: any) => {
         const invitationLink = buildGuestInvitationLink(appBaseUrl, shareLink, guest.id)
-        const invitationPdfLink = buildInvitationPdfUrl(appBaseUrl, shareLink, guest.id)
         const invitationImageLink = buildInvitationImageUrl(appBaseUrl, shareLink, guest.id)
         const mergedGuestNote = [
           invitationBaseNote,
@@ -348,7 +339,6 @@ export async function POST(request: NextRequest) {
           guestId: guest.id,
           phone: formatPhoneNumber(guest.phone),
           invitationLink,
-          invitationPdfLink,
           invitationImageLink,
           qrToken: guest.qr_token,
           contentSid: templateConfig.contentSid,
@@ -410,12 +400,7 @@ export async function POST(request: NextRequest) {
         }
 
         const messageMeta = messageByPhone.get(result.phone) as any
-        if (
-          !messageMeta?.invitationLink &&
-          !messageMeta?.invitationPdfLink &&
-          !messageMeta?.invitationImageLink &&
-          !messageMeta?.qrToken
-        ) {
+        if (!messageMeta?.invitationLink && !messageMeta?.invitationImageLink && !messageMeta?.qrToken) {
           return {
             phone: result.phone,
             status: 'skipped',
@@ -437,7 +422,6 @@ export async function POST(request: NextRequest) {
 
         const invitationCardMessage = [
           messageMeta.invitationLink ? `Open your invitation: ${messageMeta.invitationLink}` : '',
-          messageMeta.invitationPdfLink ? `Invitation card PDF: ${messageMeta.invitationPdfLink}` : '',
           'The attached invitation card can be shared with guests.',
         ]
           .filter(Boolean)
@@ -447,7 +431,6 @@ export async function POST(request: NextRequest) {
           messageMeta.qrToken ? `Check-in code: ${messageMeta.qrToken}` : '',
           messageMeta.qrToken ? `QR link: ${buildQrMediaUrl(messageMeta.qrToken)}` : '',
           messageMeta.invitationLink ? `Invitation: ${messageMeta.invitationLink}` : '',
-          messageMeta.invitationPdfLink ? `Invitation card PDF: ${messageMeta.invitationPdfLink}` : '',
           'The attached QR can be shown at entry.',
         ]
           .filter(Boolean)
@@ -484,7 +467,7 @@ export async function POST(request: NextRequest) {
             })
             mediaAttachment.reason = 'media_send_failed'
           }
-        } else if (messageMeta.invitationLink || messageMeta.invitationPdfLink) {
+        } else if (messageMeta.invitationLink) {
           mediaAttachment.reason = hasPrivateBaseUrl ? 'private_base_url_text_fallback' : 'no_image_url_text_fallback'
           try {
             const invitationCardResponse = await sendWhatsAppMessage(result.phone, invitationCardMessage)

@@ -40,11 +40,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid QR code — guest not found' }, { status: 404 })
     }
 
+    // Determine event ID from guest record; allow stale event_id in the request.
+    let resolvedEventId = guest.event_id
+    if (!resolvedEventId && event_id) {
+      resolvedEventId = event_id
+    }
+
     // Verify the guest's event is owned by this user
     const { data: event, error: eventError } = await supabase
       .from('events')
       .select('id, name')
-      .eq('id', guest.event_id)
+      .eq('id', resolvedEventId)
       .eq('user_id', user.id)
       .single()
 
@@ -53,8 +59,9 @@ export async function POST(request: NextRequest) {
     }
 
     // If a specific event_id was supplied, validate it matches the guest's event
-    if (event_id && guest.event_id !== event_id) {
-      return NextResponse.json({ error: 'Guest does not belong to this event' }, { status: 400 })
+    if (event_id && guest.event_id && guest.event_id !== event_id) {
+      // Legacy compatibility: if clients pass old event id but guest belongs to another event, prefer guest base.
+      resolvedEventId = guest.event_id
     }
 
     // --- Duplicate-entry prevention ---

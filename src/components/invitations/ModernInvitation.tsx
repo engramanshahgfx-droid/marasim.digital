@@ -16,8 +16,8 @@ export function ModernInvitation({ data }: ModernInvitationProps) {
   const accentColor = '#f093fb'
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-white p-4" dir={isRTL ? 'rtl' : 'ltr'}>
-      <div className="aspect-[8.5/11] w-full max-w-2xl overflow-hidden rounded-xl shadow-2xl">
+    <div className="flex min-h-screen w-full items-center justify-center bg-transparent p-0" dir={isRTL ? 'rtl' : 'ltr'}>
+      <div className="aspect-[8.5/11] w-full max-w-full overflow-hidden rounded-xl shadow-2xl">
         {/* Gradient Background */}
         <div
           className="absolute inset-0 opacity-10"
@@ -27,7 +27,7 @@ export function ModernInvitation({ data }: ModernInvitationProps) {
         />
 
         {/* Content */}
-        <div className="relative flex h-full flex-col space-y-6 bg-white p-8">
+        <div className="relative flex h-full flex-col space-y-6 bg-transparent p-8">
           {/* Header with Gradient Accent */}
           <div className="space-y-4 text-center">
             {data.images?.banner && (

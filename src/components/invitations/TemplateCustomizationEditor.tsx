@@ -121,9 +121,41 @@ const STICKER_OPTIONS = [
 ]
 
 const FRAME_OPTIONS = [
-  { id: 1, name: 'Classic Gold Frame', imageUrl: 'https://assets.ppassets.com/p-39P0gdfkU3fgfTzYzzY6fQ/flyer/sticker_svg/static_thumb_small' },
-  { id: 2, name: 'Floral Frame Border', imageUrl: 'https://assets.ppassets.com/p-1GQatvhIZvi3mju5bGMbKt/flyer/sticker_svg/static_thumb_small' },
-  { id: 3, name: 'Art Deco Frame', imageUrl: 'https://assets.ppassets.com/p-4xPs5dx3DT4J3SjOyHNrDT/flyer/sticker_svg/static_thumb_small' },
+  {
+    id: 1,
+    name: 'Together in Tradition',
+    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/together%20in%20tradition-1.png?auto=compress',
+  },
+  {
+    id: 2,
+    name: 'Sage Leaves',
+    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/sageleaves-5.gif?w=1000',
+  },
+  {
+    id: 3,
+    name: 'Union Time',
+    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/union-time-53144.gif?auto=format,compress&w=932',
+  },
+  {
+    id: 4,
+    name: 'Dance of Two Souls',
+    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/dance-of-two-souls-53200.jpeg?auto=format,compress&w=932',
+  },
+  {
+    id: 5,
+    name: 'Terracotta Frame',
+    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/terracotta-frame-33749.jpeg?auto=format,compress&w=932',
+  },
+  {
+    id: 6,
+    name: 'Terracotta Round Frame',
+    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/terracotta-round-frame-34863.gif?auto=format,compress&w=932',
+  },
+  {
+    id: 7,
+    name: 'Double Frame & Leaves',
+    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/double-frame-&-leaves-22133.jpeg?auto=format,compress&w=932',
+  },
 ]
 
 const FONT_OPTIONS = [
@@ -224,6 +256,7 @@ export default function TemplateCustomizationEditor({
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null)
   const [headerLogoMode, setHeaderLogoMode] = useState<'classic' | 'custom' | 'remove'>('classic')
   const [customHeaderLogo, setCustomHeaderLogo] = useState<string>('')
+  const [isCanvasInitialized, setIsCanvasInitialized] = useState(false)
 
   const canvasRef = useRef<HTMLDivElement | null>(null)
   const [dragState, setDragState] = useState<{
@@ -245,6 +278,86 @@ export default function TemplateCustomizationEditor({
     () => canvasItems.find((item) => item.id === selectedItemId) || null,
     [canvasItems, selectedItemId]
   )
+
+  const activeFrameItem = useMemo(
+    () => canvasItems.find((item) => item.type === 'frame') || null,
+    [canvasItems]
+  )
+
+  const createTextItemsFromData = () => {
+    const textPairs: Array<{ content: string | undefined; top: number }> = [
+      { content: invitationData.event_name as string | undefined, top: 120 },
+      { content: invitationData.host_name as string | undefined, top: 165 },
+      { content: invitationData.date as string | undefined, top: 230 },
+      { content: invitationData.time as string | undefined, top: 260 },
+      { content: invitationData.location as string | undefined, top: 290 },
+      { content: invitationData.description || (isArabic ? 'نحن ندعوكم بكل سرور للاحتفال' : 'We cordially invite you to celebrate'), top: 340 },
+      { content: invitationData.special_instructions || (isArabic ? 'نتطلع إلى حضوركم' : 'We look forward to your presence'), top: 420 },
+    ]
+
+    return textPairs
+      .filter((pair) => pair.content && pair.content.trim())
+      .map((pair, index) => ({
+        id: createItemId(`text-${index}`),
+        type: 'text' as CanvasItemType,
+        x: 380,
+        y: pair.top,
+        scale: 1,
+        rotation: 0,
+        zIndex: 100,
+        text: pair.content || '',
+        color: '#1f2937',
+      })) as CanvasItem[]
+  }
+
+
+  // Initialize canvas with text items from invitation data once.
+  useEffect(() => {
+    if (!invitationData || isCanvasInitialized) return
+
+    const initialItems = createTextItemsFromData()
+
+    if (initialItems.length) {
+      setCanvasItems((existing) => [...existing, ...initialItems])
+      setIsCanvasInitialized(true)
+    }
+  }, [invitationData, isCanvasInitialized])
+
+
+  useEffect(() => {
+    if (!eventData) return
+
+    setInvitationData((prev) => ({
+      ...prev,
+      event_name: eventData.event_name || prev.event_name,
+      host_name: eventData.host_name || prev.host_name,
+      date: eventData.date || prev.date,
+      time: eventData.time || prev.time,
+      location: eventData.location || prev.location,
+      description: eventData.description || prev.description,
+      guest_count: eventData.guest_count ?? prev.guest_count,
+    }))
+  }, [eventData])
+
+  useEffect(() => {
+    if (activeFrameItem) return
+    if (FRAME_OPTIONS.length === 0) return
+
+    const frame = FRAME_OPTIONS[0]
+    const frameItem: CanvasItem = {
+      id: createItemId('frame'),
+      type: 'frame',
+      x: 380,
+      y: 280,
+      scale: 1,
+      rotation: 0,
+      zIndex: 0,
+      stickerImageUrl: frame.imageUrl,
+      stickerName: frame.name,
+    }
+
+    setCanvasItems((prev) => [frameItem, ...prev.filter((item) => item.type !== 'frame')])
+  }, [activeFrameItem])
 
   const filteredBackdrops = useMemo(() => {
     const q = backdropSearch.trim().toLowerCase()
@@ -491,6 +604,11 @@ export default function TemplateCustomizationEditor({
     setSelectedItemId(null)
   }
 
+  const setSelectedItemText = (text: string) => {
+    if (!selectedItem || selectedItem.type !== 'text') return
+    updateSelectedItem({ text })
+  }
+
   const duplicateSelectedItem = () => {
     if (!selectedItem) return
     const duplicate: CanvasItem = {
@@ -591,24 +709,66 @@ export default function TemplateCustomizationEditor({
       </>
     ) : null
 
-    if (item.type === 'sticker' || item.type === 'frame') {
-      const sizeClass = item.type === 'frame' ? 'h-96 w-96' : 'h-24 w-24'
+    if (item.type === 'sticker') {
       return (
         <div key={item.id} style={commonStyle} onMouseDown={(e) => onCanvasItemMouseDown(e, item.id)}>
           {item.stickerImageUrl ? (
             <img 
               src={item.stickerImageUrl} 
-              alt={item.stickerName || (item.type === 'frame' ? 'Frame' : 'Sticker')} 
-              className={`${sizeClass} object-contain drop-shadow-sm`} 
+              alt={item.stickerName || 'Sticker'} 
+              className="h-24 w-24 object-contain drop-shadow-sm" 
             />
           ) : (
-            <span style={{ color: item.color || '#111111', fontSize: item.type === 'frame' ? 54 : 40 }}>
-              {item.stickerGlyph || (item.type === 'frame' ? '🖼️' : '✦')}
-            </span>
+            <span style={{ color: item.color || '#111111', fontSize: 40 }}>{item.stickerGlyph || '✦'}</span>
           )}
           {handles}
         </div>
       )
+    }
+
+    if (item.type === 'text') {
+      const textStyle: React.CSSProperties = {
+        ...commonStyle,
+        width: '100%',
+        maxWidth: 736,
+        margin: '0 auto',
+        textAlign: 'center',
+        background: 'transparent',
+        border: isSelected ? '1px dashed #2563eb' : 'none',
+        padding: isSelected ? '8px' : '0',
+      }
+
+      return (
+        <div
+          key={item.id}
+          style={textStyle}
+          onMouseDown={(e) => onCanvasItemMouseDown(e, item.id)}
+          onDoubleClick={() => {
+            const newText = window.prompt('Edit text', item.text || '')
+            if (newText !== null) {
+              updateSelectedItem({ text: newText })
+            }
+          }}
+        >
+          <span
+            style={{
+              color: item.color || '#1f2937',
+              fontSize: 20,
+              fontWeight: isSelected ? 700 : 600,
+              whiteSpace: 'pre-wrap',
+              wordBreak: 'break-word',
+            }}
+          >
+            {item.text || 'Text'}
+          </span>
+          {handles}
+        </div>
+      )
+    }
+
+    if (item.type === 'frame') {
+      // frame is rendered as a ring/background in the main template area and doesn't need a draggable overlay representation
+      return null
     }
 
     if (item.type === 'photo') {
@@ -619,25 +779,6 @@ export default function TemplateCustomizationEditor({
           ) : (
             <div className="h-40 w-40 rounded bg-gray-200" />
           )}
-          {handles}
-        </div>
-      )
-    }
-
-    if (item.type === 'text') {
-      return (
-        <div key={item.id} style={commonStyle} onMouseDown={(e) => onCanvasItemMouseDown(e, item.id)}>
-          <span
-            style={{
-              color: item.color || '#111111',
-              fontSize: 20,
-              fontWeight: 600,
-              whiteSpace: 'nowrap',
-              fontFamily: customization.font_family || 'serif',
-            }}
-          >
-            {item.text || 'Text'}
-          </span>
           {handles}
         </div>
       )
@@ -1053,7 +1194,7 @@ export default function TemplateCustomizationEditor({
                     <img src={customHeaderLogo} alt="Header logo" className="h-10 object-contain" />
                   ) : (
                     <div className="rounded border border-dashed border-gray-400 bg-white px-4 py-1 text-xs font-semibold tracking-wide text-gray-700">
-                      PAPERLESS STYLE
+                      Marasim Logo
                     </div>
                   )}
                 </div>
@@ -1062,24 +1203,60 @@ export default function TemplateCustomizationEditor({
               <div
                 ref={canvasRef}
                 onMouseDown={() => setSelectedItemId(null)}
-                className="relative h-[560px] w-[760px] overflow-hidden rounded-2xl border border-gray-300 bg-white shadow-2xl"
+                className="relative h-[560px] w-[760px] overflow-hidden rounded-2xl bg-transparent shadow-2xl"
                 style={{ fontFamily: customization.font_family || 'serif' }}
               >
-                <TemplateComponent
-                  data={{
-                    ...invitationData,
-                    template_id: templateId,
-                  } as InvitationData}
-                  customization={{
-                    ...customization,
-                    template_id: templateId,
-                  } as InvitationCustomization}
-                />
+                {activeFrameItem && (
+                  <img
+                    src={activeFrameItem.src || activeFrameItem.stickerImageUrl}
+                    alt={activeFrameItem.stickerName || 'Frame'}
+                    className="pointer-events-none absolute inset-0 h-full w-full"
+                    style={{ zIndex: 0, objectFit: 'contain' }}
+                  />
+                )}
+
+                <div className="relative z-10 h-full w-full">
+                  <TemplateComponent
+                    data={{
+                      ...invitationData,
+                      template_id: templateId,
+                      event_name: '',
+                      host_name: '',
+                      date: '',
+                      time: '',
+                      location: '',
+                      description: '',
+                    } as InvitationData}
+                    customization={{
+                      ...customization,
+                      template_id: templateId,
+                    } as InvitationCustomization}
+                  />
+                </div>
 
                 <div className="pointer-events-none absolute inset-0">
                   <div className="pointer-events-auto">{canvasItems.map((item) => renderItem(item))}</div>
                 </div>
               </div>
+
+              {selectedItem && selectedItem.type === 'text' && (
+                <div className="mt-4 rounded-lg border border-blue-200 bg-blue-50 p-3 text-sm shadow-lg">
+                  <p className="font-semibold text-blue-700">Text controls</p>
+                  <input
+                    type="text"
+                    value={selectedItem.text || ''}
+                    onChange={(e) => setSelectedItemText(e.target.value)}
+                    className="mt-2 w-full rounded border border-blue-300 px-2 py-1"
+                  />
+                  <button
+                    onClick={deleteSelectedItem}
+                    className="mt-2 w-full rounded bg-red-500 px-2 py-1 text-white hover:bg-red-600"
+                  >
+                    Delete selected text
+                  </button>
+                </div>
+              )}
+
             </div>
           </div>
         </div>

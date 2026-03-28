@@ -161,11 +161,15 @@ export async function POST(request: NextRequest) {
       template_id,
       invitation_data,
       customization,
+      invitation_id,
+      share_link,
     }: {
       event_id: string
       template_id: TemplateStyle
       invitation_data: InvitationData
       customization?: any
+      invitation_id?: string
+      share_link?: string
     } = body
 
     // Validate required fields
@@ -195,11 +199,67 @@ export async function POST(request: NextRequest) {
       language: (customization as any)?.language || 'en',
     }
 
+    let targetInvitationId = ''
+
+    if (invitation_id) {
+      const explicitById = await (supabase.from('invitation_templates') as any)
+        .select('id')
+        .eq('id', invitation_id)
+        .eq('event_id', event_id)
+        .maybeSingle()
+
+      if (!explicitById.error && explicitById.data?.id) {
+        targetInvitationId = explicitById.data.id
+      }
+    }
+
+    if (!targetInvitationId && share_link) {
+      const explicitByShareLink = await (supabase.from('invitation_templates') as any)
+        .select('id')
+        .eq('shareable_link', share_link)
+        .eq('event_id', event_id)
+        .maybeSingle()
+
+      if (!explicitByShareLink.error && explicitByShareLink.data?.id) {
+        targetInvitationId = explicitByShareLink.data.id
+      }
+
+      if (!targetInvitationId && explicitByShareLink.error && isMissingColumn(explicitByShareLink.error, 'shareable_link')) {
+        const explicitByLegacyShareId = await (supabase.from('invitation_templates') as any)
+          .select('id')
+          .eq('id', share_link)
+          .eq('event_id', event_id)
+          .maybeSingle()
+
+        if (!explicitByLegacyShareId.error && explicitByLegacyShareId.data?.id) {
+          targetInvitationId = explicitByLegacyShareId.data.id
+        }
+      }
+    }
+
+    if (!targetInvitationId) {
+      const byTemplate = await (supabase.from('invitation_templates') as any)
+        .select('id')
+        .eq('event_id', event_id)
+        .eq('template_id', template_id)
+        .order('updated_at', { ascending: false })
+        .limit(1)
+        .maybeSingle()
+
+      if (!byTemplate.error && byTemplate.data?.id) {
+        targetInvitationId = byTemplate.data.id
+      }
+    }
+
     const latestInvitation = await getLatestInvitationForEvent(supabase as any, event_id)
     let savedInvitation: any = null
     const failureReasons: string[] = []
 
-    if (latestInvitation?.id) {
+    if (!targetInvitationId && latestInvitation?.id) {
+      targetInvitationId = latestInvitation.id
+    }
+
+    if (targetInvitationId) {
       const modernUpdate = await (supabase.from('invitation_templates') as any)
         .update({
           template_id,
@@ -207,7 +267,7 @@ export async function POST(request: NextRequest) {
           customization: normalizedCustomization,
           updated_at: new Date().toISOString(),
         })
-        .eq('id', latestInvitation.id)
+        .eq('id', targetInvitationId)
         .eq('event_id', event_id)
         .select('*')
         .single()
@@ -221,7 +281,7 @@ export async function POST(request: NextRequest) {
           normalizedInvitationData as InvitationData,
           normalizedCustomization
         )
-        const legacyUpdate = await runLegacyUpdate(latestInvitation.id, event_id, legacyText, legacySerializedPayload)
+        const legacyUpdate = await runLegacyUpdate(targetInvitationId, event_id, legacyText, legacySerializedPayload)
 
         if (legacyUpdate.error || !legacyUpdate.data) {
           failureReasons.push(getErrorMessage(legacyUpdate.error) || 'Legacy update failed')
@@ -240,7 +300,7 @@ export async function POST(request: NextRequest) {
             ...legacyText,
             updated_at: new Date().toISOString(),
           })
-          .eq('id', latestInvitation.id)
+          .eq('id', targetInvitationId)
           .eq('event_id', event_id)
           .select('*')
           .single()
@@ -340,7 +400,7 @@ export async function POST(request: NextRequest) {
         ...savedInvitation,
         shareable_link: shareLink || (savedInvitation as any)?.id || null,
       },
-      { status: latestInvitation?.id ? 200 : 201 }
+      { status: targetInvitationId ? 200 : 201 }
     )
   } catch (error) {
     console.error('Error creating invitation:', error)

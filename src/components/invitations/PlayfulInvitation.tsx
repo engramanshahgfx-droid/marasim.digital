@@ -16,7 +16,7 @@ export function PlayfulInvitation({ data }: PlayfulInvitationProps) {
   const accentColor = '#ffe66d'
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-white p-4" dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className="flex min-h-screen w-full items-center justify-center bg-transparent p-0" dir={isRTL ? 'rtl' : 'ltr'}>
       <style>{`
         @keyframes bounce-slow {
           0%, 100% { transform: translateY(0); }
@@ -31,8 +31,8 @@ export function PlayfulInvitation({ data }: PlayfulInvitationProps) {
       `}</style>
 
       <div
-        className="relative aspect-[8.5/11] w-full max-w-2xl overflow-hidden rounded-3xl shadow-2xl"
-        style={{ background: '#fff5f7' }}
+        className="relative aspect-[8.5/11] w-full max-w-full overflow-hidden rounded-3xl shadow-2xl"
+        style={{ background: 'transparent' }}
       >
         {/* Decorative elements */}
         <div className="animate-float absolute left-10 top-10 text-4xl">🎉</div>

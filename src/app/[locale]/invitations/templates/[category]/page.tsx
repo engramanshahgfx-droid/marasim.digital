@@ -27,6 +27,8 @@ function CategoryPageInner({
   const router = useRouter()
   const searchParams = useSearchParams()
   const eventId = searchParams.get('eventId')
+  const invitationId = searchParams.get('invitationId')
+  const shareLink = searchParams.get('shareLink')
 
   const categoryInfo = TEMPLATE_CATEGORIES[category as TemplateCategoryType]
 
@@ -47,7 +49,11 @@ function CategoryPageInner({
   }
 
   const handleSelectTemplate = (templateId: string) => {
-    const queryString = eventId ? `?eventId=${encodeURIComponent(eventId)}` : ''
+    const query = new URLSearchParams()
+    if (eventId) query.set('eventId', eventId)
+    if (invitationId) query.set('invitationId', invitationId)
+    if (shareLink) query.set('shareLink', shareLink)
+    const queryString = query.toString() ? `?${query.toString()}` : ''
     router.push(`/${currentLocale}/invitations/templates/${category}/${templateId}/customize${queryString}`)
   }
 

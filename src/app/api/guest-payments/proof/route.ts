@@ -22,7 +22,21 @@ export async function GET(request: NextRequest) {
     }
 
     // Validate this share link belongs to the same event.
-    const invitation = await validateInvitationLinkForEvent(supabase as any, eventId, shareLink)
+    let resolvedEventId = eventId
+    let invitation = await validateInvitationLinkForEvent(supabase as any, eventId, shareLink)
+
+    if (!invitation) {
+      const { data: fallbackInvitation } = await supabase
+        .from('invitation_templates')
+        .select('id, event_id')
+        .eq('shareable_link', shareLink)
+        .maybeSingle()
+
+      if (fallbackInvitation?.event_id) {
+        resolvedEventId = fallbackInvitation.event_id
+        invitation = await validateInvitationLinkForEvent(supabase as any, resolvedEventId, shareLink)
+      }
+    }
 
     if (!invitation) {
       return NextResponse.json({ error: 'Invalid invitation link' }, { status: 403 })
@@ -32,7 +46,7 @@ export async function GET(request: NextRequest) {
       .from('guest_payments')
       .select('id, amount, payment_date, status, proof_url, proof_file_name, created_at, notes')
       .eq('guest_id', guestId)
-      .eq('event_id', eventId)
+      .eq('event_id', resolvedEventId)
       .order('created_at', { ascending: false })
 
     if (error) {
@@ -73,34 +87,61 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Proof file size exceeds 8MB limit' }, { status: 400 })
     }
 
+    // Validate this share link belongs to the same event.
+    const invitation = await validateInvitationLinkForEvent(supabase as any, eventId, shareLink)
+    let resolvedEventId = eventId
+
+    if (!invitation) {
+      // Fallback: allow over shared link mismatch if the invitation itself exists.
+      const { data: fallbackInvitation } = await supabase
+        .from('invitation_templates')
+        .select('id, event_id')
+        .eq('shareable_link', shareLink)
+        .maybeSingle()
+
+      if (fallbackInvitation?.event_id) {
+        resolvedEventId = fallbackInvitation.event_id
+      } else {
+        return NextResponse.json({ error: 'Invalid invitation link' }, { status: 403 })
+      }
+    }
+
     // Validate guest belongs to event.
     const { data: guest } = await supabase
       .from('guests')
       .select('id, event_id')
       .eq('id', guestId)
-      .eq('event_id', eventId)
+      .eq('event_id', resolvedEventId)
       .maybeSingle()
 
     if (!guest) {
       return NextResponse.json({ error: 'Guest not found for this event' }, { status: 404 })
     }
 
-    // Validate this share link belongs to the same event.
-    const invitation = await validateInvitationLinkForEvent(supabase as any, eventId, shareLink)
-
     if (!invitation) {
-      return NextResponse.json({ error: 'Invalid invitation link' }, { status: 403 })
+      // Fallback: allow over shared link mismatch if the invitation itself exists.
+      const { data: fallbackInvitation } = await supabase
+        .from('invitation_templates')
+        .select('id, event_id')
+        .eq('shareable_link', shareLink)
+        .maybeSingle()
+
+      if (fallbackInvitation?.event_id) {
+        resolvedEventId = fallbackInvitation.event_id
+      } else {
+        return NextResponse.json({ error: 'Invalid invitation link' }, { status: 403 })
+      }
     }
 
     // Pull event-specific bank details to persist alongside this proof record.
     const { data: eventData } = await supabase
       .from('events')
       .select('bank_account_holder, bank_name, bank_account_number, bank_iban')
-      .eq('id', eventId)
+      .eq('id', resolvedEventId)
       .maybeSingle()
 
     const extension = file.name.includes('.') ? file.name.split('.').pop() : 'bin'
-    const objectPath = `guest-payments/${eventId}/${guestId}/${Date.now()}.${extension}`
+    const objectPath = `guest-payments/${resolvedEventId}/${guestId}/${Date.now()}.${extension}`
     const fileBuffer = await file.arrayBuffer()
 
     const { error: uploadError } = await supabase.storage.from('payment-proofs').upload(objectPath, fileBuffer, {
@@ -117,7 +158,7 @@ export async function POST(request: NextRequest) {
     const { data: inserted, error: insertError } = await supabase
       .from('guest_payments')
       .insert({
-        event_id: eventId,
+        event_id: resolvedEventId,
         guest_id: guestId,
         payment_method: 'bank_transfer',
         amount,

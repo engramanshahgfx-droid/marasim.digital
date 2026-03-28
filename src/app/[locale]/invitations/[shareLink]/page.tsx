@@ -14,7 +14,7 @@ import { InvitationData, TemplateStyle } from '@/types/invitations'
 import { useLocale } from 'next-intl'
 import dynamic from 'next/dynamic'
 import { useParams, useSearchParams } from 'next/navigation'
-import { type ComponentType, useEffect, useMemo, useState } from 'react'
+import { type ComponentType, type CSSProperties, useEffect, useMemo, useState } from 'react'
 
 // QR code is SVG-based — rendered client-side only
 const QRCodeSVG = dynamic(() => import('qrcode.react').then((mod) => mod.QRCodeSVG), { ssr: false })
@@ -30,6 +30,15 @@ const TEMPLATE_COMPONENTS: Record<TemplateStyle, ComponentType<{ data: Invitatio
 interface SharedInvitationResponse {
   template_id: TemplateStyle
   invitation_data: InvitationData
+  customization?: {
+    backdrop_css?: string | null
+    font_family?: string | null
+    header_logo?: {
+      mode?: 'paperless' | 'custom' | 'remove'
+      custom_url?: string
+    }
+    canvas_items?: SharedCanvasItem[]
+  }
   qr_token?: string
   event_id?: string
   bank_details?: {
@@ -38,6 +47,27 @@ interface SharedInvitationResponse {
     bank_account_number?: string | null
     bank_iban?: string | null
   }
+}
+
+type SharedCanvasItem = {
+  id: string
+  type: 'text' | 'sticker' | 'logo' | 'frame'
+  x?: number
+  y?: number
+  scale?: number
+  rotation?: number
+  zIndex?: number
+  color?: string
+  text?: string
+  src?: string
+  stickerImageUrl?: string
+  stickerGlyph?: string
+  stickerName?: string
+}
+
+function toSafeNumber(value: unknown, fallback: number) {
+  const parsed = Number(value)
+  return Number.isFinite(parsed) ? parsed : fallback
 }
 
 export default function SharedInvitationPage() {
@@ -103,12 +133,153 @@ export default function SharedInvitationPage() {
   }
 
   const InvitationComponent = TEMPLATE_COMPONENTS[data.template_id]
+  const customization = data.customization || {}
+  const canvasItems = Array.isArray(customization.canvas_items) ? customization.canvas_items : []
+  const activeFrameItem =
+    canvasItems.find((item) => item?.type === 'frame' && (item?.src || item?.stickerImageUrl)) || null
+  const renderItems = canvasItems
+    .filter((item) => item?.type !== 'frame')
+    .sort((a, b) => toSafeNumber(a?.zIndex, 1) - toSafeNumber(b?.zIndex, 1))
+
+  const baseTemplateData: InvitationData = {
+    ...data.invitation_data,
+    event_name: '',
+    host_name: '',
+    date: '',
+    time: '',
+    location: '',
+    description: '',
+  }
   
   return (
     <CartProvider eventId={data.event_id || ''}>
       <div className="bg-white">
-        {/* Invitation Template */}
-        <InvitationComponent data={data.invitation_data} />
+        {/* Invitation Template Rendered with Saved Editor Layers */}
+        <div className="px-4 py-6 md:px-6">
+          <div
+            className="mx-auto w-full max-w-[760px] rounded-2xl p-4"
+            style={{ background: customization.backdrop_css || '#f8fafc' }}
+          >
+            {customization?.header_logo?.mode !== 'remove' && (
+              <div className="mb-3 flex justify-center">
+                {customization?.header_logo?.mode === 'custom' && customization?.header_logo?.custom_url ? (
+                  <img src={customization.header_logo.custom_url} alt="Header logo" className="h-10 object-contain" />
+                ) : (
+                  <div className="rounded border border-dashed border-gray-400 bg-white px-4 py-1 text-xs font-semibold tracking-wide text-gray-700">
+                    {customization?.header_logo?.mode === 'classic' ? 'Marasim Logo' : 'Marasim Logo'}
+                  </div>
+                )}
+              </div>
+            )}
+
+            <div
+              className="relative h-[560px] w-full overflow-hidden rounded-2xl shadow-2xl"
+              style={{ fontFamily: customization.font_family || 'serif' }}
+            >
+              {activeFrameItem && (
+                <img
+                  src={activeFrameItem.src || activeFrameItem.stickerImageUrl}
+                  alt={activeFrameItem.stickerName || 'Frame'}
+                  className="pointer-events-none absolute inset-0 h-full w-full"
+                  style={{ zIndex: 0, objectFit: 'contain' }}
+                />
+              )}
+
+              <div className="relative z-10 h-full w-full">
+                <InvitationComponent data={baseTemplateData} />
+              </div>
+
+              <div className="pointer-events-none absolute inset-0">
+                {renderItems.map((item) => {
+                  const x = toSafeNumber(item?.x, 380)
+                  const y = toSafeNumber(item?.y, 280)
+                  const scale = toSafeNumber(item?.scale, 1)
+                  const rotation = toSafeNumber(item?.rotation, 0)
+                  const style: CSSProperties = {
+                    position: 'absolute',
+                    left: x,
+                    top: y,
+                    transform: `translate(-50%, -50%) rotate(${rotation}deg) scale(${scale})`,
+                    transformOrigin: 'center center',
+                    zIndex: toSafeNumber(item?.zIndex, 20),
+                  }
+
+                  if (item.type === 'text') {
+                    return (
+                      <div
+                        key={item.id}
+                        style={{
+                          ...style,
+                          width: '100%',
+                          maxWidth: 736,
+                          textAlign: 'center',
+                          color: item.color || '#1f2937',
+                          fontSize: 20,
+                          fontWeight: 600,
+                          whiteSpace: 'pre-wrap',
+                          wordBreak: 'break-word',
+                          padding: 4,
+                        }}
+                      >
+                        {item.text || ''}
+                      </div>
+                    )
+                  }
+
+                  if (item.type === 'logo' && item.src) {
+                    return (
+                      <img
+                        key={item.id}
+                        src={item.src}
+                        alt="Logo"
+                        style={{
+                          ...style,
+                          width: 120,
+                          height: 120,
+                          objectFit: 'contain',
+                        }}
+                      />
+                    )
+                  }
+
+                  if (item.type === 'sticker') {
+                    if (item.stickerImageUrl) {
+                      return (
+                        <img
+                          key={item.id}
+                          src={item.stickerImageUrl}
+                          alt={item.stickerName || 'Sticker'}
+                          style={{
+                            ...style,
+                            width: 96,
+                            height: 96,
+                            objectFit: 'contain',
+                          }}
+                        />
+                      )
+                    }
+
+                    return (
+                      <div
+                        key={item.id}
+                        style={{
+                          ...style,
+                          color: item.color || '#111827',
+                          fontSize: 42,
+                          lineHeight: 1,
+                        }}
+                      >
+                        {item.stickerGlyph || '✦'}
+                      </div>
+                    )
+                  }
+
+                  return null
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* RSVP Buttons */}
         {data.event_id && guestId && (

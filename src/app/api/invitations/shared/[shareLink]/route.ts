@@ -14,6 +14,56 @@ interface RouteParams {
 
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || '', process.env.SUPABASE_SERVICE_ROLE_KEY || '')
 
+async function resolveInvitationBankDetails(eventId: string) {
+  const eventWithBank = await supabase
+    .from('events')
+    .select('bank_account_holder, bank_name, bank_account_number, bank_iban')
+    .eq('id', eventId)
+    .maybeSingle()
+
+  const bankColumnMissing = String(eventWithBank.error?.message || '').includes('bank_account_holder')
+  const hasEventBankDetails = Boolean(
+    (eventWithBank.data as any)?.bank_account_holder ||
+      (eventWithBank.data as any)?.bank_name ||
+      (eventWithBank.data as any)?.bank_account_number ||
+      (eventWithBank.data as any)?.bank_iban
+  )
+
+  if (!eventWithBank.error && hasEventBankDetails) {
+    return {
+      bank_account_holder: (eventWithBank.data as any)?.bank_account_holder || null,
+      bank_name: (eventWithBank.data as any)?.bank_name || null,
+      bank_account_number: (eventWithBank.data as any)?.bank_account_number || null,
+      bank_iban: (eventWithBank.data as any)?.bank_iban || null,
+    }
+  }
+
+  if (!eventWithBank.error || bankColumnMissing) {
+    const activeBankAccount = await supabase
+      .from('bank_accounts')
+      .select('account_holder, bank_name, account_number, iban')
+      .eq('is_active', true)
+      .limit(1)
+      .maybeSingle()
+
+    if (!activeBankAccount.error && activeBankAccount.data) {
+      return {
+        bank_account_holder: (activeBankAccount.data as any)?.account_holder || null,
+        bank_name: (activeBankAccount.data as any)?.bank_name || null,
+        bank_account_number: (activeBankAccount.data as any)?.account_number || null,
+        bank_iban: (activeBankAccount.data as any)?.iban || null,
+      }
+    }
+  }
+
+  return {
+    bank_account_holder: (eventWithBank.data as any)?.bank_account_holder || null,
+    bank_name: (eventWithBank.data as any)?.bank_name || null,
+    bank_account_number: (eventWithBank.data as any)?.bank_account_number || null,
+    bank_iban: (eventWithBank.data as any)?.bank_iban || null,
+  }
+}
+
 export async function GET(request: NextRequest, { params }: RouteParams) {
   try {
     const { shareLink } = params
@@ -78,16 +128,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       // Older schemas may not store view counts on invitation_templates.
     }
 
-    let eventData: any = null
-    const bankDetailsResult = await supabase
-      .from('events')
-      .select('bank_account_holder, bank_name, bank_account_number, bank_iban')
-      .eq('id', invitation.event_id)
-      .maybeSingle()
-
-    if (!bankDetailsResult.error) {
-      eventData = bankDetailsResult.data
-    }
+    const bankDetails = await resolveInvitationBankDetails(invitation.event_id)
 
     let guestPaymentSummary: { has_payment: boolean; latest_status: string | null } | null = null
     if (guestId) {
@@ -110,10 +151,10 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       ...invitationWithPersonalization,
       qr_token: qrToken ?? null,
       bank_details: {
-        bank_account_holder: (eventData as any)?.bank_account_holder || null,
-        bank_name: (eventData as any)?.bank_name || null,
-        bank_account_number: (eventData as any)?.bank_account_number || null,
-        bank_iban: (eventData as any)?.bank_iban || null,
+        bank_account_holder: bankDetails.bank_account_holder,
+        bank_name: bankDetails.bank_name,
+        bank_account_number: bankDetails.bank_account_number,
+        bank_iban: bankDetails.bank_iban,
       },
       guest_payment_summary: guestPaymentSummary,
     })

@@ -32,6 +32,44 @@ const TEMPLATE_COMPONENTS: Record<TemplateStyle, React.ComponentType<any>> = {
   professional: ProfessionalInvitation,
 }
 
+const FRAME_OPTIONS = [
+  {
+    id: 1,
+    name: 'Together in Tradition',
+    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/together%20in%20tradition-1.png?auto=compress',
+  },
+  {
+    id: 2,
+    name: 'Sage Leaves',
+    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/sageleaves-5.gif?w=1000',
+  },
+  {
+    id: 3,
+    name: 'Union Time',
+    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/union-time-53144.gif?auto=format,compress&w=932',
+  },
+  {
+    id: 4,
+    name: 'Dance of Two Souls',
+    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/dance-of-two-souls-53200.jpeg?auto=format,compress&w=932',
+  },
+  {
+    id: 5,
+    name: 'Terracotta Frame',
+    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/terracotta-frame-33749.jpeg?auto=format,compress&w=932',
+  },
+  {
+    id: 6,
+    name: 'Terracotta Round Frame',
+    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/terracotta-round-frame-34863.gif?auto=format,compress&w=932',
+  },
+  {
+    id: 7,
+    name: 'Double Frame & Leaves',
+    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/double-frame-&-leaves-22133.jpeg?auto=format,compress&w=932',
+  },
+]
+
 // Sample invitation data
 const SAMPLE_DATA = {
   template_id: 'elegant' as TemplateStyle,
@@ -53,8 +91,12 @@ export default function TemplatePreviewPage({
   const isArabic = currentLocale === 'ar'
   const searchParams = useSearchParams()
   const eventId = searchParams.get('eventId')
+  const invitationId = searchParams.get('invitationId')
+  const shareLink = searchParams.get('shareLink')
 
   const template = INVITATION_TEMPLATES[templateId as TemplateStyle]
+  const [activeFrameUrl, setActiveFrameUrl] = useState(FRAME_OPTIONS[0]?.imageUrl || '')
+
   if (!template) {
     return (
       <UserAuthGuard>
@@ -84,6 +126,7 @@ export default function TemplatePreviewPage({
         ...SAMPLE_DATA,
         template_id: templateId as TemplateStyle,
       })
+      setActiveFrameUrl(FRAME_OPTIONS[0]?.imageUrl || '')
       return
     }
 
@@ -125,8 +168,12 @@ export default function TemplatePreviewPage({
     loadEventPreview()
   }, [eventId, templateId])
 
+  const customizeQuery = new URLSearchParams()
+  if (eventId) customizeQuery.set('eventId', eventId)
+  if (invitationId) customizeQuery.set('invitationId', invitationId)
+  if (shareLink) customizeQuery.set('shareLink', shareLink)
   const customizeHref = `/${currentLocale}/invitations/templates/${category}/${templateId}/customize${
-    eventId ? `?eventId=${encodeURIComponent(eventId)}` : ''
+    customizeQuery.toString() ? `?${customizeQuery.toString()}` : ''
   }`
 
   return (
@@ -262,25 +309,37 @@ export default function TemplatePreviewPage({
                   </span>
                 </div>
 
-                {/* Preview */}
+                        {/* Preview */}
                 <div className="flex justify-center bg-gray-50 rounded-lg p-6">
-                  <div
-                    style={{
-                      transform: `scale(${zoom / 100})`,
-                      transformOrigin: 'center top',
-                    }}
-                  >
-                    <TemplateComponent
-                      data={previewData}
-                      customization={{
-                        template_id: templateId,
-                        primary_color: template.colors.primary,
-                        secondary_color: template.colors.secondary,
-                        accent_color: template.colors.accent,
-                        font_family: 'serif',
-                        style_variation: 'light',
+                  <div className="relative">
+                    {activeFrameUrl && (
+                      <img
+                        src={activeFrameUrl}
+                        alt="Invitation frame"
+                        className="absolute inset-0 h-full w-full rounded-lg"
+                        style={{ zIndex: 0, objectFit: 'contain', filter: 'brightness(0.95)' }}
+                      />
+                    )}
+                    <div
+                      className="relative"
+                      style={{
+                        transform: `scale(${zoom / 100})`,
+                        transformOrigin: 'center top',
+                        zIndex: 10,
                       }}
-                    />
+                    >
+                      <TemplateComponent
+                        data={previewData}
+                        customization={{
+                          template_id: templateId,
+                          primary_color: template.colors.primary,
+                          secondary_color: template.colors.secondary,
+                          accent_color: template.colors.accent,
+                          font_family: 'serif',
+                          style_variation: 'light',
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
 

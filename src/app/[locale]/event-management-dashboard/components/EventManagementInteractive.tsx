@@ -341,8 +341,8 @@ const EventManagementInteractive = () => {
       console.log('API Response status:', response.status)
 
       if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Failed to fetch events')
+        const errorData = await response.json().catch(() => null)
+        throw new Error(errorData?.error || errorData?.message || 'Failed to fetch events')
       }
 
       const data = await response.json()

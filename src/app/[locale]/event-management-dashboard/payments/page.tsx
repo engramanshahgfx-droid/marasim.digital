@@ -10,10 +10,79 @@ import { useEffect, useMemo, useState } from 'react'
 interface EventItem {
   id: string
   name: string
+  date?: string
+  venue?: string
+  guestCount?: number
+  invitationsSent?: number
+  confirmed?: number
+  checkedIn?: number
 }
 
 type RsvpStatus = 'confirmed' | 'declined' | 'no_response'
 type PaymentStatus = 'pending' | 'paid' | 'unpaid' | 'rejected'
+
+function cleanEventId(input: string | null): string {
+  if (!input) return ''
+
+  // Fix malformed query values that may include a concatenated URL or repeated params.
+  const trimmed = input.trim()
+  const splitOnHttp = trimmed.split(/https?:\/\//)
+  if (splitOnHttp.length > 1) {
+    // Keep only the first valid ID portion before an accidental URL insertion.
+    const fallback = splitOnHttp[0]
+    const sanitized = fallback.split(/[&?]/)[0]
+    return sanitized
+  }
+
+  // Common bad concatenation patterns: eventId=<id>http://... or eventId=<id>?eventId=...
+  const eventIdMatch = trimmed.match(/^[0-9a-fA-F-]+$/)
+  if (eventIdMatch) {
+    return eventIdMatch[0]
+  }
+
+  const [firstPart] = trimmed.split(/[^0-9a-fA-F-]/)
+  return firstPart || trimmed
+}
+
+function getEventSignature(event: Partial<EventItem>) {
+  const normalizedName = String(event.name || '').trim().toLowerCase()
+  const normalizedDate = String(event.date || '').trim()
+  const normalizedVenue = String(event.venue || '').trim().toLowerCase()
+  return `${normalizedName}|${normalizedDate}|${normalizedVenue}`
+}
+
+function getEventActivityScore(event: Partial<EventItem>) {
+  return (
+    Number(event.guestCount || 0) +
+    Number(event.invitationsSent || 0) +
+    Number(event.confirmed || 0) +
+    Number(event.checkedIn || 0)
+  )
+}
+
+function dedupeEventsBySignature(items: EventItem[]) {
+  const bySignature = new Map<string, EventItem>()
+
+  for (const item of items) {
+    const signature = getEventSignature(item)
+    if (!signature || signature === '||') {
+      bySignature.set(String(item.id), item)
+      continue
+    }
+
+    const existing = bySignature.get(signature)
+    if (!existing) {
+      bySignature.set(signature, item)
+      continue
+    }
+
+    if (getEventActivityScore(item) > getEventActivityScore(existing)) {
+      bySignature.set(signature, item)
+    }
+  }
+
+  return Array.from(bySignature.values())
+}
 
 interface GuestItem {
   id: string
@@ -129,22 +198,56 @@ export default function EventGuestPaymentsPage() {
         })
 
         if (!eventsResponse.ok) {
-          throw new Error(isArabic ? 'تعذر تحميل الفعاليات' : 'Failed to load events')
+          const errPayload = await eventsResponse.json().catch(() => null)
+          throw new Error(
+            errPayload?.error || errPayload?.message || (isArabic ? 'تعذر تحميل الفعاليات' : 'Failed to load events')
+          )
         }
 
         const payload = await eventsResponse.json()
         const mapped = (payload || []).map((event: any) => ({
           id: String(event.id),
           name: String(event.name || ''),
+          date: String(event.date || ''),
+          venue: String(event.venue || ''),
+          guestCount: Number(event.guestCount || 0),
+          invitationsSent: Number(event.invitationsSent || 0),
+          confirmed: Number(event.confirmed || 0),
+          checkedIn: Number(event.checkedIn || 0),
         }))
 
-        setEvents(mapped)
+        const dedupedEvents = dedupeEventsBySignature(mapped)
 
-        const requestedEventId = searchParams.get('eventId')
-        const selectedEventId =
-          requestedEventId && mapped.some((event: EventItem) => event.id === requestedEventId)
-            ? requestedEventId
-            : mapped[0]?.id || ''
+        const rawRequestedEventId = searchParams.get('eventId')
+        const requestedEventId = cleanEventId(rawRequestedEventId)
+        const requestedSource = requestedEventId ? mapped.find((event: EventItem) => event.id === requestedEventId) : undefined
+        const requestedSignature = requestedSource ? getEventSignature(requestedSource) : ''
+        const resolvedDuplicate = requestedSignature
+          ? dedupedEvents.find((event: EventItem) => getEventSignature(event) === requestedSignature)
+          : undefined
+
+        let finalEvents = dedupedEvents
+        if (requestedSource && !dedupedEvents.some((event: EventItem) => event.id === requestedEventId)) {
+          // Keep the requested legacy event in dropdown for visibility, but route into the best duplicate.
+          finalEvents = [requestedSource, ...dedupedEvents]
+        }
+
+        setEvents(finalEvents)
+
+        let selectedEventId = ''
+        if (requestedEventId && dedupedEvents.some((event: EventItem) => event.id === requestedEventId)) {
+          selectedEventId = requestedEventId
+        } else if (resolvedDuplicate) {
+          selectedEventId = resolvedDuplicate.id
+        } else {
+          selectedEventId = finalEvents[0]?.id || ''
+        }
+
+        if (selectedEventId && selectedEventId !== requestedEventId) {
+          const url = new URL(window.location.href)
+          url.searchParams.set('eventId', selectedEventId)
+          router.replace(url.pathname + url.search)
+        }
 
         if (selectedEventId) {
           setEventId(selectedEventId)
@@ -252,16 +355,17 @@ export default function EventGuestPaymentsPage() {
   }
 
   const onEventChange = async (nextEventId: string) => {
-    setEventId(nextEventId)
+    const cleanedEventId = cleanEventId(nextEventId)
+    setEventId(cleanedEventId)
     setGuests([])
     setFilterType('all')
     setCheckInNotice(null)
 
     if (!token) return
-    await loadGuestData(nextEventId, token)
+    await loadGuestData(cleanedEventId, token)
 
     const url = new URL(window.location.href)
-    url.searchParams.set('eventId', nextEventId)
+    url.searchParams.set('eventId', cleanedEventId)
     router.replace(url.pathname + url.search)
   }
 

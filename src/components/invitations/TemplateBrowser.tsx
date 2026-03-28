@@ -6,9 +6,49 @@ import ModernInvitation from '@/components/invitations/ModernInvitation'
 import PlayfulInvitation from '@/components/invitations/PlayfulInvitation'
 import ProfessionalInvitation from '@/components/invitations/ProfessionalInvitation'
 import { getTemplatesForCategory, InvitationData, TemplateCategory, TemplateStyle } from '@/types/invitations'
+import { getCurrentSession } from '@/lib/auth'
 import { useLocale } from 'next-intl'
 import Link from 'next/link'
+import { useEffect, useMemo, useState } from 'react'
 import type { ComponentType } from 'react'
+
+const FRAME_OPTIONS = [
+  {
+    id: 1,
+    name: 'Together in Tradition',
+    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/together%20in%20tradition-1.png?auto=compress',
+  },
+  {
+    id: 2,
+    name: 'Sage Leaves',
+    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/sageleaves-5.gif?w=1000',
+  },
+  {
+    id: 3,
+    name: 'Union Time',
+    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/union-time-53144.gif?auto=format,compress&w=932',
+  },
+  {
+    id: 4,
+    name: 'Dance of Two Souls',
+    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/dance-of-two-souls-53200.jpeg?auto=format,compress&w=932',
+  },
+  {
+    id: 5,
+    name: 'Terracotta Frame',
+    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/terracotta-frame-33749.jpeg?auto=format,compress&w=932',
+  },
+  {
+    id: 6,
+    name: 'Terracotta Round Frame',
+    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/terracotta-round-frame-34863.gif?auto=format,compress&w=932',
+  },
+  {
+    id: 7,
+    name: 'Double Frame & Leaves',
+    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/double-frame-&-leaves-22133.jpeg?auto=format,compress&w=932',
+  },
+]
 
 const TEMPLATE_COMPONENTS: Record<TemplateStyle, ComponentType<{ data: InvitationData }>> = {
   elegant: ElegantInvitation,
@@ -54,6 +94,36 @@ export default function TemplateBrowser({
 }: TemplateBrowserProps) {
   const locale = useLocale()
   const isArabic = locale === 'ar'
+
+  const [resolvedEventName, setResolvedEventName] = useState<string | null>(eventName || null)
+
+  useEffect(() => {
+    if (!eventId || eventName) return
+
+    const fetchEvent = async () => {
+      try {
+        const session = await getCurrentSession()
+        if (!session?.access_token) return
+
+        const res = await fetch(`/api/events/${eventId}`, {
+          headers: {
+            Authorization: `Bearer ${session.access_token}`,
+            'Content-Type': 'application/json',
+          },
+        })
+
+        if (!res.ok) return
+        const data = await res.json()
+        if (data?.name) {
+          setResolvedEventName(data.name)
+        }
+      } catch (err) {
+        console.warn('Failed to load event name for template browser', err)
+      }
+    }
+
+    fetchEvent()
+  }, [eventId, eventName])
 
   const templates = getTemplatesForCategory(category)
   const queryString = eventId ? `?eventId=${encodeURIComponent(eventId)}` : ''
@@ -106,6 +176,14 @@ export default function TemplateBrowser({
                 className="relative w-full overflow-hidden bg-white"
                 style={{ height: '200px' }}
               >
+                <div className="absolute inset-0 pointer-events-none">
+                  <img
+                    src={FRAME_OPTIONS[0].imageUrl}
+                    alt={FRAME_OPTIONS[0].name}
+                    className="h-full w-full object-cover"
+                    style={{ opacity: 0.92 }}
+                  />
+                </div>
                 <div
                   className="pointer-events-none absolute left-0 top-0 origin-top-left"
                   style={{ transform: 'scale(0.42)', width: '238%' }}
@@ -113,9 +191,15 @@ export default function TemplateBrowser({
                   {(() => {
                     const PreviewComponent = TEMPLATE_COMPONENTS[template.id]
                     return (
-                      <PreviewComponent
-                        data={{ ...SAMPLE_DATA, template_id: template.id }}
-                      />
+                      <div className="relative z-10">
+                        <PreviewComponent
+                          data={{
+                            ...SAMPLE_DATA,
+                            template_id: template.id,
+                            event_name: resolvedEventName || SAMPLE_DATA.event_name,
+                          }}
+                        />
+                      </div>
                     )
                   })()}
                 </div>

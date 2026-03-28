@@ -12,8 +12,8 @@ export function MinimalInvitation({ data }: MinimalInvitationProps) {
   const isRTL = locale === 'ar'
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-white p-4" dir={isRTL ? 'rtl' : 'ltr'}>
-      <div className="aspect-[8.5/11] w-full max-w-2xl overflow-hidden rounded-sm border border-gray-200 bg-white shadow-xl">
+    <div className="flex min-h-screen w-full items-center justify-center bg-transparent p-0" dir={isRTL ? 'rtl' : 'ltr'}>
+      <div className="aspect-[8.5/11] w-full max-w-full overflow-hidden rounded-sm border border-gray-200 bg-transparent shadow-xl">
         {/* Header */}
         <div className="flex h-32 flex-col items-center justify-center space-y-3 border-b border-gray-300">
           {data.images?.logo && <img src={data.images.logo} alt="Event" className="h-12 object-contain" />}

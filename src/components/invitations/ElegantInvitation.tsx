@@ -16,15 +16,15 @@ export function ElegantInvitation({ data }: ElegantInvitationProps) {
   const accentColor = '#c9a961'
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-white p-4" dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className="flex min-h-screen w-full items-center justify-center bg-transparent p-0" dir={isRTL ? 'rtl' : 'ltr'}>
       <div
-        className="aspect-[8.5/11] w-full max-w-2xl overflow-hidden rounded-lg shadow-2xl"
-        style={{ backgroundColor: '#f5f5f0' }}
+        className="aspect-[8.5/11] w-full max-w-full overflow-hidden rounded-lg shadow-2xl"
+        style={{ backgroundColor: 'transparent' }}
       >
         {/* Header Section */}
         <div
           className="relative flex h-48 flex-col items-center justify-center p-8 text-white"
-          style={{ backgroundColor: primaryColor }}
+          style={{ backgroundColor: 'transparent' }}
         >
           {/* Ornamental top border */}
           <div className="absolute left-0 right-0 top-0 h-1" style={{ backgroundColor: secondaryColor }} />
@@ -47,9 +47,11 @@ export function ElegantInvitation({ data }: ElegantInvitationProps) {
         <div className="space-y-6 p-8">
           {/* Main Message */}
           <div className="text-center">
-            <p className="mb-4 font-serif text-lg italic text-gray-600">
-              {isRTL ? 'يشرفنا دعوتكم إلى' : 'We cordially invite you to celebrate'}
-            </p>
+            {data.description && (
+              <p className="mb-4 font-serif text-lg italic text-gray-600">
+                {data.description}
+              </p>
+            )}
             <h2 className="font-serif text-3xl font-bold" style={{ color: primaryColor }}>
               {data.host_name}
             </h2>
@@ -66,56 +68,62 @@ export function ElegantInvitation({ data }: ElegantInvitationProps) {
           </div>
 
           {/* Details Section */}
-          <div className="space-y-4 border-b border-t" style={{ borderColor: accentColor }}>
-            <div className="space-y-3 pt-4">
-              {/* Date */}
-              <div className="flex items-start justify-between">
-                <span className="font-serif font-semibold" style={{ color: primaryColor }}>
-                  {isRTL ? 'التاريخ' : 'Date'}
-                </span>
-                <span className="text-gray-700">{data.date}</span>
-              </div>
+          {(data.date || data.time || data.location || data.dress_code || data.rsvp_by) && (
+            <div className="space-y-4 border-b border-t" style={{ borderColor: accentColor }}>
+              <div className="mx-auto max-w-[88%] space-y-3 pt-4 text-center">
+                <div className="grid grid-cols-1 gap-2 text-center">
+                  {data.date && (
+                    <div>
+                      <span className="font-serif font-semibold" style={{ color: primaryColor }}>
+                        {isRTL ? 'التاريخ' : 'Date'}
+                      </span>
+                      <div className="text-gray-700">{data.date}</div>
+                    </div>
+                  )}
 
-              {/* Time */}
-              <div className="flex items-start justify-between">
-                <span className="font-serif font-semibold" style={{ color: primaryColor }}>
-                  {isRTL ? 'الوقت' : 'Time'}
-                </span>
-                <span className="text-gray-700">
-                  {data.time}
-                  {data.timezone && ` (${data.timezone})`}
-                </span>
-              </div>
+                  {data.time && (
+                    <div>
+                      <span className="font-serif font-semibold" style={{ color: primaryColor }}>
+                        {isRTL ? 'الوقت' : 'Time'}
+                      </span>
+                      <div className="text-gray-700">
+                        {data.time}
+                        {data.timezone && ` (${data.timezone})`}
+                      </div>
+                    </div>
+                  )}
 
-              {/* Location */}
-              <div className="flex items-start justify-between">
-                <span className="font-serif font-semibold" style={{ color: primaryColor }}>
-                  {isRTL ? 'المكان' : 'Location'}
-                </span>
-                <span className="text-right text-gray-700">{data.location}</span>
-              </div>
+                  {data.location && (
+                    <div>
+                      <span className="font-serif font-semibold" style={{ color: primaryColor }}>
+                        {isRTL ? 'المكان' : 'Location'}
+                      </span>
+                      <div className="text-gray-700">{data.location}</div>
+                    </div>
+                  )}
 
-              {/* Dress Code */}
-              {data.dress_code && (
-                <div className="flex items-start justify-between">
-                  <span className="font-serif font-semibold" style={{ color: primaryColor }}>
-                    {isRTL ? 'الملابس' : 'Dress Code'}
-                  </span>
-                  <span className="text-gray-700">{data.dress_code}</span>
+                  {data.dress_code && (
+                    <div>
+                      <span className="font-serif font-semibold" style={{ color: primaryColor }}>
+                        {isRTL ? 'الملابس' : 'Dress Code'}
+                      </span>
+                      <div className="text-gray-700">{data.dress_code}</div>
+                    </div>
+                  )}
+
+                  {data.rsvp_by && (
+                    <div>
+                      <span className="font-serif font-semibold" style={{ color: primaryColor }}>
+                        {isRTL ? 'التأكيد بحلول' : 'RSVP by'}
+                      </span>
+                      <div className="text-gray-700">{data.rsvp_by}</div>
+                    </div>
+                  )}
                 </div>
-              )}
-
-              {/* RSVP */}
-              {data.rsvp_by && (
-                <div className="flex items-start justify-between">
-                  <span className="font-serif font-semibold" style={{ color: primaryColor }}>
-                    {isRTL ? 'التأكيد بحلول' : 'RSVP by'}
-                  </span>
-                  <span className="text-gray-700">{data.rsvp_by}</span>
-                </div>
-              )}
+              </div>
             </div>
-          </div>
+          )}
+
 
           {/* Description */}
           {data.description && (
@@ -135,12 +143,12 @@ export function ElegantInvitation({ data }: ElegantInvitationProps) {
         </div>
 
         {/* Footer */}
-        <div className="px-8 py-6 text-center" style={{ backgroundColor: primaryColor }}>
-          <p className="font-serif text-sm text-white">
-            {isRTL ? 'نتطلع إلى لقاؤك' : 'We look forward to your presence'}
-          </p>
-          <div className="mx-auto mt-2 h-1 w-12" style={{ backgroundColor: secondaryColor }} />
-        </div>
+        {data.special_instructions && (
+          <div className="px-8 py-6 text-center" style={{ backgroundColor: 'transparent' }}>
+            <p className="font-serif text-sm text-white">{data.special_instructions}</p>
+            <div className="mx-auto mt-2 h-1 w-12" style={{ backgroundColor: secondaryColor }} />
+          </div>
+        )}
       </div>
     </div>
   )

@@ -30,19 +30,24 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Verify guest exists and belongs to event
-    const { data: guest, error: guestError } = await supabase
+    // Verify guest exists and try to resolve event mismatch.
+    let { data: guest, error: guestError } = await supabase
       .from('guests')
       .select('id, event_id, status')
       .eq('id', guest_id)
       .eq('event_id', event_id)
       .single()
 
-    if (guestError || !guest) {
-      return NextResponse.json(
-        { error: 'Guest not found' },
-        { status: 404 }
-      )
+    if (!guest) {
+      const fallbackResult = await supabase
+        .from('guests')
+        .select('id, event_id, status')
+        .eq('id', guest_id)
+        .single()
+      if (fallbackResult.error || !fallbackResult.data) {
+        return NextResponse.json({ error: 'Guest not found' }, { status: 404 })
+      }
+      guest = fallbackResult.data
     }
 
     // Update guest status

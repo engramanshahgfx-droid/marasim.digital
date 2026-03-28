@@ -25,6 +25,8 @@ export default function TemplateCustomizePage() {
   const searchParams = useSearchParams()
 
   const eventId = searchParams.get('eventId')
+  const invitationId = searchParams.get('invitationId')
+  const shareLink = searchParams.get('shareLink')
   const [eventData, setEventData] = useState<any>(null)
   const [eventRecord, setEventRecord] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(!!eventId)
@@ -106,36 +108,42 @@ export default function TemplateCustomizePage() {
         throw new Error('Missing active session')
       }
 
-      if (!eventId) {
-        throw new Error('Missing eventId. Please return to Events and open template customization from a specific event.')
+      const savedEventId = eventId && eventId !== 'new-event' ? eventId : eventRecord?.id || data?.event_id || ''
+
+      if (!savedEventId) {
+        console.warn('No event ID available while saving. Skipping event update and saving invitation only if possible.')
       }
 
-      if (!eventRecord) {
-        throw new Error('Event details are not loaded yet. Please refresh and try saving again.')
+      if (!eventRecord && savedEventId) {
+        console.warn('Event details not loaded, but event ID present. Continuing with invitation save.');
       }
 
-      const response = await fetch(`/api/events/${eventId}`, {
-        method: 'PUT',
-        headers: {
-          Authorization: `Bearer ${session.access_token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: eventRecord.name,
-          date: eventRecord.date,
-          time: eventRecord.time,
-          venue: eventRecord.venue,
-          description: eventRecord.description,
-          eventType: eventRecord.event_type,
-          expectedGuests: eventRecord.expected_guests,
-          status: eventRecord.status,
+      if (savedEventId) {
+        const eventUpdateBody = {
+          name: eventRecord?.name ?? data?.invitation_data?.event_name ?? '',
+          date: eventRecord?.date ?? data?.invitation_data?.date ?? '',
+          time: eventRecord?.time ?? data?.invitation_data?.time ?? '18:00',
+          venue: eventRecord?.venue ?? data?.invitation_data?.location ?? '',
+          description: eventRecord?.description ?? data?.invitation_data?.description ?? '',
+          eventType: eventRecord?.event_type ?? data?.invitation_data?.event_type ?? '',
+          expectedGuests: eventRecord?.expected_guests ?? data?.invitation_data?.guest_count ?? 0,
+          status: eventRecord?.status ?? 'active',
           templateId,
-        }),
-      })
+        }
 
-      if (!response.ok) {
-        const error = await response.json()
-        throw new Error(error.error || 'Failed to attach template to event')
+        const response = await fetch(`/api/events/${savedEventId}`, {
+          method: 'PUT',
+          headers: {
+            Authorization: `Bearer ${session.access_token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(eventUpdateBody),
+        })
+
+        if (!response.ok) {
+          const error = await response.json()
+          throw new Error(error.error || 'Failed to attach template to event')
+        }
       }
 
       const invitationResponse = await fetch('/api/invitations/create', {
@@ -146,11 +154,13 @@ export default function TemplateCustomizePage() {
         },
         // Persist full editor payload in customization so export/WhatsApp can render designed cards.
         body: JSON.stringify({
-          event_id: eventId,
+          event_id: savedEventId || undefined,
+          invitation_id: invitationId || undefined,
+          share_link: shareLink || undefined,
           template_id: templateId,
           invitation_data: {
             ...data.invitation_data,
-            event_id: eventId,
+            event_id: savedEventId || undefined,
             template_id: templateId,
           },
           customization: {

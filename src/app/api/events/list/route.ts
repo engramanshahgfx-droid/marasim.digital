@@ -48,7 +48,16 @@ export async function GET(request: NextRequest) {
       .select('event_id, view_count')
       .in('event_id', eventIds)
 
-    const guestStatsByEvent = new Map<string, {
+    const eventSignatureMap = new Map<string, string[]>()
+    const eventById = new Map<string, any>()
+    events?.forEach((e: any) => {
+      const signature = `${String(e.name || '').trim().toLowerCase()}|${String(e.venue || '').trim().toLowerCase()}`
+      if (!eventSignatureMap.has(signature)) eventSignatureMap.set(signature, [])
+      eventSignatureMap.get(signature)?.push(String(e.id))
+      eventById.set(String(e.id), e)
+    })
+
+    const guestStatsBySignature = new Map<string, {
       invitationsSent: number
       confirmed: number
       declined: number
@@ -57,8 +66,12 @@ export async function GET(request: NextRequest) {
     }>()
 
     for (const guest of guests || []) {
-      const eventId = (guest as any).event_id as string
-      const current = guestStatsByEvent.get(eventId) || {
+      const eventId = String((guest as any).event_id)
+      const event = eventById.get(eventId)
+      if (!event) continue
+      const signature = `${String(event.name || '').trim().toLowerCase()}|${String(event.venue || '').trim().toLowerCase()}`
+
+      const current = guestStatsBySignature.get(signature) || {
         invitationsSent: 0,
         confirmed: 0,
         declined: 0,
@@ -72,21 +85,26 @@ export async function GET(request: NextRequest) {
       if ((guest as any).status === 'no_response') current.noResponse += 1
       if ((guest as any).checked_in) current.checkedIn += 1
 
-      guestStatsByEvent.set(eventId, current)
+      guestStatsBySignature.set(signature, current)
     }
 
-    const openCountByEvent = new Map<string, number>()
+    const openCountBySignature = new Map<string, number>()
     for (const invitation of invitationTemplates || []) {
-      const eventId = (invitation as any).event_id as string
-      const currentOpenCount = openCountByEvent.get(eventId) || 0
-      openCountByEvent.set(eventId, currentOpenCount + ((invitation as any).view_count || 0))
+      const eventId = String((invitation as any).event_id)
+      const event = eventById.get(eventId)
+      if (!event) continue
+      const signature = `${String(event.name || '').trim().toLowerCase()}|${String(event.venue || '').trim().toLowerCase()}`
+
+      const currentOpenCount = openCountBySignature.get(signature) || 0
+      openCountBySignature.set(signature, currentOpenCount + ((invitation as any).view_count || 0))
     }
 
     const enrichedEvents = (events || []).map((event: any) => {
+      const signature = `${String(event.name || '').trim().toLowerCase()}|${String(event.venue || '').trim().toLowerCase()}`
       const guestStats =
-        guestStatsByEvent.get(event.id) ||
+        guestStatsBySignature.get(signature) ||
         ({ invitationsSent: 0, confirmed: 0, declined: 0, noResponse: 0, checkedIn: 0 } as const)
-      const openCount = openCountByEvent.get(event.id) || 0
+      const openCount = openCountBySignature.get(signature) || 0
 
       return {
         ...event,
