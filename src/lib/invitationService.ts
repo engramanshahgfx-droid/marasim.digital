@@ -51,7 +51,6 @@ export class InvitationService {
           template_id: templateId,
           customization: {
             ...rawCustomization,
-            secondary_color: rawCustomization?.secondary_color || null,
             primary_color: (customization as any)?.primary_color || null,
             secondary_color: (customization as any)?.secondary_color || null,
             accent_color: (customization as any)?.accent_color || null,
