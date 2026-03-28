@@ -177,7 +177,7 @@ export function logSecurityEvent(
   const timestamp = new Date().toISOString()
   const maskedIdentifier = details.identifier ? maskSensitiveData(details.identifier) : 'unknown'
 
-  console.log(`[SECURITY] ${timestamp} - ${eventType}`, {
+  console.info(`[SECURITY] ${timestamp} - ${eventType}`, {
     identifier: maskedIdentifier,
     ip: details.ip || 'unknown',
     userAgent: details.userAgent?.substring(0, 100),

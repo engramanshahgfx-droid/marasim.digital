@@ -70,17 +70,22 @@ export async function GET(request: NextRequest) {
 
     const eventById = new Map((events || []).map((event: any) => [event.id, event]))
     const guestById = new Map((guests || []).map((guest: any) => [guest.id, guest]))
-    const templateToEvent = new Map((invitationTemplates || []).map((invitation: any) => [invitation.id, invitation.event_id]))
+    const templateToEvent = new Map(
+      (invitationTemplates || []).map((invitation: any) => [invitation.id, invitation.event_id])
+    )
 
-    const eventMetrics = new Map<string, {
-      invitationsSent: number
-      confirmed: number
-      declined: number
-      pending: number
-      checkedIn: number
-      openCount: number
-      uniqueGuestOpenIds: Set<string>
-    }>()
+    const eventMetrics = new Map<
+      string,
+      {
+        invitationsSent: number
+        confirmed: number
+        declined: number
+        pending: number
+        checkedIn: number
+        openCount: number
+        uniqueGuestOpenIds: Set<string>
+      }
+    >()
 
     for (const event of events || []) {
       eventMetrics.set((event as any).id, {
@@ -158,8 +163,12 @@ export async function GET(request: NextRequest) {
         checkedIn: metrics?.checkedIn || 0,
         openCount: metrics?.openCount || 0,
         uniqueGuestOpens,
-        openRate: (metrics?.invitationsSent || 0) > 0 ? Math.round((uniqueGuestOpens / (metrics?.invitationsSent || 1)) * 100) : 0,
-        attendanceRate: (metrics?.confirmed || 0) > 0 ? Math.round(((metrics?.checkedIn || 0) / (metrics?.confirmed || 1)) * 100) : 0,
+        openRate:
+          (metrics?.invitationsSent || 0) > 0
+            ? Math.round((uniqueGuestOpens / (metrics?.invitationsSent || 1)) * 100)
+            : 0,
+        attendanceRate:
+          (metrics?.confirmed || 0) > 0 ? Math.round(((metrics?.checkedIn || 0) / (metrics?.confirmed || 1)) * 100) : 0,
       }
     })
 

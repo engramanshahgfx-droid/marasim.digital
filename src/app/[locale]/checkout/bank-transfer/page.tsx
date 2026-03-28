@@ -8,7 +8,15 @@ import { useEffect, useState } from 'react'
 function generateRef() {
   const arr = new Uint8Array(3)
   crypto.getRandomValues(arr)
-  return 'REF-' + Date.now() + '-' + Array.from(arr).map((n) => n.toString(16).padStart(2, '0')).join('').toUpperCase()
+  return (
+    'REF-' +
+    Date.now() +
+    '-' +
+    Array.from(arr)
+      .map((n) => n.toString(16).padStart(2, '0'))
+      .join('')
+      .toUpperCase()
+  )
 }
 
 type Step = 'info' | 'upload' | 'success'
@@ -68,9 +76,13 @@ export default function CheckoutBankTransferPage() {
     uploadTitle: isAr ? 'رفع إيصال التحويل' : 'Upload Transfer Receipt',
     phonePlaceholder: '+966 55 1234 5678',
     phoneLabel: isAr ? 'رقم واتساب (اختياري)' : 'WhatsApp Number (optional)',
-    phoneHint: isAr ? 'سنرسل لك تأكيداً عند مراجعة الدفعة' : "We'll send you a confirmation when the payment is reviewed",
+    phoneHint: isAr
+      ? 'سنرسل لك تأكيداً عند مراجعة الدفعة'
+      : "We'll send you a confirmation when the payment is reviewed",
     uploadLabel: isAr ? 'صورة إيصال التحويل البنكي' : 'Bank Transfer Receipt Screenshot',
-    uploadHint: isAr ? 'صورة واضحة للإيصال أو لقطة شاشة من التطبيق البنكي' : 'Clear image or screenshot from your banking app',
+    uploadHint: isAr
+      ? 'صورة واضحة للإيصال أو لقطة شاشة من التطبيق البنكي'
+      : 'Clear image or screenshot from your banking app',
     submit: isAr ? 'إرسال الإيصال' : 'Submit Receipt',
     submitting: isAr ? 'جارٍ الإرسال...' : 'Submitting...',
     back: isAr ? 'رجوع' : 'Back',
@@ -109,7 +121,7 @@ export default function CheckoutBankTransferPage() {
       const { createClient } = await import('@supabase/supabase-js')
       const supabase = createClient(
         process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY!,
+        process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY!
       )
       const { data: session } = await supabase.auth.getSession()
       const token = session?.session?.access_token
@@ -241,20 +253,18 @@ export default function CheckoutBankTransferPage() {
                 ].map(([label, value]) => (
                   <div key={label} className="flex justify-between gap-4">
                     <dt className="text-gray-500">{label}</dt>
-                    <dd className="font-mono font-semibold text-gray-900 break-all text-right">{value}</dd>
+                    <dd className="break-all text-right font-mono font-semibold text-gray-900">{value}</dd>
                   </div>
                 ))}
                 <div className="flex justify-between gap-4 border-t border-blue-200 pt-3">
                   <dt className="text-gray-500">{t.reference}</dt>
-                  <dd className="font-mono font-bold text-green-700 text-right">{orderData.reference_code}</dd>
+                  <dd className="text-right font-mono font-bold text-green-700">{orderData.reference_code}</dd>
                 </div>
               </dl>
             </div>
 
             {/* Important note */}
-            <div className="rounded-lg bg-yellow-50 p-4 text-sm text-yellow-800">
-              📌 {t.importantNote}
-            </div>
+            <div className="rounded-lg bg-yellow-50 p-4 text-sm text-yellow-800">📌 {t.importantNote}</div>
 
             <button
               onClick={() => setStep('upload')}
@@ -300,9 +310,7 @@ export default function CheckoutBankTransferPage() {
                   onChange={(e) => setProofFile(e.target.files?.[0] || null)}
                   className="block w-full text-sm text-gray-700"
                 />
-                {proofFile && (
-                  <p className="mt-2 text-sm text-green-600">✓ {proofFile.name}</p>
-                )}
+                {proofFile && <p className="mt-2 text-sm text-green-600">✓ {proofFile.name}</p>}
               </div>
               <p className="mt-1 text-xs text-gray-400">{t.uploadHint}</p>
             </div>

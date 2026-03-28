@@ -46,17 +46,12 @@ export default function ShoppingCart({ isOpen, onClose, eventId }: ShoppingCartP
         }`}
       >
         {/* Header */}
-        <div className="sticky top-0 border-b border-gray-200 bg-white px-4 py-4 sm:px-6 flex items-center justify-between">
+        <div className="sticky top-0 flex items-center justify-between border-b border-gray-200 bg-white px-4 py-4 sm:px-6">
           <div className="flex items-center gap-2">
             <AiOutlineShoppingCart className="h-6 w-6" />
-            <h2 className="text-xl font-bold text-gray-900">
-              {isArabic ? 'سلة التسوق' : 'Shopping Cart'}
-            </h2>
+            <h2 className="text-xl font-bold text-gray-900">{isArabic ? 'سلة التسوق' : 'Shopping Cart'}</h2>
           </div>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
-          >
+          <button onClick={onClose} className="text-gray-400 transition-colors hover:text-gray-600">
             <AiOutlineClose className="h-6 w-6" />
           </button>
         </div>
@@ -64,25 +59,20 @@ export default function ShoppingCart({ isOpen, onClose, eventId }: ShoppingCartP
         {/* Cart Items */}
         <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
           {isLoading ? (
-            <div className="flex items-center justify-center h-32">
+            <div className="flex h-32 items-center justify-center">
               <div className="h-8 w-8 animate-spin rounded-full border-4 border-purple-600 border-t-transparent" />
             </div>
           ) : !cart || cart.items.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-48 gap-3">
+            <div className="flex h-48 flex-col items-center justify-center gap-3">
               <AiOutlineShoppingCart className="h-12 w-12 text-gray-300" />
-              <p className="text-gray-500 text-center">
-                {isArabic ? 'سلتك فارغة' : 'Your cart is empty'}
-              </p>
+              <p className="text-center text-gray-500">{isArabic ? 'سلتك فارغة' : 'Your cart is empty'}</p>
             </div>
           ) : (
             <div className="space-y-4">
               {cart.items.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex gap-3 border-b border-gray-100 pb-4"
-                >
+                <div key={item.id} className="flex gap-3 border-b border-gray-100 pb-4">
                   {/* Service Image */}
-                  {(item.service?.images?.[0]?.url) && (
+                  {item.service?.images?.[0]?.url && (
                     <img
                       src={item.service.images[0].url}
                       alt={item.service?.name}
@@ -92,19 +82,17 @@ export default function ShoppingCart({ isOpen, onClose, eventId }: ShoppingCartP
 
                   {/* Service Details */}
                   <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900 line-clamp-2">
+                    <h3 className="line-clamp-2 font-semibold text-gray-900">
                       {isArabic && item.service?.name_ar ? item.service.name_ar : item.service?.name}
                     </h3>
-                    <p className="text-sm text-gray-600 mt-1">
-                      SAR {item.unit_price.toFixed(2)}
-                    </p>
+                    <p className="mt-1 text-sm text-gray-600">SAR {item.unit_price.toFixed(2)}</p>
 
                     {/* Quantity Control */}
-                    <div className="flex items-center gap-2 mt-2">
+                    <div className="mt-2 flex items-center gap-2">
                       <button
                         onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
                         disabled={updatingId === item.id || item.quantity <= 1}
-                        className="px-2 py-1 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 rounded"
+                        className="rounded bg-gray-100 px-2 py-1 hover:bg-gray-200 disabled:opacity-50"
                       >
                         −
                       </button>
@@ -112,14 +100,14 @@ export default function ShoppingCart({ isOpen, onClose, eventId }: ShoppingCartP
                       <button
                         onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
                         disabled={updatingId === item.id}
-                        className="px-2 py-1 bg-gray-100 hover:bg-gray-200 disabled:opacity-50 rounded"
+                        className="rounded bg-gray-100 px-2 py-1 hover:bg-gray-200 disabled:opacity-50"
                       >
                         +
                       </button>
                     </div>
 
                     {/* Subtotal */}
-                    <p className="text-sm font-semibold text-gray-900 mt-2">
+                    <p className="mt-2 text-sm font-semibold text-gray-900">
                       SAR {(item.unit_price * item.quantity).toFixed(2)}
                     </p>
                   </div>
@@ -127,7 +115,7 @@ export default function ShoppingCart({ isOpen, onClose, eventId }: ShoppingCartP
                   {/* Remove Button */}
                   <button
                     onClick={() => handleRemove(item.id)}
-                    className="text-red-500 hover:text-red-700 transition-colors"
+                    className="text-red-500 transition-colors hover:text-red-700"
                   >
                     <AiOutlineDelete className="h-5 w-5" />
                   </button>
@@ -139,7 +127,7 @@ export default function ShoppingCart({ isOpen, onClose, eventId }: ShoppingCartP
 
         {/* Summary & Checkout */}
         {cart && cart.items.length > 0 && (
-          <div className="border-t border-gray-200 bg-gray-50 px-4 py-6 sm:px-6 space-y-4">
+          <div className="space-y-4 border-t border-gray-200 bg-gray-50 px-4 py-6 sm:px-6">
             <div className="space-y-2 text-sm">
               <div className="flex justify-between text-gray-600">
                 <span>{isArabic ? 'المجموع الفرعي' : 'Subtotal'}</span>
@@ -155,21 +143,21 @@ export default function ShoppingCart({ isOpen, onClose, eventId }: ShoppingCartP
               </div>
             </div>
 
-            <div className="border-t border-gray-200 pt-4 flex justify-between text-lg font-bold text-gray-900">
+            <div className="flex justify-between border-t border-gray-200 pt-4 text-lg font-bold text-gray-900">
               <span>{isArabic ? 'الإجمالي' : 'Total'}</span>
               <span>SAR {cart.total.toFixed(2)}</span>
             </div>
 
             <Link
               href={`/${locale}/checkout/bank-transfer?eventId=${eventId}`}
-              className="block w-full rounded-lg bg-purple-600 px-4 py-3 text-center font-semibold text-white hover:bg-purple-700 transition-colors"
+              className="block w-full rounded-lg bg-purple-600 px-4 py-3 text-center font-semibold text-white transition-colors hover:bg-purple-700"
             >
               {isArabic ? 'الذهاب للدفع' : 'Proceed to Checkout'}
             </Link>
 
             <button
               onClick={onClose}
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-center font-semibold text-gray-900 hover:bg-gray-100 transition-colors"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-center font-semibold text-gray-900 transition-colors hover:bg-gray-100"
             >
               {isArabic ? 'متابعة التسوق' : 'Continue Shopping'}
             </button>

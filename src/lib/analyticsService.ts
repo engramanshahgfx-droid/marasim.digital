@@ -151,7 +151,9 @@ export async function getGuestLevelAnalytics(eventId: string) {
         first_opened_at: firstOpen,
         response_time:
           guest.status !== 'no_response' && guest.created_at && guest.updated_at
-            ? Math.round((new Date(guest.updated_at).getTime() - new Date(guest.created_at).getTime()) / (1000 * 60 * 60))
+            ? Math.round(
+                (new Date(guest.updated_at).getTime() - new Date(guest.created_at).getTime()) / (1000 * 60 * 60)
+              )
             : null, // hours
       }
     })

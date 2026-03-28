@@ -115,22 +115,25 @@ export async function getCurrentSession() {
 }
 
 export async function getUserProfile(userId: string) {
-  const { data, error } = await (supabase as any).from('users').select('*').eq('id', userId).single()
+  const { data, error } = await supabase.from('users').select('*').eq('id', userId).single()
 
   if (error) throw error
-  return data as any
+  return data as Database['public']['Tables']['users']['Row'] | undefined
 }
 
-export async function updateUserProfile(userId: string, updates: any) {
-  const { data, error } = await (supabase as any).from('users').update(updates).eq('id', userId).select().single()
+export async function updateUserProfile(
+  userId: string,
+  updates: Partial<Database['public']['Tables']['users']['Update']>
+) {
+  const { data, error } = await supabase.from('users').update(updates).eq('id', userId).select().single()
 
   if (error) throw error
-  return data as any
+  return data as Database['public']['Tables']['users']['Row'] | undefined
 }
 
 export async function checkSubscriptionStatus(userId: string) {
   try {
-    const { data, error } = await (supabase as any)
+    const { data, error } = await supabase
       .from('users')
       .select(
         'subscription_status, plan_type, subscription_expiry, account_type, demo_expiry, event_limit, guest_limit'
@@ -140,27 +143,33 @@ export async function checkSubscriptionStatus(userId: string) {
 
     if (error) throw error
 
-    const accountType = (data as any).account_type || 'free'
+    const userData = data as Database['public']['Tables']['users']['Row'] & {
+      account_type?: string
+      demo_expiry?: string
+      event_limit?: number
+      guest_limit?: number
+    }
+    const accountType = userData.account_type || 'free'
     const isFree = accountType === 'free'
     const isPaid = accountType === 'paid'
-    const subscriptionStatus = (data as any).subscription_status
+    const subscriptionStatus = userData.subscription_status
 
     const isActive =
       subscriptionStatus === 'trial' ||
       (subscriptionStatus === 'active' &&
-        (!(data as any).subscription_expiry || new Date((data as any).subscription_expiry) > new Date()))
+        (!userData.subscription_expiry || new Date(userData.subscription_expiry) > new Date()))
 
     return {
       isActive,
       isFree,
       isPaid,
       status: subscriptionStatus,
-      plan: (data as any).plan_type,
+      plan: userData.plan_type,
       accountType,
-      expiryDate: (data as any).subscription_expiry,
-      demoExpiry: (data as any).demo_expiry,
-      eventLimit: (data as any).event_limit ?? (isFree ? 1 : null),
-      guestLimit: (data as any).guest_limit ?? (isFree ? 50 : null),
+      expiryDate: userData.subscription_expiry,
+      demoExpiry: userData.demo_expiry,
+      eventLimit: userData.event_limit ?? (isFree ? 1 : null),
+      guestLimit: userData.guest_limit ?? (isFree ? 50 : null),
     }
   } catch (error) {
     console.error('Error checking subscription:', error)

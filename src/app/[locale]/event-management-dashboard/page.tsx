@@ -58,7 +58,9 @@ export default function EventManagementDashboardPage() {
                   href={`/${locale}/event-management-dashboard/payments`}
                   className="mt-2 inline-block text-sm font-medium text-primary hover:underline"
                 >
-                  {isArabic ? 'فتح صفحة تفاصيل الضيوف والحضور والمدفوعات' : 'Open full guest details, attendance, and payments'}
+                  {isArabic
+                    ? 'فتح صفحة تفاصيل الضيوف والحضور والمدفوعات'
+                    : 'Open full guest details, attendance, and payments'}
                 </Link>
               </div>
               <QuickActionToolbar />

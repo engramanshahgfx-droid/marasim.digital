@@ -16,7 +16,10 @@ export function PlayfulInvitation({ data }: PlayfulInvitationProps) {
   const accentColor = '#ffe66d'
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-transparent p-0" dir={isRTL ? 'rtl' : 'ltr'}>
+    <div
+      className="flex min-h-screen w-full items-center justify-center bg-transparent p-0"
+      dir={isRTL ? 'rtl' : 'ltr'}
+    >
       <style>{`
         @keyframes bounce-slow {
           0%, 100% { transform: translateY(0); }

@@ -3,8 +3,8 @@
 // Methods: POST
 
 import { createClient } from '@supabase/supabase-js'
-import Stripe from 'stripe'
 import { NextRequest, NextResponse } from 'next/server'
+import Stripe from 'stripe'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
   apiVersion: '2024-04-10',
@@ -35,10 +35,7 @@ export async function POST(request: NextRequest) {
     const { event_id, payment_method = 'card' } = body
 
     if (!event_id) {
-      return NextResponse.json(
-        { error: 'Missing event_id' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Missing event_id' }, { status: 400 })
     }
 
     // Get cart items
@@ -49,10 +46,7 @@ export async function POST(request: NextRequest) {
       .eq('event_id', event_id)
 
     if (cartError || !cartItems || cartItems.length === 0) {
-      return NextResponse.json(
-        { error: 'Cart is empty' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Cart is empty' }, { status: 400 })
     }
 
     // Get event details
@@ -63,10 +57,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (eventError || !event) {
-      return NextResponse.json(
-        { error: 'Event not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Event not found' }, { status: 404 })
     }
 
     // Calculate totals
@@ -98,10 +89,7 @@ export async function POST(request: NextRequest) {
 
     if (bulkOrderError || !bulkOrder) {
       console.error('Error creating bulk order:', bulkOrderError)
-      return NextResponse.json(
-        { error: 'Failed to create order' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Failed to create order' }, { status: 500 })
     }
 
     // Create individual bookings for each cart item
@@ -130,7 +118,7 @@ export async function POST(request: NextRequest) {
           quantity: cartItem.quantity,
           unit_price: cartItem.unit_price,
           subtotal: cartItem.unit_price * cartItem.quantity,
-          platform_fee: platformFee * (cartItem.unit_price * cartItem.quantity) / subtotal,
+          platform_fee: (platformFee * (cartItem.unit_price * cartItem.quantity)) / subtotal,
           total_amount: cartItem.unit_price * cartItem.quantity,
           status: 'pending',
           payment_status: 'unpaid',
@@ -165,34 +153,25 @@ export async function POST(request: NextRequest) {
       paymentIntentId = paymentIntent.id
 
       // Update bulk order with payment intent
-      await supabase
-        .from('bulk_orders')
-        .update({ stripe_payment_intent_id: paymentIntentId })
-        .eq('id', bulkOrder.id)
+      await supabase.from('bulk_orders').update({ stripe_payment_intent_id: paymentIntentId }).eq('id', bulkOrder.id)
     } catch (stripeError) {
       console.error('Error creating Stripe payment intent:', stripeError)
       // Continue without Stripe for now, but mark as issue
     }
 
     // Clear cart
-    await supabase
-      .from('cart_items')
-      .delete()
-      .eq('guest_id', guestId)
-      .eq('event_id', event_id)
+    await supabase.from('cart_items').delete().eq('guest_id', guestId).eq('event_id', event_id)
 
     // Create notification for organizer
-    await supabase
-      .from('service_notifications')
-      .insert({
-        organizer_id: event.organizer_id,
-        event_id,
-        bulk_order_id: bulkOrder.id,
-        notification_type: 'booking_received',
-        title: `New Bulk Service Booking: ${orderNumber}`,
-        message: `A guest has placed a new order for ${cartItems.length} service(s) totaling SAR ${totalAmount.toFixed(2)}`,
-        action_url: `/[locale]/event-management-dashboard?tab=bookings&order=${bulkOrder.id}`,
-      })
+    await supabase.from('service_notifications').insert({
+      organizer_id: event.organizer_id,
+      event_id,
+      bulk_order_id: bulkOrder.id,
+      notification_type: 'booking_received',
+      title: `New Bulk Service Booking: ${orderNumber}`,
+      message: `A guest has placed a new order for ${cartItems.length} service(s) totaling SAR ${totalAmount.toFixed(2)}`,
+      action_url: `/[locale]/event-management-dashboard?tab=bookings&order=${bulkOrder.id}`,
+    })
 
     return NextResponse.json(
       {
@@ -210,9 +189,6 @@ export async function POST(request: NextRequest) {
     )
   } catch (error) {
     console.error('Checkout error:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

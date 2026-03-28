@@ -8,10 +8,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import twilio from 'twilio'
 
 function makeSupabase() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-    process.env.SUPABASE_SERVICE_ROLE_KEY || '',
-  )
+  return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || '', process.env.SUPABASE_SERVICE_ROLE_KEY || '')
 }
 
 async function sendWhatsApp(to: string, body: string) {
@@ -46,11 +43,7 @@ export async function POST(request: NextRequest) {
     const reviewerId = userData.user.id
 
     // Check role
-    const { data: reviewerUser } = await supabase
-      .from('users')
-      .select('role')
-      .eq('id', reviewerId)
-      .single()
+    const { data: reviewerUser } = await supabase.from('users').select('role').eq('id', reviewerId).single()
 
     const isSuperAdmin = (reviewerUser as any)?.role === 'super_admin'
 
@@ -68,7 +61,8 @@ export async function POST(request: NextRequest) {
     // Load order + event
     const { data: order, error: orderError } = await supabase
       .from('bulk_orders')
-      .select(`
+      .select(
+        `
         id,
         order_number,
         total_amount,
@@ -76,7 +70,8 @@ export async function POST(request: NextRequest) {
         customer_id,
         event_id,
         events ( id, name, organizer_id )
-      `)
+      `
+      )
       .eq('id', orderId)
       .single()
 
@@ -100,19 +95,25 @@ export async function POST(request: NextRequest) {
     const orderStatus = action === 'approve' ? 'completed' : 'cancelled'
 
     // Update bulk_order
-    await supabase.from('bulk_orders').update({
-      payment_status: newStatus,
-      status: orderStatus,
-      reviewed_by: reviewerId,
-      reviewed_at: new Date().toISOString(),
-      review_note: note || null,
-    }).eq('id', orderId)
+    await supabase
+      .from('bulk_orders')
+      .update({
+        payment_status: newStatus,
+        status: orderStatus,
+        reviewed_by: reviewerId,
+        reviewed_at: new Date().toISOString(),
+        review_note: note || null,
+      })
+      .eq('id', orderId)
 
     // Update all bookings in this order
-    await supabase.from('bookings').update({
-      payment_status: action === 'approve' ? 'paid' : 'failed',
-      status: orderStatus,
-    } as any).eq('bulk_order_id', orderId)
+    await supabase
+      .from('bookings')
+      .update({
+        payment_status: action === 'approve' ? 'paid' : 'failed',
+        status: orderStatus,
+      } as any)
+      .eq('bulk_order_id', orderId)
 
     // Notify customer via WhatsApp
     const { data: customer } = await supabase

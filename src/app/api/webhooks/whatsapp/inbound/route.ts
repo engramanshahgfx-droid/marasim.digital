@@ -67,9 +67,10 @@ export async function POST(request: NextRequest) {
           const validatedShareLink = invitation?.shareable_link
             ? await validateInvitationLinkForEvent(supabase as any, guest.event_id, invitation.shareable_link)
             : null
-          const validatedById = !validatedShareLink && invitation?.id
-            ? await validateInvitationLinkForEvent(supabase as any, guest.event_id, invitation.id)
-            : null
+          const validatedById =
+            !validatedShareLink && invitation?.id
+              ? await validateInvitationLinkForEvent(supabase as any, guest.event_id, invitation.id)
+              : null
           shareLink =
             (validatedShareLink && ((validatedShareLink as any).shareable_link || invitation?.shareable_link)) ||
             (validatedById && ((validatedById as any).shareable_link || invitation?.id)) ||

@@ -1,6 +1,6 @@
-import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
+import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || '', process.env.SUPABASE_SERVICE_ROLE_KEY || '')
 
@@ -59,7 +59,12 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       const svg = buildInvitationSvg(invitation)
       await supabase
         .from('invitation_templates')
-        .update({ exported_formats: ['image', ...(((invitation as any).exported_formats || []).filter((item: string) => item !== 'image'))] })
+        .update({
+          exported_formats: [
+            'image',
+            ...((invitation as any).exported_formats || []).filter((item: string) => item !== 'image'),
+          ],
+        })
         .eq('id', invitationId)
 
       return new NextResponse(svg, {
@@ -77,18 +82,55 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     const bodyFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
     const data = (invitation as any).invitation_data || {}
 
-    page.drawRectangle({ x: 36, y: 36, width: 523.28, height: 769.89, borderColor: rgb(0.11, 0.31, 0.85), borderWidth: 2 })
-    page.drawText(String(data.event_name || 'Invitation'), { x: 72, y: 740, size: 24, font: titleFont, color: rgb(0.11, 0.31, 0.85) })
-    page.drawText(String(data.description || 'You are invited'), { x: 72, y: 700, size: 14, font: bodyFont, color: rgb(0.1, 0.1, 0.1), maxWidth: 440 })
+    page.drawRectangle({
+      x: 36,
+      y: 36,
+      width: 523.28,
+      height: 769.89,
+      borderColor: rgb(0.11, 0.31, 0.85),
+      borderWidth: 2,
+    })
+    page.drawText(String(data.event_name || 'Invitation'), {
+      x: 72,
+      y: 740,
+      size: 24,
+      font: titleFont,
+      color: rgb(0.11, 0.31, 0.85),
+    })
+    page.drawText(String(data.description || 'You are invited'), {
+      x: 72,
+      y: 700,
+      size: 14,
+      font: bodyFont,
+      color: rgb(0.1, 0.1, 0.1),
+      maxWidth: 440,
+    })
     page.drawText(`Date: ${String(data.date || 'TBD')}`, { x: 72, y: 640, size: 14, font: bodyFont })
     page.drawText(`Time: ${String(data.time || '18:00')}`, { x: 72, y: 615, size: 14, font: bodyFont })
-    page.drawText(`Location: ${String(data.location || 'TBD')}`, { x: 72, y: 590, size: 14, font: bodyFont, maxWidth: 440 })
-    page.drawText(`Host: ${String(data.host_name || data.event_name || 'Event Host')}`, { x: 72, y: 555, size: 14, font: bodyFont, maxWidth: 440 })
+    page.drawText(`Location: ${String(data.location || 'TBD')}`, {
+      x: 72,
+      y: 590,
+      size: 14,
+      font: bodyFont,
+      maxWidth: 440,
+    })
+    page.drawText(`Host: ${String(data.host_name || data.event_name || 'Event Host')}`, {
+      x: 72,
+      y: 555,
+      size: 14,
+      font: bodyFont,
+      maxWidth: 440,
+    })
 
     const pdfBytes = await pdfDoc.save()
     await supabase
       .from('invitation_templates')
-      .update({ exported_formats: ['pdf', ...(((invitation as any).exported_formats || []).filter((item: string) => item !== 'pdf'))] })
+      .update({
+        exported_formats: [
+          'pdf',
+          ...((invitation as any).exported_formats || []).filter((item: string) => item !== 'pdf'),
+        ],
+      })
       .eq('id', invitationId)
 
     return new NextResponse(Buffer.from(pdfBytes), {

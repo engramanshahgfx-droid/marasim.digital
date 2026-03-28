@@ -1,8 +1,7 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
-import { useState } from 'react'
 import Image from 'next/image'
+import { useState } from 'react'
 
 interface ImageUploaderProps {
   label: string
@@ -13,14 +12,7 @@ interface ImageUploaderProps {
   error?: string
 }
 
-export default function ImageUploader({
-  label,
-  value,
-  onChange,
-  type,
-  isLoading = false,
-  error,
-}: ImageUploaderProps) {
+export default function ImageUploader({ label, value, onChange, type, isLoading = false, error }: ImageUploaderProps) {
   const [preview, setPreview] = useState<string | null>(value || null)
   const [isDragging, setIsDragging] = useState(false)
 
@@ -79,12 +71,7 @@ export default function ImageUploader({
           {preview ? (
             // Show Preview
             <div className="relative h-32 w-full">
-              <Image
-                src={preview}
-                alt="Preview"
-                fill
-                className="rounded-lg object-cover"
-              />
+              <Image src={preview} alt="Preview" fill className="rounded-lg object-cover" />
               <button
                 type="button"
                 onClick={() => {
@@ -98,24 +85,12 @@ export default function ImageUploader({
             </div>
           ) : (
             <>
-              <svg
-                className="h-12 w-12 text-gray-400"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 4v16m8-8H4"
-                />
+              <svg className="h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
               </svg>
 
               <div className="text-center">
-                <p className="text-sm font-medium text-gray-700">
-                  Drag and drop your image here
-                </p>
+                <p className="text-sm font-medium text-gray-700">Drag and drop your image here</p>
                 <p className="text-xs text-gray-500">or click to browse</p>
               </div>
 

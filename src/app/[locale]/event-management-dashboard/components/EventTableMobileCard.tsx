@@ -162,7 +162,9 @@ const EventTableMobileCard = ({
               <p className="font-mono text-xl font-bold text-primary">{attendanceRate}%</p>
             </div>
             <div className="rounded-md bg-muted p-3 text-center">
-              <p className="mb-1 text-xs text-text-secondary">{isArabic ? 'معدل فتح الدعوات' : 'Invitation Open Rate'}</p>
+              <p className="mb-1 text-xs text-text-secondary">
+                {isArabic ? 'معدل فتح الدعوات' : 'Invitation Open Rate'}
+              </p>
               <p className="font-mono text-xl font-bold text-accent">{openRate}%</p>
               <p className="text-xs text-text-secondary">
                 {isArabic ? 'إجمالي الفتح' : 'Total Opens'}: {openCount}

@@ -1,9 +1,9 @@
 'use client'
 
 import Header from '@/components/common/Header'
-import UserAuthGuard from '@/components/UserAuthGuard'
 import TemplateBrowser from '@/components/invitations/TemplateBrowser'
-import { TemplateCategory as TemplateCategoryType, TEMPLATE_CATEGORIES } from '@/types/invitations'
+import UserAuthGuard from '@/components/UserAuthGuard'
+import { TEMPLATE_CATEGORIES, TemplateCategory as TemplateCategoryType } from '@/types/invitations'
 import { useLocale } from 'next-intl'
 import Link from 'next/link'
 import { useRouter, useSearchParams } from 'next/navigation'
@@ -17,11 +17,7 @@ interface TemplateCategoryPageProps {
 }
 
 /** Inner component that safely uses useSearchParams inside Suspense */
-function CategoryPageInner({
-  category,
-}: {
-  category: string
-}) {
+function CategoryPageInner({ category }: { category: string }) {
   const currentLocale = useLocale()
   const isArabic = currentLocale === 'ar'
   const router = useRouter()
@@ -35,9 +31,7 @@ function CategoryPageInner({
   if (!categoryInfo) {
     return (
       <main className="container mx-auto px-4 py-12 text-center">
-        <p className="text-xl text-gray-600">
-          {isArabic ? 'فئة غير صحيحة' : 'Invalid category'}
-        </p>
+        <p className="text-xl text-gray-600">{isArabic ? 'فئة غير صحيحة' : 'Invalid category'}</p>
         <Link
           href={`/${currentLocale}/invitations/templates`}
           className="mt-4 inline-block text-blue-600 hover:text-blue-700"
@@ -69,9 +63,7 @@ function CategoryPageInner({
           {isArabic ? 'القوالب' : 'Templates'}
         </Link>
         <span>/</span>
-        <span className="font-medium text-gray-900">
-          {isArabic ? categoryInfo.name_ar : categoryInfo.name}
-        </span>
+        <span className="font-medium text-gray-900">{isArabic ? categoryInfo.name_ar : categoryInfo.name}</span>
       </div>
 
       {/* Page Header */}

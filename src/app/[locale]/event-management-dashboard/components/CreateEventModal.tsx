@@ -228,7 +228,7 @@ const CreateEventModal = ({ isOpen, onClose, onSubmit, editingEvent }: CreateEve
                 />
               </div>
 
-              <div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
+              <div className="border-primary/20 bg-primary/5 rounded-lg border p-4">
                 <h3 className="mb-3 text-sm font-semibold text-text-primary">
                   {isArabic ? 'بيانات الحساب البنكي لاستلام دفعات الضيوف' : 'Bank account for guest direct transfers'}
                 </h3>
@@ -292,7 +292,7 @@ const CreateEventModal = ({ isOpen, onClose, onSubmit, editingEvent }: CreateEve
               </div>
 
               {!editingEvent && (
-                <div className="rounded-lg border border-primary/15 bg-primary/5 px-4 py-3 text-sm text-text-secondary">
+                <div className="border-primary/15 bg-primary/5 rounded-lg border px-4 py-3 text-sm text-text-secondary">
                   {isArabic
                     ? 'أكمل تفاصيل الفعالية أولاً، ثم سنعرض لك القوالب المناسبة تلقائياً حسب نوع الفعالية.'
                     : 'Enter the event details first, then we will take you directly to the most relevant invitation templates.'}

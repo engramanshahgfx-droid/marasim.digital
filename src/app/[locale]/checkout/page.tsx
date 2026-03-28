@@ -1,8 +1,7 @@
 'use client'
 
 import { useLocale } from 'next-intl'
-import { useRouter } from 'next/navigation'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { AiOutlineCheckCircle, AiOutlineCloseCircle, AiOutlineLoading3Quarters } from 'react-icons/ai'
 
@@ -11,7 +10,7 @@ export default function CheckoutPage() {
   const router = useRouter()
   const isArabic = locale === 'ar'
   const searchParams = useSearchParams()
-  
+
   const [status, setStatus] = useState<'processing' | 'success' | 'error' | 'loading'>('loading')
   const [error, setError] = useState<string | null>(null)
   const [orderData, setOrderData] = useState<any>(null)
@@ -64,10 +63,10 @@ export default function CheckoutPage() {
 
   if (status === 'loading') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
         <div className="w-full max-w-md">
-          <div className="text-center space-y-4">
-            <AiOutlineLoading3Quarters className="h-16 w-16 mx-auto animate-spin text-purple-600" />
+          <div className="space-y-4 text-center">
+            <AiOutlineLoading3Quarters className="mx-auto h-16 w-16 animate-spin text-purple-600" />
             <h1 className="text-2xl font-bold text-gray-900">
               {isArabic ? 'جاري معالجة الدفع...' : 'Processing Payment...'}
             </h1>
@@ -82,13 +81,11 @@ export default function CheckoutPage() {
 
   if (status === 'success') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
         <div className="w-full max-w-md">
-          <div className="rounded-xl border border-green-200 bg-white p-8 shadow-sm text-center space-y-4">
-            <AiOutlineCheckCircle className="h-16 w-16 mx-auto text-green-500" />
-            <h1 className="text-2xl font-bold text-gray-900">
-              {isArabic ? 'شكراً لك!' : 'Thank You!'}
-            </h1>
+          <div className="space-y-4 rounded-xl border border-green-200 bg-white p-8 text-center shadow-sm">
+            <AiOutlineCheckCircle className="mx-auto h-16 w-16 text-green-500" />
+            <h1 className="text-2xl font-bold text-gray-900">{isArabic ? 'شكراً لك!' : 'Thank You!'}</h1>
             <p className="text-gray-600">
               {isArabic
                 ? 'تم استقبال دفعتك بنجاح وجاري معالجة طلبك'
@@ -96,7 +93,7 @@ export default function CheckoutPage() {
             </p>
 
             {orderData && (
-              <div className="mt-6 space-y-2 text-left bg-gray-50 p-4 rounded-lg">
+              <div className="mt-6 space-y-2 rounded-lg bg-gray-50 p-4 text-left">
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">{isArabic ? 'رقم الطلب' : 'Order Number'}:</span>
                   <span className="font-semibold">{orderData.order_number}</span>
@@ -124,7 +121,7 @@ export default function CheckoutPage() {
               </p>
               <a
                 href={`/${locale}`}
-                className="inline-block mt-4 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors"
+                className="mt-4 inline-block rounded-lg bg-purple-600 px-6 py-2 font-semibold text-white transition-colors hover:bg-purple-700"
               >
                 {isArabic ? 'العودة للصفحة الرئيسية' : 'Return Home'}
               </a>
@@ -137,21 +134,17 @@ export default function CheckoutPage() {
 
   if (status === 'processing') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
         <div className="w-full max-w-md">
-          <div className="rounded-xl border border-blue-200 bg-white p-8 shadow-sm text-center space-y-4">
-            <AiOutlineLoading3Quarters className="h-16 w-16 mx-auto animate-spin text-blue-600" />
-            <h1 className="text-2xl font-bold text-gray-900">
-              {isArabic ? 'جاري المعالجة' : 'Processing'}
-            </h1>
+          <div className="space-y-4 rounded-xl border border-blue-200 bg-white p-8 text-center shadow-sm">
+            <AiOutlineLoading3Quarters className="mx-auto h-16 w-16 animate-spin text-blue-600" />
+            <h1 className="text-2xl font-bold text-gray-900">{isArabic ? 'جاري المعالجة' : 'Processing'}</h1>
             <p className="text-gray-600">
               {isArabic
                 ? 'يتم معالجة دفعتك. قد يستغرق الأمر بضع دقائق'
                 : 'Your payment is being processed. This may take a few minutes'}
             </p>
-            <p className="text-sm text-gray-500">
-              {isArabic ? 'لا تغلق هذه الصفحة' : 'Do not close this page'}
-            </p>
+            <p className="text-sm text-gray-500">{isArabic ? 'لا تغلق هذه الصفحة' : 'Do not close this page'}</p>
           </div>
         </div>
       </div>
@@ -160,13 +153,11 @@ export default function CheckoutPage() {
 
   // Error status
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-md">
-        <div className="rounded-xl border border-red-200 bg-white p-8 shadow-sm text-center space-y-4">
-          <AiOutlineCloseCircle className="h-16 w-16 mx-auto text-red-500" />
-          <h1 className="text-2xl font-bold text-gray-900">
-            {isArabic ? 'فشل الدفع' : 'Payment Failed'}
-          </h1>
+        <div className="space-y-4 rounded-xl border border-red-200 bg-white p-8 text-center shadow-sm">
+          <AiOutlineCloseCircle className="mx-auto h-16 w-16 text-red-500" />
+          <h1 className="text-2xl font-bold text-gray-900">{isArabic ? 'فشل الدفع' : 'Payment Failed'}</h1>
           <p className="text-gray-600">
             {error || (isArabic ? 'حدث خطأ أثناء المعالجة' : 'An error occurred during processing')}
           </p>
@@ -178,13 +169,13 @@ export default function CheckoutPage() {
             <div className="space-y-2">
               <a
                 href={`/${locale}/marketplace`}
-                className="block bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors text-center"
+                className="block rounded-lg bg-purple-600 px-6 py-2 text-center font-semibold text-white transition-colors hover:bg-purple-700"
               >
                 {isArabic ? 'العودة للتسوق' : 'Go Back to Shopping'}
               </a>
               <a
                 href="mailto:support@marasim.com"
-                className="block border border-purple-600 text-purple-600 hover:bg-purple-50 font-semibold py-2 px-6 rounded-lg transition-colors text-center"
+                className="block rounded-lg border border-purple-600 px-6 py-2 text-center font-semibold text-purple-600 transition-colors hover:bg-purple-50"
               >
                 {isArabic ? 'التواصل بالدعم' : 'Contact Support'}
               </a>

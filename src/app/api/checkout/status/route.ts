@@ -11,10 +11,7 @@ export async function GET(request: NextRequest) {
     const paymentIntentId = request.nextUrl.searchParams.get('paymentIntentId')
 
     if (!orderId && !paymentIntentId) {
-      return NextResponse.json(
-        { error: 'Missing orderId or paymentIntentId' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Missing orderId or paymentIntentId' }, { status: 400 })
     }
 
     // Get authenticated user
@@ -49,10 +46,7 @@ export async function GET(request: NextRequest) {
     const { data: order, error: orderError } = await query.single()
 
     if (orderError || !order) {
-      return NextResponse.json(
-        { error: 'Order not found' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Order not found' }, { status: 404 })
     }
 
     // Get associated bookings
@@ -71,9 +65,6 @@ export async function GET(request: NextRequest) {
     })
   } catch (error) {
     console.error('Checkout status error:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

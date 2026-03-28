@@ -98,7 +98,7 @@ export const templateService = {
       }
 
       if (data) {
-        return transformFromDb(data as any)
+        return transformFromDb(data as Record<string, unknown>)
       }
     }
 

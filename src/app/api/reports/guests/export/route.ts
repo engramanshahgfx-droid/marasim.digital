@@ -4,9 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || '', process.env.SUPABASE_SERVICE_ROLE_KEY || '')
 
 function toCsv(rows: string[][]) {
-  return rows
-    .map((row) => row.map((value) => `"${String(value ?? '').replace(/"/g, '""')}"`).join(','))
-    .join('\n')
+  return rows.map((row) => row.map((value) => `"${String(value ?? '').replace(/"/g, '""')}"`).join(',')).join('\n')
 }
 
 export async function GET(request: NextRequest) {
@@ -36,17 +34,19 @@ export async function GET(request: NextRequest) {
           .order('created_at', { ascending: false })
       : { data: [] as any[] }
 
-    const rows: string[][] = [[
-      'Event',
-      'Guest Name',
-      'Email',
-      'Phone',
-      'RSVP Status',
-      'Plus Ones',
-      'Checked In',
-      'Checked In At',
-      'Created At',
-    ]]
+    const rows: string[][] = [
+      [
+        'Event',
+        'Guest Name',
+        'Email',
+        'Phone',
+        'RSVP Status',
+        'Plus Ones',
+        'Checked In',
+        'Checked In At',
+        'Created At',
+      ],
+    ]
 
     for (const guest of guests || []) {
       rows.push([

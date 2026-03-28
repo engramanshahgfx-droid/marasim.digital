@@ -1,0 +1,964 @@
+
+> Marasim@0.1.0 lint
+> next lint
+
+
+./src/app/admin/dashboard/page.tsx
+13:38  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+20:6  Warning: React Hook useEffect has a missing dependency: 'verifyAdmin'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+30:108  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+32:39  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+38:14  Warning: 'error' is defined but never used. Allowed unused caught errors must match /^_/u.  @typescript-eslint/no-unused-vars
+139:38  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+168:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+211:38  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+214:38  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+221:38  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+230:6  Warning: React Hook useEffect has a missing dependency: 'fetchUsers'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+279:9  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+487:44  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+574:39  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+641:44  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+643:38  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+645:58  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+748:37  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+795:37  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+888:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+986:44  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+995:13  Warning: 'admin' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+1007:27  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+1033:38  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+1060:34  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+1127:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+1134:39  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+1149:46  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+1172:27  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/admin-login/page.tsx
+34:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+36:42  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+43:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/admin/dashboard/overview/route.ts
+33:62  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+34:66  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+81:25  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+82:38  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+85:17  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+98:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/admin/payments/approve/route.ts
+29:105  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+31:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+40:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+51:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+94:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+98:20  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+118:53  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+142:105  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+144:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+153:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/admin/plans/update/route.ts
+19:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+21:33  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+25:44  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+81:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/admin/users/list/route.ts
+19:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+21:33  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+40:56  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+41:62  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+83:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/auth/check-subscription/route.ts
+31:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+44:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/auth/forgot-password/reset/route.ts
+20:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+36:7  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+
+./src/app/api/auth/refresh-session/route.ts
+24:69  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/auth/register/route.ts
+50:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+74:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+75:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+76:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+77:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+78:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+79:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+80:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+81:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+82:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+83:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+84:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+92:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/auth/resend-otp/route.ts
+28:65  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+45:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/auth/send-otp/route.ts
+210:85  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+236:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/auth/verify-otp/route.ts
+270:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/cart/items/[id]/route.ts
+53:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/checkins/route.ts
+49:16  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+50:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/checkout/bank-transfer/approve/route.ts
+48:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+82:38  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+115:12  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/checkout/bank-transfer/upload-proof/route.ts
+124:61  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+127:38  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/checkout/status/route.ts
+53:36  Warning: 'bookingsError' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/app/api/cron/send-reminders/route.ts
+11:47  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+12:72  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+52:37  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+52:68  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+57:37  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+61:35  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+67:111  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+72:54  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+75:67  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+76:71  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+83:51  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+86:37  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+94:33  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+95:33  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+100:68  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+104:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+106:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/events/create/route.ts
+23:29  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+33:39  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+95:86  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+96:68  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+97:86  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+98:68  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+106:75  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+116:73  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+162:65  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+190:16  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+191:16  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/events/list/route.ts
+35:49  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+52:39  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+53:25  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+76:40  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+94:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+95:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+96:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+97:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+104:45  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+114:78  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+117:55  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/events/[id]/guest-payments/route.ts
+68:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+83:45  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+160:45  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+163:41  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+166:44  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+169:54  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+178:84  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+183:45  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+185:31  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+199:40  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+212:53  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+212:80  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+212:109  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+228:72  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+298:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/events/[id]/route.ts
+23:29  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+33:39  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+122:41  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+123:38  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+150:16  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+151:16  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/guest-payments/proof/route.ts
+26:71  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+37:71  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+91:73  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+170:44  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+171:34  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+172:44  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+173:34  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/guest-payments/[paymentId]/receipt/route.ts
+28:71  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+58:68  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+60:83  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+62:73  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+71:35  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+72:35  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+86:37  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+87:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+88:37  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+91:45  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+92:40  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+93:45  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+94:35  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/guests/delete/route.ts
+49:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/guests/delete-all/route.ts
+36:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+58:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+
+./src/app/api/guests/list/route.ts
+109:32  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+138:11  Warning: 'liveStatusUpdates' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/app/api/guests/update/route.ts
+96:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/guests/upload/route.ts
+49:37  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+78:3  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+79:3  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+90:3  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+136:7  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+142:16  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+157:7  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+165:3  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+170:54  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+216:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+244:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+247:53  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+256:56  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+268:60  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+273:7  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+287:7  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+297:50  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+318:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+
+./src/app/api/invitations/create/route.ts
+17:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+18:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+19:33  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+25:33  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+31:33  Error: Unnecessary escape character: \".  no-useless-escape
+31:54  Error: Unnecessary escape character: \".  no-useless-escape
+38:40  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+82:70  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+94:68  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+114:70  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+125:68  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+168:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+184:86  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+197:35  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+203:76  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+215:83  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+230:89  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+243:74  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+256:76  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+257:26  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+265:76  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+300:80  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+319:76  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+353:88  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+370:91  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+395:41  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+396:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+397:65  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+397:90  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+403:58  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/invitations/event/[eventId]/route.ts
+25:86  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/invitations/send-email/route.ts
+35:22  Warning: 'invitationId' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+51:74  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+51:92  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+69:27  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+72:31  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+73:35  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+74:111  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+96:35  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+101:44  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+101:85  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+105:31  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+111:66  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+116:30  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+122:31  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/invitations/shared/[shareLink]/export/route.ts
+23:41  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+37:17  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+92:68  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+127:42  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/invitations/shared/[shareLink]/route.ts
+26:28  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+27:28  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+28:28  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+29:28  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+34:51  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+35:41  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+36:51  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+37:41  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+51:57  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+52:47  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+53:57  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+54:47  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+60:49  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+61:39  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+62:49  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+63:39  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+74:68  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+125:47  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/invitations/[invitationId]/analytics/route.ts
+25:105  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/invitations/[invitationId]/export/route.ts
+7:41  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+65:32  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+83:33  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+131:30  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/invitations/[invitationId]/route.ts
+46:105  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+87:105  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/invitations/[invitationId]/share/route.ts
+38:73  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+46:75  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+58:69  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/marketplace/services/search/route.ts
+25:47  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+26:53  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/payments/bank-transfer/auto-verify/route.ts
+33:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/payments/bank-transfer/create-request/route.ts
+10:21  Warning: 'userId' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/app/api/payments/bank-transfer/upload-proof/route.ts
+25:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+56:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+58:19  Warning: 'uploadData' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+75:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+97:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+
+./src/app/api/payments/paypal/verify-payment/route.ts
+9:24  Warning: 'transactionId' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/app/api/reminders/send/route.ts
+23:72  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+23:90  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+66:37  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+66:72  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+70:24  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+73:111  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+74:31  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+79:31  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+94:63  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+97:65  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+98:80  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+106:53  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+109:35  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+117:31  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+123:66  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+128:31  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/reports/checkins/export/route.ts
+24:49  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+25:62  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+33:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+39:37  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+40:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+41:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+42:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+43:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+44:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/reports/dashboard/export/route.ts
+27:49  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+30:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+33:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+34:62  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+40:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+42:74  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+43:58  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+44:58  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+64:57  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+64:94  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+66:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+66:64  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+69:35  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+74:26  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+74:97  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+75:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+80:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+81:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+82:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+83:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+85:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+86:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+87:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+88:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+100:32  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+101:52  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+105:28  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+105:49  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+105:69  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+105:95  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/reports/dashboard/overview/route.ts
+33:49  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+62:70  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+69:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+71:58  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+72:58  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+74:52  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+91:34  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+103:50  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+106:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+107:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+108:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+109:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+113:55  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+115:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+129:34  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+129:73  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+131:52  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+141:30  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+142:26  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+143:26  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+145:30  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+146:28  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+150:57  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/reports/events/export/route.ts
+28:49  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+32:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+35:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+54:57  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+54:94  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+56:30  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+56:72  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+57:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+61:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+62:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+63:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+64:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+66:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+67:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+68:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+69:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/reports/guests/export/route.ts
+25:56  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+28:62  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+35:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+53:37  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+54:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+55:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+56:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+57:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+58:26  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+59:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+60:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+61:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/subscription/info/route.ts
+36:34  Warning: 'eventsError' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+48:39  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/subscription/manage/route.ts
+20:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+22:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+56:24  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+64:24  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+90:21  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+100:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+118:24  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+121:32  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+122:47  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+127:24  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+136:47  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+153:24  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+161:24  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/webhooks/stripe/route.ts
+26:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+65:11  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+95:56  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+117:67  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+130:49  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+140:53  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+144:31  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+156:50  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+159:29  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+178:67  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+190:53  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+202:50  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+217:3  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+224:67  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+235:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/webhooks/whatsapp/inbound/route.ts
+66:76  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+68:64  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+72:66  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+75:60  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+76:50  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/api/whatsapp/send-invitations/route.ts
+163:46  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+164:20  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+171:20  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+172:20  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+172:83  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+176:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+177:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+196:76  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+201:37  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+208:71  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+208:89  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+218:80  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+220:59  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+234:85  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+234:103  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+235:60  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+236:59  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+236:86  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+239:60  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+241:60  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+258:63  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+259:63  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+265:45  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+266:45  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+271:29  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+274:74  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+280:56  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+282:76  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+283:91  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+284:91  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+285:99  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+311:33  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+312:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+313:20  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+357:34  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+379:59  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+382:39  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+397:65  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+533:57  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+535:54  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+535:67  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+538:54  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+539:64  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+557:25  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+558:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+559:67  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+581:49  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+588:42  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+589:40  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+593:55  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+596:57  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+598:63  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/[locale]/auth/forgot-password/page.tsx
+81:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+108:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+149:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+164:17  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/[locale]/auth/login/page.tsx
+58:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+73:17  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/[locale]/auth/register/page.tsx
+79:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+94:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+107:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+122:17  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/[locale]/checkout/bank-transfer/page.tsx
+8:10  Warning: 'generateRef' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+117:6  Warning: React Hook useEffect has missing dependencies: 'createOrder' and 'isAr'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/[locale]/checkout/page.tsx
+16:46  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+28:15  Warning: 'paymentIntent' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+29:15  Warning: 'paymentIntentClientSecret' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/app/[locale]/event-management-dashboard/components/EventManagementInteractive.tsx
+191:10  Warning: 'pendingPayment' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+191:26  Warning: 'setPendingPayment' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+264:9  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+269:11  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+291:11  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+310:9  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+314:9  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+328:6  Warning: React Hook useEffect has a missing dependency: 'fetchEvents'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+333:7  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+341:7  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+349:7  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+352:54  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+374:7  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+405:54  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+469:11  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+524:7  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+554:9  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+615:9  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+662:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+663:27  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+664:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+665:27  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+694:40  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+695:31  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+696:40  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+697:31  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+742:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+753:7  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+768:7  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+780:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+
+./src/app/[locale]/event-management-dashboard/components/EventSummaryCards.tsx
+42:40  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/[locale]/event-management-dashboard/components/InvitationsManager.tsx
+66:6  Warning: React Hook useEffect has a missing dependency: 'fetchInvitations'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/[locale]/event-management-dashboard/components/ServiceBookingsManager.tsx
+31:58  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+145:58  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+192:52  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+276:28  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+277:29  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+283:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+363:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/[locale]/event-management-dashboard/components/TemplateEditorModal.tsx
+89:6  Warning: React Hook useCallback has a missing dependency: 'isArabic'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/[locale]/event-management-dashboard/payments/page.tsx
+257:52  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+270:9  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+324:6  Warning: React Hook useEffect has missing dependencies: 'loadGuestData' and 'router'. Either include them or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/[locale]/guest-list-management/components/GuestListInteractive.tsx
+103:10  Warning: 'isClearing' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+183:63  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+474:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+550:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+569:7  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+601:7  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+624:9  Warning: 'handleClearAllGuests' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/app/[locale]/guest-list-management/components/GuestTableRow.tsx
+113:66  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/[locale]/invitations/gallery/page.tsx
+9:9  Warning: 'router' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/app/[locale]/invitations/templates/[category]/[templateId]/customize/page.tsx
+30:46  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+31:50  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+104:35  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+183:7  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+
+./src/app/[locale]/invitations/templates/[category]/[templateId]/preview/page.tsx
+25:70  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+92:33  Warning: 'locale' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+117:27  Error: React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+118:35  Error: React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+119:41  Error: React Hook "useState" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+124:3  Error: React Hook "useEffect" is called conditionally. React Hooks must be called in the exact same order in every component render.  react-hooks/rules-of-hooks
+299:23  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/[locale]/invitations/[shareLink]/page.tsx
+114:7  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+133:9  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+260:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+275:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/[locale]/marketplace/become-provider/page.tsx
+25:9  Warning: 'router' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/app/[locale]/marketplace/category/[category]/page.tsx
+27:9  Warning: 'router' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+285:33  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+297:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/[locale]/marketplace/page.tsx
+279:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/[locale]/marketplace/[serviceId]/page.tsx
+131:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+146:23  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+219:23  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+371:3  Warning: 'locale' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/app/[locale]/page.tsx
+192:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+407:15  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/app/[locale]/payment/bank-transfer/page.tsx
+37:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+38:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+39:50  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+111:6  Warning: React Hook useEffect has a missing dependency: 'initializeCheckout'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+157:7  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+173:32  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+174:34  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/[locale]/payment/paypal/page.tsx
+17:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+18:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+35:6  Warning: React Hook useEffect has a missing dependency: 'initializeCheckout'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/[locale]/pricing/page.tsx
+17:13  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+198:38  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/[locale]/qr-check-in-system/components/GuestTableRow.tsx
+102:66  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/[locale]/qr-check-in-system/components/LiveAttendancePanel.tsx
+88:48  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/app/[locale]/qr-check-in-system/components/QRCheckInInteractive.tsx
+65:76  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+115:77  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+138:6  Warning: React Hook useEffect has a missing dependency: 'fetchGuests'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/app/[locale]/qr-check-in-system/components/QRScannerViewport.tsx
+84:33  Warning: The ref value 'videoRef.current' will likely have changed by the time this effect cleanup function runs. If this ref points to a node rendered by React, copy 'videoRef.current' to a variable inside the effect, and use that variable in the cleanup function.  react-hooks/exhaustive-deps
+88:6  Warning: React Hook useEffect has a missing dependency: 'isArabic'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+93:44  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+139:6  Warning: React Hook useEffect has a missing dependency: 'submitCode'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/components/analytics/GuestAnalyticsDashboard.tsx
+156:66  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+170:60  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/components/common/Header.tsx
+24:36  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+63:25  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+143:15  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+222:41  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/components/common/LocaleSwitch.tsx
+6:7  Warning: 'supportedLocales' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/components/common/QuickActionToolbar.tsx
+72:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+91:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+95:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+99:5  Warning: Unexpected console statement. Only these console methods are allowed: warn, error, info.  no-console
+188:40  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+219:52  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/components/invitations/ElegantInvitation.tsx
+34:13  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/components/invitations/FontSelector.tsx
+47:9  Warning: 't' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/components/invitations/GuestPaymentProofCard.tsx
+66:20  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/components/invitations/ImageUploader.tsx
+15:65  Warning: 'type' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/components/invitations/MinimalInvitation.tsx
+22:33  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/components/invitations/ModernInvitation.tsx
+37:15  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/components/invitations/PlayfulInvitation.tsx
+51:15  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/components/invitations/ProfessionalInvitation.tsx
+33:33  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/components/invitations/RSVPButtons.tsx
+45:13  Warning: 'data' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+61:14  Warning: 'error' is defined but never used. Allowed unused caught errors must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/components/invitations/TemplateBrowser.tsx
+176:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/components/invitations/TemplateCustomizationEditor.tsx
+24:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+47:70  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+523:6  Warning: React Hook useEffect has a missing dependency: 'createTextItemsFromData'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+1009:13  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+1078:13  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+1104:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+1254:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+1278:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+1479:104  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+1582:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+1598:19  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/components/invitations/TemplateGalleryView.tsx
+434:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+529:23  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/components/invitations/TemplateSelector.tsx
+17:78  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+28:9  Warning: 't' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/components/invitations/TextEditSection.tsx
+13:9  Warning: 't' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/components/marketplace/MarketplaceWidget.tsx
+125:17  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/components/marketplace/ShoppingCart.tsx
+76:21  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./src/components/SubscriptionGuard.tsx
+30:10  Warning: 'userPlan' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+35:52  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+43:38  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+45:45  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+47:30  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+66:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+66:68  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/components/SubscriptionGuardComponent.tsx
+21:6  Warning: React Hook useEffect has a missing dependency: 'verifySubscription'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/components/ui/AppImage.tsx
+72:11  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+87:7  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+119:9  Warning: Image elements must have an alt prop, either with meaningful text, or an empty string for decorative images.  jsx-a11y/alt-text
+124:10  Warning: Image elements must have an alt prop, either with meaningful text, or an empty string for decorative images.  jsx-a11y/alt-text
+
+./src/contexts/CartContext.tsx
+50:6  Warning: React Hook useCallback has a missing dependency: 'guestId'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+69:5  Warning: React Hook useCallback has a missing dependency: 'guestId'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+87:5  Warning: React Hook useCallback has a missing dependency: 'guestId'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+107:5  Warning: React Hook useCallback has a missing dependency: 'guestId'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+123:6  Warning: React Hook useCallback has a missing dependency: 'guestId'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./src/lib/auth.ts
+60:56  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+192:46  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+199:18  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/lib/guestUploadService.ts
+24:41  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+56:61  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/lib/hydrationFix.ts
+34:29  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/lib/invitationTemplateCompat.ts
+2:28  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+3:72  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+3:84  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+88:50  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+151:14  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+279:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+319:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/lib/marketplaceService.ts
+50:37  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+91:42  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+162:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+175:78  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+182:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+201:14  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+203:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+217:96  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+220:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+231:68  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+236:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+256:55  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+280:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+287:38  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+320:14  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+322:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+362:57  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+395:57  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+415:68  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+424:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+459:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+465:38  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+479:14  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+481:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+506:55  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+525:110  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+538:80  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+548:14  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+550:22  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+576:57  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+580:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+614:39  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+618:47  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+624:44  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+629:33  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+644:54  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+648:49  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+652:42  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+657:31  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/lib/otpService.ts
+47:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+81:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/lib/reminderService.ts
+36:7  Warning: 'eventFilter' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./src/lib/templateService.ts
+138:52  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+149:63  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+164:52  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+174:63  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+233:23  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/lib/twilio.ts
+44:43  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+91:20  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+106:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+129:20  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+141:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/lib/verifyService.ts
+61:40  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+120:32  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+150:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+202:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+251:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+291:26  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+313:19  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+355:46  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./src/types/marketplace.ts
+334:26  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules

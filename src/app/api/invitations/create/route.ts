@@ -2,8 +2,8 @@
 // Location: src/app/api/invitations/create/route.ts
 
 import { generateShareableLinkCompat, getLatestInvitationForEvent } from '@/lib/invitationTemplateCompat'
-import { createClient } from '@supabase/supabase-js'
 import { InvitationData, TemplateStyle } from '@/types/invitations'
+import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
 
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || '', process.env.SUPABASE_SERVICE_ROLE_KEY || '')
@@ -28,7 +28,7 @@ function isMissingColumn(error: any, column: string) {
   const normalizedColumn = String(column || '').toLowerCase()
   return (
     normalized.includes(`could not find the '${normalizedColumn}' column`) ||
-    normalized.includes(`column \"${normalizedColumn}\" does not exist`) ||
+    normalized.includes(`column "${normalizedColumn}" does not exist`) ||
     normalized.includes(`column ${normalizedColumn} does not exist`) ||
     normalized.includes(`column invitation_templates.${normalizedColumn} does not exist`) ||
     normalized.includes(`column events.${normalizedColumn} does not exist`)
@@ -54,9 +54,7 @@ function buildLegacyTextPayload(invitationData: InvitationData) {
 
   return {
     title: String(invitationData?.title || '').trim() || "You're Invited!",
-    message:
-      description ||
-      `You are invited to ${eventName} on ${dateLabel} at ${timeLabel}. Venue: ${locationLabel}`,
+    message: description || `You are invited to ${eventName} on ${dateLabel} at ${timeLabel}. Venue: ${locationLabel}`,
     footer_text: String(invitationData?.footer_text || '').trim() || 'Please confirm your attendance.',
     language: 'en',
     is_active: true,
@@ -224,7 +222,11 @@ export async function POST(request: NextRequest) {
         targetInvitationId = explicitByShareLink.data.id
       }
 
-      if (!targetInvitationId && explicitByShareLink.error && isMissingColumn(explicitByShareLink.error, 'shareable_link')) {
+      if (
+        !targetInvitationId &&
+        explicitByShareLink.error &&
+        isMissingColumn(explicitByShareLink.error, 'shareable_link')
+      ) {
         const explicitByLegacyShareId = await (supabase.from('invitation_templates') as any)
           .select('id')
           .eq('id', share_link)

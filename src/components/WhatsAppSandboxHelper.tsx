@@ -62,9 +62,7 @@ export const WhatsAppSandboxHelper: React.FC<WhatsAppSandboxHelperProps> = ({
               </p>
               <ol className="list-inside list-decimal space-y-1 text-yellow-800">
                 <li>
-                  {isArabic
-                    ? 'إرسال الرسالة التالية إلى '
-                    : 'Send this message to '}
+                  {isArabic ? 'إرسال الرسالة التالية إلى ' : 'Send this message to '}
                   <strong>+14155238886</strong>
                   {isArabic ? ' من واتساب:' : ' from WhatsApp:'}
                 </li>
@@ -99,7 +97,7 @@ export const WhatsAppSandboxHelper: React.FC<WhatsAppSandboxHelperProps> = ({
               <div className="rounded border border-yellow-300 bg-white/70 p-2 text-xs text-yellow-900">
                 {isArabic
                   ? 'إذا كانت ميزات الخصوصية مفعلة في Twilio، فقد يتم الاحتفاظ برقم الهاتف مؤقتاً لمدة تصل إلى 3 أيام.'
-                  : "If Privacy features are enabled in Twilio, the sandbox may temporarily store the phone number for up to 3 days."}
+                  : 'If Privacy features are enabled in Twilio, the sandbox may temporarily store the phone number for up to 3 days.'}
               </div>
 
               <div className="rounded border border-yellow-300 bg-white/70 p-2 text-xs text-yellow-900">
@@ -126,9 +124,7 @@ export const WhatsAppSandboxHelper: React.FC<WhatsAppSandboxHelperProps> = ({
 
             {recipientPhone && (
               <div className="mt-2 text-xs text-yellow-700">
-                {isArabic
-                  ? `رقم المستلم الذي فشل: ${recipientPhone}`
-                  : `Failed recipient phone: ${recipientPhone}`}
+                {isArabic ? `رقم المستلم الذي فشل: ${recipientPhone}` : `Failed recipient phone: ${recipientPhone}`}
               </div>
             )}
           </div>

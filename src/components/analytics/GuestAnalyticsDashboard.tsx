@@ -2,12 +2,7 @@
 
 import { useLocale } from 'next-intl'
 import { useEffect, useState } from 'react'
-import {
-  AiOutlineCheck,
-  AiOutlineClose,
-  AiOutlineEye,
-  AiOutlineUser,
-} from 'react-icons/ai'
+import { AiOutlineCheck, AiOutlineClose, AiOutlineEye, AiOutlineUser } from 'react-icons/ai'
 import { BiChart } from 'react-icons/bi'
 
 interface GuestMetrics {
@@ -97,10 +92,7 @@ export default function GuestAnalyticsDashboard({ eventId, onClose }: GuestAnaly
   }
 
   // Filter and sort guest metrics
-  const filteredGuests =
-    filterStatus === 'all'
-      ? guestMetrics
-      : guestMetrics.filter((g) => g.status === filterStatus)
+  const filteredGuests = filterStatus === 'all' ? guestMetrics : guestMetrics.filter((g) => g.status === filterStatus)
 
   const sortedGuests = [...filteredGuests].sort((a, b) => {
     if (sortBy === 'name') return a.name.localeCompare(b.name)
@@ -112,10 +104,7 @@ export default function GuestAnalyticsDashboard({ eventId, onClose }: GuestAnaly
     <div className="space-y-6">
       {/* Close Button */}
       {onClose && (
-        <button
-          onClick={onClose}
-          className="text-sm text-gray-500 hover:text-gray-700"
-        >
+        <button onClick={onClose} className="text-sm text-gray-500 hover:text-gray-700">
           {isArabic ? '← إغلاق' : '← Close'}
         </button>
       )}
@@ -156,16 +145,12 @@ export default function GuestAnalyticsDashboard({ eventId, onClose }: GuestAnaly
 
       {/* Guest List */}
       <div className="rounded-lg border border-gray-200 bg-white p-6">
-        <h3 className="mb-4 text-lg font-semibold text-gray-900">
-          {isArabic ? 'تفاصيل الضيوف' : 'Guest Details'}
-        </h3>
+        <h3 className="mb-4 text-lg font-semibold text-gray-900">{isArabic ? 'تفاصيل الضيوف' : 'Guest Details'}</h3>
 
         {/* Filter and Sort Controls */}
         <div className="mb-4 flex flex-col gap-3 sm:flex-row">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {isArabic ? 'الحالة' : 'Status'}
-            </label>
+            <label className="mb-1 block text-sm font-medium text-gray-700">{isArabic ? 'الحالة' : 'Status'}</label>
             <select
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value as any)}
@@ -179,9 +164,7 @@ export default function GuestAnalyticsDashboard({ eventId, onClose }: GuestAnaly
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {isArabic ? 'ترتيب' : 'Sort By'}
-            </label>
+            <label className="mb-1 block text-sm font-medium text-gray-700">{isArabic ? 'ترتيب' : 'Sort By'}</label>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
@@ -199,18 +182,12 @@ export default function GuestAnalyticsDashboard({ eventId, onClose }: GuestAnaly
           <table className="min-w-full text-sm">
             <thead className="border-b border-gray-200 bg-gray-50">
               <tr>
-                <th className="px-4 py-3 text-left font-medium text-gray-700">
-                  {isArabic ? 'الاسم' : 'Name'}
-                </th>
+                <th className="px-4 py-3 text-left font-medium text-gray-700">{isArabic ? 'الاسم' : 'Name'}</th>
                 <th className="px-4 py-3 text-left font-medium text-gray-700">
                   {isArabic ? 'البريد الإلكتروني' : 'Email'}
                 </th>
-                <th className="px-4 py-3 text-center font-medium text-gray-700">
-                  {isArabic ? 'الحالة' : 'Status'}
-                </th>
-                <th className="px-4 py-3 text-center font-medium text-gray-700">
-                  {isArabic ? 'الفتحات' : 'Opens'}
-                </th>
+                <th className="px-4 py-3 text-center font-medium text-gray-700">{isArabic ? 'الحالة' : 'Status'}</th>
+                <th className="px-4 py-3 text-center font-medium text-gray-700">{isArabic ? 'الفتحات' : 'Opens'}</th>
                 <th className="px-4 py-3 text-right font-medium text-gray-700">
                   {isArabic ? 'وقت الرد' : 'Response Time'}
                 </th>
@@ -219,8 +196,8 @@ export default function GuestAnalyticsDashboard({ eventId, onClose }: GuestAnaly
             <tbody className="divide-y divide-gray-200">
               {sortedGuests.map((guest) => (
                 <tr key={guest.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3 text-gray-900 font-medium">{guest.name}</td>
-                  <td className="px-4 py-3 text-gray-600 text-sm">{guest.email}</td>
+                  <td className="px-4 py-3 font-medium text-gray-900">{guest.name}</td>
+                  <td className="px-4 py-3 text-sm text-gray-600">{guest.email}</td>
                   <td className="px-4 py-3 text-center">
                     <StatusBadge status={guest.status} isArabic={isArabic} />
                   </td>
@@ -235,11 +212,7 @@ export default function GuestAnalyticsDashboard({ eventId, onClose }: GuestAnaly
                     )}
                   </td>
                   <td className="px-4 py-3 text-right text-sm text-gray-600">
-                    {guest.response_time
-                      ? `${guest.response_time}h`
-                      : guest.status !== 'no_response'
-                        ? '—'
-                        : '...'}
+                    {guest.response_time ? `${guest.response_time}h` : guest.status !== 'no_response' ? '—' : '...'}
                   </td>
                 </tr>
               ))}
@@ -248,9 +221,7 @@ export default function GuestAnalyticsDashboard({ eventId, onClose }: GuestAnaly
         </div>
 
         {sortedGuests.length === 0 && (
-          <div className="py-8 text-center text-gray-500">
-            {isArabic ? 'لا توجد بيانات' : 'No data available'}
-          </div>
+          <div className="py-8 text-center text-gray-500">{isArabic ? 'لا توجد بيانات' : 'No data available'}</div>
         )}
       </div>
     </div>

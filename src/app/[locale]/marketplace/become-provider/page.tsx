@@ -46,11 +46,7 @@ export default function BecomeProviderPage() {
     setError('')
 
     if (!form.business_name || !form.email || !form.phone || !form.category) {
-      setError(
-        isArabic
-          ? 'يرجى ملء جميع الحقول المطلوبة'
-          : 'Please fill in all required fields'
-      )
+      setError(isArabic ? 'يرجى ملء جميع الحقول المطلوبة' : 'Please fill in all required fields')
       return
     }
 
@@ -89,11 +85,7 @@ export default function BecomeProviderPage() {
       if (data.success) {
         setSuccess(true)
       } else if (res.status === 409) {
-        setError(
-          isArabic
-            ? 'أنت مسجل بالفعل كمزود خدمة'
-            : 'You are already registered as a provider'
-        )
+        setError(isArabic ? 'أنت مسجل بالفعل كمزود خدمة' : 'You are already registered as a provider')
       } else {
         setError(data.message || (isArabic ? 'حدث خطأ. يرجى المحاولة مجدداً' : 'An error occurred. Please try again.'))
       }
@@ -164,11 +156,7 @@ export default function BecomeProviderPage() {
             </p>
           </div>
 
-          <form
-            onSubmit={handleSubmit}
-            className="rounded-2xl bg-white p-8 shadow-sm"
-            dir={isArabic ? 'rtl' : 'ltr'}
-          >
+          <form onSubmit={handleSubmit} className="rounded-2xl bg-white p-8 shadow-sm" dir={isArabic ? 'rtl' : 'ltr'}>
             {/* Business Name */}
             <div className="mb-5">
               <label className={`mb-1.5 block text-sm font-medium text-gray-700 ${isArabic ? 'text-right' : ''}`}>
@@ -195,9 +183,7 @@ export default function BecomeProviderPage() {
                 required
                 className="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
               >
-                <option value="">
-                  {isArabic ? 'اختر فئة الخدمة' : 'Select a category'}
-                </option>
+                <option value="">{isArabic ? 'اختر فئة الخدمة' : 'Select a category'}</option>
                 {CATEGORIES.map((cat) => (
                   <option key={cat.value} value={cat.value}>
                     {isArabic ? cat.ar : cat.en}
@@ -246,9 +232,7 @@ export default function BecomeProviderPage() {
                 onChange={(e) => handleChange('business_description', e.target.value)}
                 rows={4}
                 placeholder={
-                  isArabic
-                    ? 'اكتب نبذة عن نشاطك التجاري وخدماتك...'
-                    : 'Tell us about your business and services...'
+                  isArabic ? 'اكتب نبذة عن نشاطك التجاري وخدماتك...' : 'Tell us about your business and services...'
                 }
                 className="w-full resize-none rounded-xl border border-gray-300 px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
@@ -273,7 +257,9 @@ export default function BecomeProviderPage() {
               <label className={`mb-1.5 block text-sm font-medium text-gray-700 ${isArabic ? 'text-right' : ''}`}>
                 {isArabic ? 'إنستغرام' : 'Instagram (optional)'}
               </label>
-              <div className={`flex overflow-hidden rounded-xl border border-gray-300 focus-within:ring-2 focus-within:ring-purple-500 ${isArabic ? 'flex-row-reverse' : ''}`}>
+              <div
+                className={`flex overflow-hidden rounded-xl border border-gray-300 focus-within:ring-2 focus-within:ring-purple-500 ${isArabic ? 'flex-row-reverse' : ''}`}
+              >
                 <span className="flex items-center bg-gray-100 px-3 text-sm text-gray-500">@</span>
                 <input
                   type="text"
@@ -288,24 +274,24 @@ export default function BecomeProviderPage() {
             {/* Terms note */}
             <p className={`mb-5 text-xs text-gray-400 ${isArabic ? 'text-right' : ''}`}>
               {isArabic
-                ? "بالتسجيل، أنت توافق على شروط الاستخدام وسياسة الخصوصية الخاصة بمراسم"
-                : "By registering, you agree to Marasim Terms of Service and Privacy Policy"}
+                ? 'بالتسجيل، أنت توافق على شروط الاستخدام وسياسة الخصوصية الخاصة بمراسم'
+                : 'By registering, you agree to Marasim Terms of Service and Privacy Policy'}
             </p>
 
-            {error && (
-              <div className="mb-4 rounded-xl bg-red-50 p-3 text-sm text-red-600">
-                {error}
-              </div>
-            )}
+            {error && <div className="mb-4 rounded-xl bg-red-50 p-3 text-sm text-red-600">{error}</div>}
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 py-3.5 font-semibold text-white transition-opacity disabled:opacity-60 hover:opacity-90"
+              className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 py-3.5 font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
             >
               {loading
-                ? (isArabic ? 'جاري التسجيل...' : 'Registering...')
-                : (isArabic ? 'تقديم الطلب' : 'Submit Application')}
+                ? isArabic
+                  ? 'جاري التسجيل...'
+                  : 'Registering...'
+                : isArabic
+                  ? 'تقديم الطلب'
+                  : 'Submit Application'}
             </button>
           </form>
         </main>

@@ -211,7 +211,7 @@ export function formatInvitationTemplateVariables(
   qrToken?: string,
   invitationLink?: string,
   guestNote?: string | null,
-  bankDetails?: {
+  _bankDetails?: {
     bankName?: string | null
     accountNumber?: string | null
     iban?: string | null

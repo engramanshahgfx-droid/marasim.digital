@@ -1,5 +1,6 @@
 'use client'
 
+/* eslint-disable react-hooks/rules-of-hooks */
 import LocaleSwitch from '@/components/common/LocaleSwitch'
 import Icon from '@/components/ui/AppIcon'
 import { useLocale } from 'next-intl'

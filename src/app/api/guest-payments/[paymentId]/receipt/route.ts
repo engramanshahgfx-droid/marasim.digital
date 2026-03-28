@@ -1,7 +1,7 @@
-import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
+import { validateInvitationLinkForEvent } from '@/lib/invitationTemplateCompat'
 import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
-import { validateInvitationLinkForEvent } from '@/lib/invitationTemplateCompat'
+import { PDFDocument, StandardFonts, rgb } from 'pdf-lib'
 
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || '', process.env.SUPABASE_SERVICE_ROLE_KEY || '')
 
@@ -16,11 +16,7 @@ async function hasOwnerAccess(request: NextRequest, eventId: string) {
 
   if (!user) return false
 
-  const { data: event } = await supabase
-    .from('events')
-    .select('id, user_id')
-    .eq('id', eventId)
-    .maybeSingle()
+  const { data: event } = await supabase.from('events').select('id, user_id').eq('id', eventId).maybeSingle()
 
   return Boolean(event && event.user_id === user.id)
 }
@@ -49,7 +45,9 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
     const { data: payment, error } = await supabase
       .from('guest_payments')
-      .select('id, event_id, guest_id, amount, payment_date, status, bank_account_holder, bank_name, bank_account_number, bank_iban, guests(name), events(name)')
+      .select(
+        'id, event_id, guest_id, amount, payment_date, status, bank_account_holder, bank_name, bank_account_number, bank_iban, guests(name), events(name)'
+      )
       .eq('id', paymentId)
       .maybeSingle()
 
@@ -59,9 +57,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
     const ownerAllowed = await hasOwnerAccess(request, (payment as any).event_id)
     const guestIdParam = request.nextUrl.searchParams.get('guestId') || ''
-    const guestAllowed = guestIdParam
-      ? await hasGuestAccess(request, (payment as any).event_id, guestIdParam)
-      : false
+    const guestAllowed = guestIdParam ? await hasGuestAccess(request, (payment as any).event_id, guestIdParam) : false
 
     if (!ownerAllowed && (!guestAllowed || guestIdParam !== (payment as any).guest_id)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })

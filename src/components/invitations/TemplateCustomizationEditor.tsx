@@ -1078,7 +1078,11 @@ export default function TemplateCustomizationEditor({
             <img
               src={item.src}
               alt={item.type === 'logo' ? 'Logo' : 'Uploaded'}
-              className={item.type === 'logo' ? 'h-20 w-20 md:h-24 md:w-24 rounded object-contain shadow-md' : 'h-40 w-40 rounded object-cover shadow-md'}
+              className={
+                item.type === 'logo'
+                  ? 'h-20 w-20 rounded object-contain shadow-md md:h-24 md:w-24'
+                  : 'h-40 w-40 rounded object-cover shadow-md'
+              }
               style={{ maxWidth: '90%', maxHeight: '90%' }}
             />
           ) : (
@@ -1587,7 +1591,7 @@ export default function TemplateCustomizationEditor({
               <div
                 ref={canvasRef}
                 onMouseDown={() => setSelectedItemId(null)}
-                className="relative mx-auto w-full max-w-[760px] overflow-hidden rounded-2xl bg-transparent shadow-2xl aspect-[760/560] max-h-[80vh]"
+                className="relative mx-auto aspect-[760/560] max-h-[80vh] w-full max-w-[760px] overflow-hidden rounded-2xl bg-transparent shadow-2xl"
                 style={{ fontFamily: customization.font_family || 'serif' }}
               >
                 {activeFrameItem && (

@@ -1,8 +1,7 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
 import { InvitationData } from '@/types/invitations'
-import { useLocale } from 'next-intl'
+import { useLocale, useTranslations } from 'next-intl'
 
 interface TextEditSectionProps {
   data: Partial<InvitationData>
@@ -45,9 +44,7 @@ export default function TextEditSection({ data, onChange, isArabic = false }: Te
 
   return (
     <div className="space-y-4">
-      <h3 className="text-lg font-semibold text-gray-800">
-        {isArabic ? 'تحرير النصوص' : 'Edit Text'}
-      </h3>
+      <h3 className="text-lg font-semibold text-gray-800">{isArabic ? 'تحرير النصوص' : 'Edit Text'}</h3>
 
       {textFields.map((field) => {
         const value = data[field.key as keyof InvitationData] || ''
@@ -89,9 +86,7 @@ export default function TextEditSection({ data, onChange, isArabic = false }: Te
       {/* Date and Time Section */}
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
-            {isArabic ? 'التاريخ' : 'Date'}
-          </label>
+          <label className="block text-sm font-medium text-gray-700">{isArabic ? 'التاريخ' : 'Date'}</label>
           <input
             type="date"
             value={data.date || ''}
@@ -101,9 +96,7 @@ export default function TextEditSection({ data, onChange, isArabic = false }: Te
         </div>
 
         <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700">
-            {isArabic ? 'الوقت' : 'Time'}
-          </label>
+          <label className="block text-sm font-medium text-gray-700">{isArabic ? 'الوقت' : 'Time'}</label>
           <input
             type="time"
             value={data.time || ''}

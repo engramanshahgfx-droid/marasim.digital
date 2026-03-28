@@ -284,9 +284,7 @@ export default function SharedInvitationPage() {
                   <InvitationComponent data={baseTemplateData} />
                 </div>
 
-                <div className="pointer-events-none absolute inset-0">
-                  {renderItems.map(renderCanvasItem)}
-                </div>
+                <div className="pointer-events-none absolute inset-0">{renderItems.map(renderCanvasItem)}</div>
               </div>
             </div>
           </div>

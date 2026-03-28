@@ -5,18 +5,19 @@ import MinimalInvitation from '@/components/invitations/MinimalInvitation'
 import ModernInvitation from '@/components/invitations/ModernInvitation'
 import PlayfulInvitation from '@/components/invitations/PlayfulInvitation'
 import ProfessionalInvitation from '@/components/invitations/ProfessionalInvitation'
-import { getTemplatesForCategory, InvitationData, TemplateCategory, TemplateStyle } from '@/types/invitations'
 import { getCurrentSession } from '@/lib/auth'
+import { getTemplatesForCategory, InvitationData, TemplateCategory, TemplateStyle } from '@/types/invitations'
 import { useLocale } from 'next-intl'
 import Link from 'next/link'
-import { useEffect, useMemo, useState } from 'react'
 import type { ComponentType } from 'react'
+import { useEffect, useState } from 'react'
 
 const FRAME_OPTIONS = [
   {
     id: 1,
     name: 'Together in Tradition',
-    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/together%20in%20tradition-1.png?auto=compress',
+    imageUrl:
+      'https://images.greetingsisland.com/images/invitations/wedding/together%20in%20tradition-1.png?auto=compress',
   },
   {
     id: 2,
@@ -26,27 +27,32 @@ const FRAME_OPTIONS = [
   {
     id: 3,
     name: 'Union Time',
-    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/union-time-53144.gif?auto=format,compress&w=932',
+    imageUrl:
+      'https://images.greetingsisland.com/images/invitations/wedding/previews/union-time-53144.gif?auto=format,compress&w=932',
   },
   {
     id: 4,
     name: 'Dance of Two Souls',
-    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/dance-of-two-souls-53200.jpeg?auto=format,compress&w=932',
+    imageUrl:
+      'https://images.greetingsisland.com/images/invitations/wedding/previews/dance-of-two-souls-53200.jpeg?auto=format,compress&w=932',
   },
   {
     id: 5,
     name: 'Terracotta Frame',
-    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/terracotta-frame-33749.jpeg?auto=format,compress&w=932',
+    imageUrl:
+      'https://images.greetingsisland.com/images/invitations/wedding/previews/terracotta-frame-33749.jpeg?auto=format,compress&w=932',
   },
   {
     id: 6,
     name: 'Terracotta Round Frame',
-    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/terracotta-round-frame-34863.gif?auto=format,compress&w=932',
+    imageUrl:
+      'https://images.greetingsisland.com/images/invitations/wedding/previews/terracotta-round-frame-34863.gif?auto=format,compress&w=932',
   },
   {
     id: 7,
     name: 'Double Frame & Leaves',
-    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/double-frame-&-leaves-22133.jpeg?auto=format,compress&w=932',
+    imageUrl:
+      'https://images.greetingsisland.com/images/invitations/wedding/previews/double-frame-&-leaves-22133.jpeg?auto=format,compress&w=932',
   },
 ]
 
@@ -86,12 +92,7 @@ interface TemplateBrowserProps {
   onSelectTemplate?: (templateId: string) => void
 }
 
-export default function TemplateBrowser({
-  category,
-  eventId,
-  eventName,
-  onSelectTemplate,
-}: TemplateBrowserProps) {
+export default function TemplateBrowser({ category, eventId, eventName, onSelectTemplate }: TemplateBrowserProps) {
   const locale = useLocale()
   const isArabic = locale === 'ar'
 
@@ -155,9 +156,7 @@ export default function TemplateBrowser({
 
       {/* Header */}
       <div className="space-y-2">
-        <h2 className="text-2xl font-bold text-gray-800">
-          {isArabic ? 'اختر القالب' : 'Select Template'}
-        </h2>
+        <h2 className="text-2xl font-bold text-gray-800">{isArabic ? 'اختر القالب' : 'Select Template'}</h2>
         <p className="text-gray-600">
           {isArabic ? `${templates.length} قوالب متاحة` : `${templates.length} templates available`}
         </p>
@@ -172,11 +171,8 @@ export default function TemplateBrowser({
               className="group overflow-hidden rounded-xl border-2 border-gray-200 bg-white shadow-sm transition-all hover:border-blue-400 hover:shadow-lg"
             >
               {/* Live template preview — rendered at full size then scaled down */}
-              <div
-                className="relative w-full overflow-hidden bg-white"
-                style={{ height: '200px' }}
-              >
-                <div className="absolute inset-0 pointer-events-none">
+              <div className="relative w-full overflow-hidden bg-white" style={{ height: '200px' }}>
+                <div className="pointer-events-none absolute inset-0">
                   <img
                     src={FRAME_OPTIONS[0].imageUrl}
                     alt={FRAME_OPTIONS[0].name}
@@ -208,12 +204,10 @@ export default function TemplateBrowser({
               </div>
 
               {/* Template Info */}
-              <div className="p-4 space-y-3">
+              <div className="space-y-3 p-4">
                 {/* Name & Description */}
                 <div>
-                  <h3 className="text-lg font-bold text-gray-800">
-                    {isArabic ? template.name_ar : template.name}
-                  </h3>
+                  <h3 className="text-lg font-bold text-gray-800">{isArabic ? template.name_ar : template.name}</h3>
                   <p className="mt-1 text-xs font-semibold uppercase tracking-[0.18em] text-blue-600">
                     {isArabic ? template.style_label_ar : template.style_label}
                   </p>
@@ -224,9 +218,7 @@ export default function TemplateBrowser({
 
                 {/* Color Palette */}
                 <div className="space-y-2">
-                  <p className="text-xs font-semibold uppercase text-gray-500">
-                    {isArabic ? 'ألوان' : 'Colors'}
-                  </p>
+                  <p className="text-xs font-semibold uppercase text-gray-500">{isArabic ? 'ألوان' : 'Colors'}</p>
                   <div className="flex gap-2">
                     {[
                       template.colors.primary,
@@ -246,9 +238,7 @@ export default function TemplateBrowser({
 
                 {/* Features */}
                 <div className="space-y-2">
-                  <p className="text-xs font-semibold uppercase text-gray-500">
-                    {isArabic ? 'الميزات' : 'Features'}
-                  </p>
+                  <p className="text-xs font-semibold uppercase text-gray-500">{isArabic ? 'الميزات' : 'Features'}</p>
                   <div className="flex flex-wrap gap-1">
                     {template.features.slice(0, 3).map((feature) => (
                       <span
@@ -296,9 +286,7 @@ export default function TemplateBrowser({
         </div>
       ) : (
         <div className="rounded-lg bg-gray-50 p-12 text-center">
-          <p className="text-gray-600">
-            {isArabic ? 'لا توجد قوالب متاحة' : 'No templates available'}
-          </p>
+          <p className="text-gray-600">{isArabic ? 'لا توجد قوالب متاحة' : 'No templates available'}</p>
         </div>
       )}
     </div>

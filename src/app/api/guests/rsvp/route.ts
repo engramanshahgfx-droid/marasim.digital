@@ -16,10 +16,7 @@ export async function POST(request: NextRequest) {
 
     // Validate input
     if (!guest_id || !event_id || !status) {
-      return NextResponse.json(
-        { error: 'Missing required fields: guest_id, event_id, status' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Missing required fields: guest_id, event_id, status' }, { status: 400 })
     }
 
     const validStatuses = ['confirmed', 'declined', 'no_response']
@@ -31,7 +28,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify guest exists and try to resolve event mismatch.
-    let { data: guest, error: guestError } = await supabase
+    const { data: guest, error: _guestError } = await supabase
       .from('guests')
       .select('id, event_id, status')
       .eq('id', guest_id)
@@ -39,11 +36,7 @@ export async function POST(request: NextRequest) {
       .single()
 
     if (!guest) {
-      const fallbackResult = await supabase
-        .from('guests')
-        .select('id, event_id, status')
-        .eq('id', guest_id)
-        .single()
+      const fallbackResult = await supabase.from('guests').select('id, event_id, status').eq('id', guest_id).single()
       if (fallbackResult.error || !fallbackResult.data) {
         return NextResponse.json({ error: 'Guest not found' }, { status: 404 })
       }
@@ -64,10 +57,7 @@ export async function POST(request: NextRequest) {
 
     if (updateError) {
       console.error('RSVP update error:', updateError)
-      return NextResponse.json(
-        { error: 'Failed to update RSVP status' },
-        { status: 500 }
-      )
+      return NextResponse.json({ error: 'Failed to update RSVP status' }, { status: 500 })
     }
 
     // Log the RSVP action
@@ -91,9 +81,6 @@ export async function POST(request: NextRequest) {
     })
   } catch (error) {
     console.error('RSVP error:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

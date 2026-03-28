@@ -71,29 +71,16 @@ export default function ServerErrorPage({ params }: { params: { locale: string }
 
           {/* Support Contact */}
           <div className="mt-6">
-            <Link
-              href={`/${locale}/contact`}
-              className="text-sm text-orange-600 hover:text-orange-700 font-medium"
-            >
+            <Link href={`/${locale}/contact`} className="text-sm font-medium text-orange-600 hover:text-orange-700">
               {contactText} →
             </Link>
           </div>
 
           {/* Error Reference */}
-          <p className="text-xs text-gray-400 mt-6">
+          <p className="mt-6 text-xs text-gray-400">
             {isArabic ? 'رقم المرجع: ' : 'Error Reference: '}
             <code className="font-mono text-gray-500">ERR_500_{Date.now()}</code>
           </p>
-        </div>
-      </div>
-    </div>
-  )
-}
-              <li>• Clear your browser cache</li>
-              <li>• Try again in a few minutes</li>
-              <li>• Contact support@marasim.digital</li>
-            </ul>
-          </div>
         </div>
       </div>
     </div>

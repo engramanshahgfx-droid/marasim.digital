@@ -908,7 +908,7 @@ const EventManagementInteractive = () => {
                     : 'Guest-level invitation opens with latest activity'}
                 </p>
               </div>
-              <div className="rounded-md bg-primary/10 px-3 py-2 text-sm font-medium text-primary">
+              <div className="bg-primary/10 rounded-md px-3 py-2 text-sm font-medium text-primary">
                 {dashboardOverview.metrics.uniqueGuestsOpened}/{dashboardOverview.metrics.totalGuests}{' '}
                 {isArabic ? 'ضيف فتح الدعوة' : 'guests opened'}
               </div>

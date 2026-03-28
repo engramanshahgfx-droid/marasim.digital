@@ -47,11 +47,7 @@ export function ElegantInvitation({ data }: ElegantInvitationProps) {
         <div className="space-y-6 p-8">
           {/* Main Message */}
           <div className="text-center">
-            {data.description && (
-              <p className="mb-4 font-serif text-lg italic text-gray-600">
-                {data.description}
-              </p>
-            )}
+            {data.description && <p className="mb-4 font-serif text-lg italic text-gray-600">{data.description}</p>}
             <h2 className="font-serif text-3xl font-bold" style={{ color: primaryColor }}>
               {data.host_name}
             </h2>
@@ -123,7 +119,6 @@ export function ElegantInvitation({ data }: ElegantInvitationProps) {
               </div>
             </div>
           )}
-
 
           {/* Description */}
           {data.description && (

@@ -43,36 +43,39 @@ function CategoryBrowseInner() {
   const [maxPrice, setMaxPrice] = useState('')
   const [minRating, setMinRating] = useState('')
 
-  const fetchServices = useCallback(async (page = 1) => {
-    setLoading(true)
-    try {
-      const qs = new URLSearchParams()
-      if (category !== 'all') qs.set('category', category)
-      if (search) qs.set('search', search)
-      qs.set('sortBy', sortBy)
-      qs.set('sortOrder', sortOrder)
-      if (minPrice) qs.set('minPrice', minPrice)
-      if (maxPrice) qs.set('maxPrice', maxPrice)
-      if (minRating) qs.set('rating', minRating)
-      qs.set('page', String(page))
-      qs.set('limit', '12')
+  const fetchServices = useCallback(
+    async (page = 1) => {
+      setLoading(true)
+      try {
+        const qs = new URLSearchParams()
+        if (category !== 'all') qs.set('category', category)
+        if (search) qs.set('search', search)
+        qs.set('sortBy', sortBy)
+        qs.set('sortOrder', sortOrder)
+        if (minPrice) qs.set('minPrice', minPrice)
+        if (maxPrice) qs.set('maxPrice', maxPrice)
+        if (minRating) qs.set('rating', minRating)
+        qs.set('page', String(page))
+        qs.set('limit', '12')
 
-      const response = await fetch(`/api/marketplace/services/search?${qs.toString()}`)
-      if (response.ok) {
-        const data = await response.json()
-        if (data.success) {
-          setServices(data.data)
-          setTotalCount(data.pagination.total)
-          setTotalPages(data.pagination.total_pages)
-          setCurrentPage(page)
+        const response = await fetch(`/api/marketplace/services/search?${qs.toString()}`)
+        if (response.ok) {
+          const data = await response.json()
+          if (data.success) {
+            setServices(data.data)
+            setTotalCount(data.pagination.total)
+            setTotalPages(data.pagination.total_pages)
+            setCurrentPage(page)
+          }
         }
+      } catch {
+        // silently ignore
+      } finally {
+        setLoading(false)
       }
-    } catch {
-      // silently ignore
-    } finally {
-      setLoading(false)
-    }
-  }, [category, search, sortBy, sortOrder, minPrice, maxPrice, minRating])
+    },
+    [category, search, sortBy, sortOrder, minPrice, maxPrice, minRating]
+  )
 
   useEffect(() => {
     fetchServices(1)
@@ -88,16 +91,14 @@ function CategoryBrowseInner() {
       <Header />
 
       {/* Breadcrumb + Header */}
-      <div className="border-b border-gray-200 bg-white pt-24 pb-6">
+      <div className="border-b border-gray-200 bg-white pb-6 pt-24">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <nav className={`mb-3 flex items-center gap-2 text-sm text-gray-500 ${isArabic ? 'flex-row-reverse' : ''}`}>
             <Link href={`/${locale}/marketplace`} className="hover:text-purple-600">
               {isArabic ? 'السوق' : 'Marketplace'}
             </Link>
             <span>/</span>
-            <span className="text-gray-900 font-medium">
-              {isArabic ? categoryLabel.ar : categoryLabel.en}
-            </span>
+            <span className="font-medium text-gray-900">{isArabic ? categoryLabel.ar : categoryLabel.en}</span>
           </nav>
           <h1 className={`text-3xl font-bold text-text-primary ${isArabic ? 'text-right' : ''}`}>
             {isArabic ? categoryLabel.ar : categoryLabel.en}
@@ -184,8 +185,13 @@ function CategoryBrowseInner() {
           {/* Main Content */}
           <div className="min-w-0 flex-1">
             {/* Search + Sort Bar */}
-            <div className={`mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between ${isArabic ? 'sm:flex-row-reverse' : ''}`}>
-              <form onSubmit={handleSearchSubmit} className="flex max-w-sm flex-1 overflow-hidden rounded-xl border border-gray-300">
+            <div
+              className={`mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between ${isArabic ? 'sm:flex-row-reverse' : ''}`}
+            >
+              <form
+                onSubmit={handleSearchSubmit}
+                className="flex max-w-sm flex-1 overflow-hidden rounded-xl border border-gray-300"
+              >
                 <input
                   type="text"
                   value={search}
@@ -196,7 +202,12 @@ function CategoryBrowseInner() {
                 />
                 <button type="submit" className="bg-purple-600 px-4 text-white hover:bg-purple-700">
                   <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
                   </svg>
                 </button>
               </form>
@@ -244,19 +255,17 @@ function CategoryBrowseInner() {
                     <button
                       onClick={() => fetchServices(currentPage - 1)}
                       disabled={currentPage === 1}
-                      className="rounded-lg border border-gray-300 px-4 py-2 text-sm disabled:opacity-40 hover:bg-gray-50"
+                      className="rounded-lg border border-gray-300 px-4 py-2 text-sm hover:bg-gray-50 disabled:opacity-40"
                     >
                       {isArabic ? 'السابق' : 'Prev'}
                     </button>
                     <span className="flex items-center px-4 text-sm text-gray-600">
-                      {isArabic
-                        ? `صفحة ${currentPage} من ${totalPages}`
-                        : `Page ${currentPage} of ${totalPages}`}
+                      {isArabic ? `صفحة ${currentPage} من ${totalPages}` : `Page ${currentPage} of ${totalPages}`}
                     </span>
                     <button
                       onClick={() => fetchServices(currentPage + 1)}
                       disabled={currentPage === totalPages}
-                      className="rounded-lg border border-gray-300 px-4 py-2 text-sm disabled:opacity-40 hover:bg-gray-50"
+                      className="rounded-lg border border-gray-300 px-4 py-2 text-sm hover:bg-gray-50 disabled:opacity-40"
                     >
                       {isArabic ? 'التالي' : 'Next'}
                     </button>
@@ -271,15 +280,7 @@ function CategoryBrowseInner() {
   )
 }
 
-function ServiceCard({
-  service,
-  isArabic,
-  locale,
-}: {
-  service: Service
-  isArabic: boolean
-  locale: string
-}) {
+function ServiceCard({ service, isArabic, locale }: { service: Service; isArabic: boolean; locale: string }) {
   const name = isArabic && service.name_ar ? service.name_ar : service.name
   const providers = (service as any).providers
   const providerName =
@@ -293,19 +294,25 @@ function ServiceCard({
     >
       <div className="relative h-48 overflow-hidden bg-gradient-to-br from-purple-50 to-indigo-100">
         {image ? (
-          <img src={image} alt={name} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+          <img
+            src={image}
+            alt={name}
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
         ) : (
           <div className="flex h-full items-center justify-center text-5xl opacity-25">🛍️</div>
         )}
         {providers?.is_verified && (
-          <span className={`absolute top-3 ${isArabic ? 'left-3' : 'right-3'} rounded-full bg-green-500 px-2 py-0.5 text-xs font-semibold text-white`}>
+          <span
+            className={`absolute top-3 ${isArabic ? 'left-3' : 'right-3'} rounded-full bg-green-500 px-2 py-0.5 text-xs font-semibold text-white`}
+          >
             {isArabic ? 'موثق' : 'Verified'}
           </span>
         )}
       </div>
       <div className={`p-4 ${isArabic ? 'text-right' : 'text-left'}`}>
         <p className="mb-1 text-xs text-gray-400">{providerName}</p>
-        <h3 className="mb-2 font-semibold text-gray-900 line-clamp-2">{name}</h3>
+        <h3 className="mb-2 line-clamp-2 font-semibold text-gray-900">{name}</h3>
         <div className={`mb-3 flex items-center gap-1 ${isArabic ? 'flex-row-reverse justify-end' : ''}`}>
           <span className="text-yellow-400">★</span>
           <span className="text-sm font-medium text-gray-700">{service.rating.toFixed(1)}</span>
@@ -326,11 +333,13 @@ function ServiceCard({
 
 export default function CategoryPage() {
   return (
-    <Suspense fallback={
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-purple-600 border-t-transparent" />
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center">
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-purple-600 border-t-transparent" />
+        </div>
+      }
+    >
       <CategoryBrowseInner />
     </Suspense>
   )

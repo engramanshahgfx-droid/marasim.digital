@@ -1,9 +1,9 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
 import TemplateGalleryView from '@/components/invitations/TemplateGalleryView'
 import { TemplateStyle } from '@/types/invitations'
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 export default function TemplateGalleryPage() {
   const router = useRouter()

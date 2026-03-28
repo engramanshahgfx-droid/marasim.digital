@@ -71,21 +71,19 @@ export default function RSVPButtons({
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
       {/* Header */}
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">
-        {isArabic ? 'هل ستحضر الحدث؟' : 'Will you attend?'}
-      </h3>
+      <h3 className="mb-4 text-lg font-semibold text-gray-900">{isArabic ? 'هل ستحضر الحدث؟' : 'Will you attend?'}</h3>
 
       {/* Buttons */}
-      <div className="flex gap-3 mb-4">
+      <div className="mb-4 flex gap-3">
         {/* Accept Button */}
         <button
           onClick={() => handleRSVP('confirmed')}
           disabled={isLoading}
-          className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg font-semibold transition-all duration-200 ${
+          className={`flex flex-1 items-center justify-center gap-2 rounded-lg px-4 py-3 font-semibold transition-all duration-200 ${
             status === 'confirmed'
               ? 'bg-green-600 text-white shadow-md'
-              : 'bg-gray-100 text-gray-700 hover:bg-green-50 border border-green-300'
-          } disabled:opacity-50 disabled:cursor-not-allowed`}
+              : 'border border-green-300 bg-gray-100 text-gray-700 hover:bg-green-50'
+          } disabled:cursor-not-allowed disabled:opacity-50`}
         >
           {isLoading && status !== 'no_response' ? (
             <AiOutlineLoading3Quarters className="h-5 w-5 animate-spin" />
@@ -101,11 +99,11 @@ export default function RSVPButtons({
         <button
           onClick={() => handleRSVP('declined')}
           disabled={isLoading}
-          className={`flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-lg font-semibold transition-all duration-200 ${
+          className={`flex flex-1 items-center justify-center gap-2 rounded-lg px-4 py-3 font-semibold transition-all duration-200 ${
             status === 'declined'
               ? 'bg-red-600 text-white shadow-md'
-              : 'bg-gray-100 text-gray-700 hover:bg-red-50 border border-red-300'
-          } disabled:opacity-50 disabled:cursor-not-allowed`}
+              : 'border border-red-300 bg-gray-100 text-gray-700 hover:bg-red-50'
+          } disabled:cursor-not-allowed disabled:opacity-50`}
         >
           {isLoading && status !== 'no_response' ? (
             <AiOutlineLoading3Quarters className="h-5 w-5 animate-spin" />
@@ -120,8 +118,8 @@ export default function RSVPButtons({
 
       {/* Current Status Badge */}
       {status !== 'no_response' && (
-        <div className="mb-4 p-3 rounded-lg bg-blue-50 border border-blue-200">
-          <p className="text-sm text-blue-700 font-medium">
+        <div className="mb-4 rounded-lg border border-blue-200 bg-blue-50 p-3">
+          <p className="text-sm font-medium text-blue-700">
             {isArabic
               ? status === 'confirmed'
                 ? '✓ تم تأكيد حضورك'
@@ -136,10 +134,10 @@ export default function RSVPButtons({
       {/* Message */}
       {message && (
         <div
-          className={`p-3 rounded-lg text-sm font-medium ${
+          className={`rounded-lg p-3 text-sm font-medium ${
             message.type === 'success'
-              ? 'bg-green-50 border border-green-200 text-green-700'
-              : 'bg-red-50 border border-red-200 text-red-700'
+              ? 'border border-green-200 bg-green-50 text-green-700'
+              : 'border border-red-200 bg-red-50 text-red-700'
           }`}
         >
           {message.text}
@@ -147,10 +145,8 @@ export default function RSVPButtons({
       )}
 
       {/* Help Text */}
-      <p className="text-xs text-gray-500 mt-4">
-        {isArabic
-          ? 'يساعدنا ردك على تنظيم الحدث بشكل أفضل'
-          : 'Your response helps us organize the event better'}
+      <p className="mt-4 text-xs text-gray-500">
+        {isArabic ? 'يساعدنا ردك على تنظيم الحدث بشكل أفضل' : 'Your response helps us organize the event better'}
       </p>
     </div>
   )

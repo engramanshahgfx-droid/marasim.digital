@@ -4,9 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || '', process.env.SUPABASE_SERVICE_ROLE_KEY || '')
 
 function toCsv(rows: string[][]) {
-  return rows
-    .map((row) => row.map((value) => `"${String(value ?? '').replace(/"/g, '""')}"`).join(','))
-    .join('\n')
+  return rows.map((row) => row.map((value) => `"${String(value ?? '').replace(/"/g, '""')}"`).join(',')).join('\n')
 }
 
 export async function GET(request: NextRequest) {
@@ -22,7 +20,11 @@ export async function GET(request: NextRequest) {
 
     if (authError || !user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-    const { data: events } = await supabase.from('events').select('*').eq('user_id', user.id).order('date', { ascending: true })
+    const { data: events } = await supabase
+      .from('events')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('date', { ascending: true })
     const eventIds = (events || []).map((event: any) => event.id)
 
     const { data: guests } = eventIds.length
@@ -32,19 +34,21 @@ export async function GET(request: NextRequest) {
       ? await supabase.from('invitation_templates').select('event_id, view_count').in('event_id', eventIds)
       : { data: [] as any[] }
 
-    const rows: string[][] = [[
-      'Event Name',
-      'Date',
-      'Venue',
-      'Status',
-      'Guests',
-      'Confirmed',
-      'Declined',
-      'Pending',
-      'Checked In',
-      'Invitation Opens',
-      'Open Rate %',
-    ]]
+    const rows: string[][] = [
+      [
+        'Event Name',
+        'Date',
+        'Venue',
+        'Status',
+        'Guests',
+        'Confirmed',
+        'Declined',
+        'Pending',
+        'Checked In',
+        'Invitation Opens',
+        'Open Rate %',
+      ],
+    ]
 
     for (const event of events || []) {
       const eventGuests = (guests || []).filter((guest: any) => guest.event_id === (event as any).id)

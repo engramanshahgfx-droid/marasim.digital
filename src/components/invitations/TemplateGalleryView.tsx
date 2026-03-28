@@ -1,8 +1,8 @@
 'use client'
 
-import React, { useState, useMemo } from 'react'
-import { useLocale } from 'next-intl'
 import { INVITATION_TEMPLATES, InvitationData, TemplateStyle } from '@/types/invitations'
+import { useLocale } from 'next-intl'
+import React, { useMemo, useState } from 'react'
 import ElegantInvitation from './ElegantInvitation'
 import MinimalInvitation from './MinimalInvitation'
 import ModernInvitation from './ModernInvitation'
@@ -16,54 +16,246 @@ interface TemplateGalleryViewProps {
 }
 
 const PAPERLESS_POST_STICKERS = [
-  { id: 1, name: 'Golden Vine Details', imageUrl: 'https://assets.ppassets.com/p-78vZww2jq7BGx2LHkjeScW/flyer/sticker_svg/static_thumb_small' },
-  { id: 2, name: 'Floral Frieze', imageUrl: 'https://assets.ppassets.com/p-43svb4tChjGpGgr73sP3bD/flyer/sticker_svg/static_thumb_small' },
-  { id: 3, name: 'Soft Scroll', imageUrl: 'https://assets.ppassets.com/p-2KA335JyApnsJXVtGq3muf/flyer/sticker_svg/static_thumb_small' },
-  { id: 4, name: 'Teacup', imageUrl: 'https://assets.ppassets.com/p-qtcTl6TATPvSeIBw0bRG0/flyer/sticker_svg/static_thumb_small' },
-  { id: 5, name: 'Floral Cartouche', imageUrl: 'https://assets.ppassets.com/p-3lgGxrBRBPS1k6ihTXzQhm/flyer/sticker_svg/static_thumb_small' },
-  { id: 6, name: 'Save the Date Angled', imageUrl: 'https://assets.ppassets.com/p-4wN8ZmvlrzcxWs8ULIvrG8/flyer/sticker_svg/static_thumb_small' },
-  { id: 7, name: "Trail's End Save the Date", imageUrl: 'https://assets.ppassets.com/p-6bsX0sUSukCTBPUoTVpbPS/flyer/sticker_svg/static_thumb_small' },
-  { id: 8, name: 'Passport to Romance', imageUrl: 'https://assets.ppassets.com/p-545fSVCy4v9v45xuzyLh6F/flyer/sticker_svg/static_thumb_small' },
-  { id: 9, name: 'Calligraphy RSVP', imageUrl: 'https://assets.ppassets.com/p-4n6SccawagsXgn3tKHTSgL/flyer/sticker_svg/static_thumb_small' },
-  { id: 10, name: 'Voice of Joy', imageUrl: 'https://assets.ppassets.com/p-22IqPrLpQPKJSj9wBNRKyP/flyer/sticker_svg/static_thumb_small' },
-  { id: 11, name: 'Tompion', imageUrl: 'https://assets.ppassets.com/p-1PUpMMebZ4JGkS3vucjRae/flyer/sticker_svg/static_thumb_small' },
-  { id: 12, name: 'Together', imageUrl: 'https://assets.ppassets.com/p-6crQHMNWn9Rjm0UYfOVIuL/flyer/sticker_svg/static_thumb_small' },
-  { id: 13, name: 'Rubell', imageUrl: 'https://assets.ppassets.com/p-3xI3tTENF2g4gJVHz2wtV4/flyer/sticker_svg/static_thumb_small' },
-  { id: 14, name: 'Save the Date Typography', imageUrl: 'https://assets.ppassets.com/p-4NvKBnQpcQWtuzkVofS1PL/flyer/sticker_svg/static_thumb_small' },
-  { id: 15, name: 'Sincerely', imageUrl: 'https://assets.ppassets.com/p-ywu39LUV3fBeZulOSiolV/flyer/sticker_svg/static_thumb_small' },
-  { id: 16, name: 'Save the Date Banner', imageUrl: 'https://assets.ppassets.com/p-3iCojUQggmdS9IJpQvTQDz/flyer/sticker_svg/static_thumb_small' },
-  { id: 17, name: 'Invite You To Celebrate', imageUrl: 'https://assets.ppassets.com/p-8q6Tco9Q2pBrDXVIoTbJt/flyer/sticker_svg/static_thumb_small' },
-  { id: 18, name: 'Frame Matting', imageUrl: 'https://assets.ppassets.com/p-26Yl35wFYgjLLpXbTP3a3Y/flyer/sticker_svg/static_thumb_small' },
-  { id: 19, name: 'Vintage Save the Date', imageUrl: 'https://assets.ppassets.com/p-1GQatvhIZvi3mju5bGMbKt/flyer/sticker_svg/static_thumb_small' },
-  { id: 20, name: 'Daguerre', imageUrl: 'https://assets.ppassets.com/p-Gy8mKq2r8uwODKHymB9Qz/flyer/sticker_svg/static_thumb_small' },
-  { id: 21, name: 'Sincerely New', imageUrl: 'https://assets.ppassets.com/p-6X55ucNmQFrKXeOU81A6Tb/flyer/sticker_svg/static_thumb_small' },
-  { id: 22, name: 'Brand New Day', imageUrl: 'https://assets.ppassets.com/p-1yaMoNKHRyps5tOX3cW8C0/flyer/sticker_svg/static_thumb_small' },
-  { id: 23, name: 'Virtual', imageUrl: 'https://assets.ppassets.com/p-4Hyayg3X3xLAxIFMkwhprS/flyer/sticker_svg/static_thumb_small' },
-  { id: 24, name: 'Walker', imageUrl: 'https://assets.ppassets.com/p-4HPaDrx8VJvsgKsVX46eWV/flyer/sticker_svg/static_thumb_small' },
-  { id: 25, name: 'Welcome', imageUrl: 'https://assets.ppassets.com/p-YSHRIFGPRxueT0PnnFZTA/flyer/sticker_svg/static_thumb_small' },
-  { id: 26, name: 'Bridal Shower', imageUrl: 'https://assets.ppassets.com/p-7hy6RvuRemb7SZ5SFHGYzE/flyer/sticker_svg/static_thumb_small' },
-  { id: 27, name: 'Classic Wedding Cake', imageUrl: 'https://assets.ppassets.com/p-lk2DdF6QINk6fSg6DUyK3/flyer/sticker_svg/static_thumb_small' },
-  { id: 28, name: 'Bride and Groom', imageUrl: 'https://assets.ppassets.com/p-1P8z5C6BtCIAObqAZz2SPJ/flyer/sticker_svg/static_thumb_small' },
-  { id: 29, name: "Trail's End And", imageUrl: 'https://assets.ppassets.com/p-3DT7LXwhSDH0KK6DWvuwwI/flyer/sticker_svg/static_thumb_small' },
-  { id: 30, name: 'Wedding Bands', imageUrl: 'https://assets.ppassets.com/p-6tNKMubW6lFtEV7n9hmWNM/flyer/sticker_svg/static_thumb_small' },
-  { id: 31, name: 'Garland', imageUrl: 'https://assets.ppassets.com/p-21CdAg63g3ILr950d72tfu/flyer/sticker_svg/static_thumb_small' },
-  { id: 32, name: 'Bride', imageUrl: 'https://assets.ppassets.com/p-4ZGFDVZep0ihMGLhDtEA5o/flyer/sticker_svg/static_thumb_small' },
-  { id: 33, name: 'Deco Dancers', imageUrl: 'https://assets.ppassets.com/p-U3FjMduXUFeuZ4MLGkWc9/flyer/sticker_svg/static_thumb_small' },
-  { id: 34, name: "YOU'RE INVITED", imageUrl: 'https://assets.ppassets.com/p-osQO1XQs6rA9zkTVVakis/flyer/sticker_svg/static_thumb_small' },
-  { id: 35, name: 'Polka Dot Wedding Cake', imageUrl: 'https://assets.ppassets.com/p-6IXskdGutXODIRwyIz8tvk/flyer/sticker_svg/static_thumb_small' },
-  { id: 36, name: 'Topiary', imageUrl: 'https://assets.ppassets.com/p-2bOsA5eWEXvunc2IzxvDXN/flyer/sticker_svg/static_thumb_small' },
-  { id: 37, name: 'Chandelier', imageUrl: 'https://assets.ppassets.com/p-3ECh0eRzUObnd3eXdsws1e/flyer/sticker_svg/static_thumb_small' },
-  { id: 38, name: 'Parasol', imageUrl: 'https://assets.ppassets.com/p-483AwvY3toT7ahQuqe5CVh/flyer/sticker_svg/static_thumb_small' },
-  { id: 39, name: 'Thick Frame', imageUrl: 'https://assets.ppassets.com/p-4xPs5dx3DT4J3SjOyHNrDT/flyer/sticker_svg/static_thumb_small' },
-  { id: 40, name: 'Delicate Heart', imageUrl: 'https://assets.ppassets.com/p-1d9JBiDWJAwgSqgI4tT2YD/flyer/sticker_svg/static_thumb_small' },
-  { id: 41, name: 'Itinerary', imageUrl: 'https://assets.ppassets.com/p-5Qal8rGZ9BaGHOAxM4iO5C/flyer/sticker_svg/static_thumb_small' },
-  { id: 42, name: 'Party Tent', imageUrl: 'https://assets.ppassets.com/p-58HVJb31nCG4K0YnaQ4ozG/flyer/sticker_svg/static_thumb_small' },
-  { id: 43, name: 'Timepiece', imageUrl: 'https://assets.ppassets.com/p-3S003yUfJBG88vkyGSMlG8/flyer/sticker_svg/static_thumb_small' },
-  { id: 44, name: 'Flower Vase', imageUrl: 'https://assets.ppassets.com/p-2GVzsQ6vSg6EtEoVy7hSF8/flyer/sticker_svg/static_thumb_small' },
-  { id: 45, name: 'Raw Edge And', imageUrl: 'https://assets.ppassets.com/p-4Id2AxbEClWdYDNv3KMRct/flyer/sticker_svg/static_thumb_small' },
-  { id: 46, name: 'And Script', imageUrl: 'https://assets.ppassets.com/p-4rF12kP28Ne6vIMnbWcfxK/flyer/sticker_svg/static_thumb_small' },
-  { id: 47, name: 'Peace on Earth', imageUrl: 'https://assets.ppassets.com/p-1GPRqZt1jWnFoexdL54dOP/flyer/sticker_svg/static_thumb_small' },
-  { id: 48, name: 'Peony', imageUrl: 'https://assets.ppassets.com/p-2M7X9pNK15ZkzGY81ikyPG/flyer/sticker_svg/static_thumb_small' },
+  {
+    id: 1,
+    name: 'Golden Vine Details',
+    imageUrl: 'https://assets.ppassets.com/p-78vZww2jq7BGx2LHkjeScW/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 2,
+    name: 'Floral Frieze',
+    imageUrl: 'https://assets.ppassets.com/p-43svb4tChjGpGgr73sP3bD/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 3,
+    name: 'Soft Scroll',
+    imageUrl: 'https://assets.ppassets.com/p-2KA335JyApnsJXVtGq3muf/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 4,
+    name: 'Teacup',
+    imageUrl: 'https://assets.ppassets.com/p-qtcTl6TATPvSeIBw0bRG0/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 5,
+    name: 'Floral Cartouche',
+    imageUrl: 'https://assets.ppassets.com/p-3lgGxrBRBPS1k6ihTXzQhm/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 6,
+    name: 'Save the Date Angled',
+    imageUrl: 'https://assets.ppassets.com/p-4wN8ZmvlrzcxWs8ULIvrG8/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 7,
+    name: "Trail's End Save the Date",
+    imageUrl: 'https://assets.ppassets.com/p-6bsX0sUSukCTBPUoTVpbPS/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 8,
+    name: 'Passport to Romance',
+    imageUrl: 'https://assets.ppassets.com/p-545fSVCy4v9v45xuzyLh6F/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 9,
+    name: 'Calligraphy RSVP',
+    imageUrl: 'https://assets.ppassets.com/p-4n6SccawagsXgn3tKHTSgL/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 10,
+    name: 'Voice of Joy',
+    imageUrl: 'https://assets.ppassets.com/p-22IqPrLpQPKJSj9wBNRKyP/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 11,
+    name: 'Tompion',
+    imageUrl: 'https://assets.ppassets.com/p-1PUpMMebZ4JGkS3vucjRae/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 12,
+    name: 'Together',
+    imageUrl: 'https://assets.ppassets.com/p-6crQHMNWn9Rjm0UYfOVIuL/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 13,
+    name: 'Rubell',
+    imageUrl: 'https://assets.ppassets.com/p-3xI3tTENF2g4gJVHz2wtV4/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 14,
+    name: 'Save the Date Typography',
+    imageUrl: 'https://assets.ppassets.com/p-4NvKBnQpcQWtuzkVofS1PL/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 15,
+    name: 'Sincerely',
+    imageUrl: 'https://assets.ppassets.com/p-ywu39LUV3fBeZulOSiolV/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 16,
+    name: 'Save the Date Banner',
+    imageUrl: 'https://assets.ppassets.com/p-3iCojUQggmdS9IJpQvTQDz/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 17,
+    name: 'Invite You To Celebrate',
+    imageUrl: 'https://assets.ppassets.com/p-8q6Tco9Q2pBrDXVIoTbJt/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 18,
+    name: 'Frame Matting',
+    imageUrl: 'https://assets.ppassets.com/p-26Yl35wFYgjLLpXbTP3a3Y/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 19,
+    name: 'Vintage Save the Date',
+    imageUrl: 'https://assets.ppassets.com/p-1GQatvhIZvi3mju5bGMbKt/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 20,
+    name: 'Daguerre',
+    imageUrl: 'https://assets.ppassets.com/p-Gy8mKq2r8uwODKHymB9Qz/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 21,
+    name: 'Sincerely New',
+    imageUrl: 'https://assets.ppassets.com/p-6X55ucNmQFrKXeOU81A6Tb/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 22,
+    name: 'Brand New Day',
+    imageUrl: 'https://assets.ppassets.com/p-1yaMoNKHRyps5tOX3cW8C0/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 23,
+    name: 'Virtual',
+    imageUrl: 'https://assets.ppassets.com/p-4Hyayg3X3xLAxIFMkwhprS/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 24,
+    name: 'Walker',
+    imageUrl: 'https://assets.ppassets.com/p-4HPaDrx8VJvsgKsVX46eWV/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 25,
+    name: 'Welcome',
+    imageUrl: 'https://assets.ppassets.com/p-YSHRIFGPRxueT0PnnFZTA/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 26,
+    name: 'Bridal Shower',
+    imageUrl: 'https://assets.ppassets.com/p-7hy6RvuRemb7SZ5SFHGYzE/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 27,
+    name: 'Classic Wedding Cake',
+    imageUrl: 'https://assets.ppassets.com/p-lk2DdF6QINk6fSg6DUyK3/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 28,
+    name: 'Bride and Groom',
+    imageUrl: 'https://assets.ppassets.com/p-1P8z5C6BtCIAObqAZz2SPJ/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 29,
+    name: "Trail's End And",
+    imageUrl: 'https://assets.ppassets.com/p-3DT7LXwhSDH0KK6DWvuwwI/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 30,
+    name: 'Wedding Bands',
+    imageUrl: 'https://assets.ppassets.com/p-6tNKMubW6lFtEV7n9hmWNM/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 31,
+    name: 'Garland',
+    imageUrl: 'https://assets.ppassets.com/p-21CdAg63g3ILr950d72tfu/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 32,
+    name: 'Bride',
+    imageUrl: 'https://assets.ppassets.com/p-4ZGFDVZep0ihMGLhDtEA5o/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 33,
+    name: 'Deco Dancers',
+    imageUrl: 'https://assets.ppassets.com/p-U3FjMduXUFeuZ4MLGkWc9/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 34,
+    name: "YOU'RE INVITED",
+    imageUrl: 'https://assets.ppassets.com/p-osQO1XQs6rA9zkTVVakis/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 35,
+    name: 'Polka Dot Wedding Cake',
+    imageUrl: 'https://assets.ppassets.com/p-6IXskdGutXODIRwyIz8tvk/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 36,
+    name: 'Topiary',
+    imageUrl: 'https://assets.ppassets.com/p-2bOsA5eWEXvunc2IzxvDXN/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 37,
+    name: 'Chandelier',
+    imageUrl: 'https://assets.ppassets.com/p-3ECh0eRzUObnd3eXdsws1e/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 38,
+    name: 'Parasol',
+    imageUrl: 'https://assets.ppassets.com/p-483AwvY3toT7ahQuqe5CVh/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 39,
+    name: 'Thick Frame',
+    imageUrl: 'https://assets.ppassets.com/p-4xPs5dx3DT4J3SjOyHNrDT/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 40,
+    name: 'Delicate Heart',
+    imageUrl: 'https://assets.ppassets.com/p-1d9JBiDWJAwgSqgI4tT2YD/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 41,
+    name: 'Itinerary',
+    imageUrl: 'https://assets.ppassets.com/p-5Qal8rGZ9BaGHOAxM4iO5C/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 42,
+    name: 'Party Tent',
+    imageUrl: 'https://assets.ppassets.com/p-58HVJb31nCG4K0YnaQ4ozG/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 43,
+    name: 'Timepiece',
+    imageUrl: 'https://assets.ppassets.com/p-3S003yUfJBG88vkyGSMlG8/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 44,
+    name: 'Flower Vase',
+    imageUrl: 'https://assets.ppassets.com/p-2GVzsQ6vSg6EtEoVy7hSF8/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 45,
+    name: 'Raw Edge And',
+    imageUrl: 'https://assets.ppassets.com/p-4Id2AxbEClWdYDNv3KMRct/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 46,
+    name: 'And Script',
+    imageUrl: 'https://assets.ppassets.com/p-4rF12kP28Ne6vIMnbWcfxK/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 47,
+    name: 'Peace on Earth',
+    imageUrl: 'https://assets.ppassets.com/p-1GPRqZt1jWnFoexdL54dOP/flyer/sticker_svg/static_thumb_small',
+  },
+  {
+    id: 48,
+    name: 'Peony',
+    imageUrl: 'https://assets.ppassets.com/p-2M7X9pNK15ZkzGY81ikyPG/flyer/sticker_svg/static_thumb_small',
+  },
 ]
 
 const TEMPLATE_COMPONENTS: Record<TemplateStyle, React.ComponentType<{ data: InvitationData }>> = {
@@ -107,9 +299,7 @@ export default function TemplateGalleryView({
       {/* Header */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-8 text-center">
-          <h1 className="mb-2 text-4xl font-bold text-gray-900">
-            {isArabic ? 'معرض دعوات' : 'Invitation Gallery'}
-          </h1>
+          <h1 className="mb-2 text-4xl font-bold text-gray-900">{isArabic ? 'معرض دعوات' : 'Invitation Gallery'}</h1>
           <p className="text-lg text-gray-600">
             {isArabic
               ? 'اختر من 5 قوالب احترافية و 48 ملصق جميل'
@@ -122,9 +312,7 @@ export default function TemplateGalleryView({
           <button
             onClick={() => setActiveTab('templates')}
             className={`rounded-lg px-6 py-3 font-semibold transition ${
-              activeTab === 'templates'
-                ? 'bg-blue-600 text-white shadow-lg'
-                : 'bg-white text-gray-700 hover:bg-gray-50'
+              activeTab === 'templates' ? 'bg-blue-600 text-white shadow-lg' : 'bg-white text-gray-700 hover:bg-gray-50'
             }`}
           >
             {isArabic ? 'القوالب' : 'Templates'} (5)
@@ -132,9 +320,7 @@ export default function TemplateGalleryView({
           <button
             onClick={() => setActiveTab('stickers')}
             className={`rounded-lg px-6 py-3 font-semibold transition ${
-              activeTab === 'stickers'
-                ? 'bg-blue-600 text-white shadow-lg'
-                : 'bg-white text-gray-700 hover:bg-gray-50'
+              activeTab === 'stickers' ? 'bg-blue-600 text-white shadow-lg' : 'bg-white text-gray-700 hover:bg-gray-50'
             }`}
           >
             {isArabic ? 'الملصقات' : 'Stickers'} (48)
@@ -142,9 +328,7 @@ export default function TemplateGalleryView({
           <button
             onClick={() => setActiveTab('combined')}
             className={`rounded-lg px-6 py-3 font-semibold transition ${
-              activeTab === 'combined'
-                ? 'bg-blue-600 text-white shadow-lg'
-                : 'bg-white text-gray-700 hover:bg-gray-50'
+              activeTab === 'combined' ? 'bg-blue-600 text-white shadow-lg' : 'bg-white text-gray-700 hover:bg-gray-50'
             }`}
           >
             {isArabic ? 'مرحلة' : 'Showcase'}
@@ -165,7 +349,7 @@ export default function TemplateGalleryView({
                     key={templateId}
                     onClick={() => onSelectTemplate?.(templateId)}
                     className={`transform overflow-hidden rounded-2xl shadow-lg transition duration-300 ${
-                      isSelected ? 'scale-105 ring-4 ring-blue-500' : 'hover:shadow-2xl hover:scale-102'
+                      isSelected ? 'scale-105 ring-4 ring-blue-500' : 'hover:scale-102 hover:shadow-2xl'
                     }`}
                   >
                     <div className="h-80 overflow-hidden bg-white">
@@ -203,7 +387,10 @@ export default function TemplateGalleryView({
 
                         <div className="flex flex-wrap gap-1">
                           {template.features.slice(0, 3).map((feature, idx) => (
-                            <span key={idx} className="inline-block rounded-full bg-blue-100 px-3 py-1 text-xs text-blue-800">
+                            <span
+                              key={idx}
+                              className="inline-block rounded-full bg-blue-100 px-3 py-1 text-xs text-blue-800"
+                            >
                               {feature}
                             </span>
                           ))}
@@ -257,9 +444,7 @@ export default function TemplateGalleryView({
 
             {filteredStickers.length === 0 && (
               <div className="py-12 text-center">
-                <p className="text-gray-500">
-                  {isArabic ? 'لم يتم العثور على ملصقات' : 'No stickers found'}
-                </p>
+                <p className="text-gray-500">{isArabic ? 'لم يتم العثور على ملصقات' : 'No stickers found'}</p>
               </div>
             )}
           </div>
@@ -269,9 +454,7 @@ export default function TemplateGalleryView({
         {activeTab === 'combined' && (
           <div className="space-y-12">
             <div>
-              <h2 className="mb-6 text-2xl font-bold text-gray-900">
-                {isArabic ? 'معرض مختلط' : 'Template Showcase'}
-              </h2>
+              <h2 className="mb-6 text-2xl font-bold text-gray-900">{isArabic ? 'معرض مختلط' : 'Template Showcase'}</h2>
               <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
                 {(Object.keys(INVITATION_TEMPLATES) as TemplateStyle[]).map((templateId) => {
                   const template = INVITATION_TEMPLATES[templateId]
@@ -291,10 +474,13 @@ export default function TemplateGalleryView({
 
                         <div className="mt-4 grid gap-3">
                           <div>
-                            <p className="text-xs font-semibold text-gray-500 uppercase">Features</p>
+                            <p className="text-xs font-semibold uppercase text-gray-500">Features</p>
                             <div className="mt-2 flex flex-wrap gap-2">
                               {template.features.map((feature, idx) => (
-                                <span key={idx} className="inline-block rounded-full bg-gradient-to-r from-blue-50 to-blue-100 px-3 py-1 text-xs font-medium text-blue-800">
+                                <span
+                                  key={idx}
+                                  className="inline-block rounded-full bg-gradient-to-r from-blue-50 to-blue-100 px-3 py-1 text-xs font-medium text-blue-800"
+                                >
                                   {feature}
                                 </span>
                               ))}
@@ -302,7 +488,7 @@ export default function TemplateGalleryView({
                           </div>
 
                           <div>
-                            <p className="text-xs font-semibold text-gray-500 uppercase">Color Palette</p>
+                            <p className="text-xs font-semibold uppercase text-gray-500">Color Palette</p>
                             <div className="mt-2 flex gap-3">
                               <div
                                 className="h-10 w-full rounded-lg shadow"

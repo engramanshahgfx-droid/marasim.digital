@@ -11,10 +11,7 @@ interface ServiceBookingsManagerProps {
 }
 
 function makeSupabase() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY!,
-  )
+  return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY!)
 }
 
 async function getAuthToken() {
@@ -43,7 +40,7 @@ export default function ServiceBookingsManager({ eventId }: ServiceBookingsManag
         const token = await getAuthToken()
         const response = await fetch(
           `/api/events/${eventId}/service-bookings${selectedTab !== 'all' ? `?status=${selectedTab}` : ''}`,
-          { headers: { Authorization: `Bearer ${token}` } },
+          { headers: { Authorization: `Bearer ${token}` } }
         )
         if (!response.ok) throw new Error('Failed to fetch service bookings')
         const data = await response.json()
@@ -77,8 +74,8 @@ export default function ServiceBookingsManager({ eventId }: ServiceBookingsManag
                 payment_status: action === 'approve' ? 'paid' : 'rejected',
                 status: action === 'approve' ? 'completed' : 'cancelled',
               }
-            : o,
-        ),
+            : o
+        )
       )
       setProofModalOrder(null)
       setActionNote('')
@@ -91,22 +88,33 @@ export default function ServiceBookingsManager({ eventId }: ServiceBookingsManag
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'completed': return 'bg-green-100 text-green-800'
-      case 'pending': return 'bg-yellow-100 text-yellow-800'
-      case 'cancelled': return 'bg-red-100 text-red-800'
-      case 'refunded': return 'bg-gray-100 text-gray-800'
-      default: return 'bg-blue-100 text-blue-800'
+      case 'completed':
+        return 'bg-green-100 text-green-800'
+      case 'pending':
+        return 'bg-yellow-100 text-yellow-800'
+      case 'cancelled':
+        return 'bg-red-100 text-red-800'
+      case 'refunded':
+        return 'bg-gray-100 text-gray-800'
+      default:
+        return 'bg-blue-100 text-blue-800'
     }
   }
 
   const getPaymentStatusColor = (status: string) => {
     switch (status) {
-      case 'paid': return 'text-green-600 font-semibold'
-      case 'unpaid': return 'text-red-600 font-semibold'
-      case 'pending_verification': return 'text-orange-600 font-semibold'
-      case 'rejected': return 'text-red-700 font-semibold'
-      case 'refunded': return 'text-gray-600'
-      default: return 'text-gray-600'
+      case 'paid':
+        return 'text-green-600 font-semibold'
+      case 'unpaid':
+        return 'text-red-600 font-semibold'
+      case 'pending_verification':
+        return 'text-orange-600 font-semibold'
+      case 'rejected':
+        return 'text-red-700 font-semibold'
+      case 'refunded':
+        return 'text-gray-600'
+      default:
+        return 'text-gray-600'
     }
   }
 
@@ -138,9 +146,9 @@ export default function ServiceBookingsManager({ eventId }: ServiceBookingsManag
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-64">
+      <div className="flex h-64 items-center justify-center">
         <div className="text-center">
-          <AiOutlineLoading3Quarters className="h-8 w-8 animate-spin text-purple-600 mx-auto mb-2" />
+          <AiOutlineLoading3Quarters className="mx-auto mb-2 h-8 w-8 animate-spin text-purple-600" />
           <p className="text-gray-600">{isArabic ? 'جاري التحميل...' : 'Loading...'}</p>
         </div>
       </div>
@@ -148,11 +156,7 @@ export default function ServiceBookingsManager({ eventId }: ServiceBookingsManag
   }
 
   if (error) {
-    return (
-      <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">
-        {error}
-      </div>
-    )
+    return <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-red-700">{error}</div>
   }
 
   return (
@@ -160,10 +164,8 @@ export default function ServiceBookingsManager({ eventId }: ServiceBookingsManag
       <div className="space-y-6">
         {/* Header */}
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">
-            {isArabic ? 'طلبات الخدمات' : 'Service Bookings'}
-          </h2>
-          <p className="text-gray-600 mt-1">
+          <h2 className="text-2xl font-bold text-gray-900">{isArabic ? 'طلبات الخدمات' : 'Service Bookings'}</h2>
+          <p className="mt-1 text-gray-600">
             {isArabic
               ? 'عرض جميع حجوزات الخدمات والمدفوعات للحدث'
               : 'View all service bookings and payments for this event'}
@@ -172,9 +174,9 @@ export default function ServiceBookingsManager({ eventId }: ServiceBookingsManag
 
         {/* Bank transfer pending review alert */}
         {pendingReviewOrders.length > 0 && (
-          <div className="rounded-lg border border-orange-200 bg-orange-50 p-4 flex items-center gap-3">
+          <div className="flex items-center gap-3 rounded-lg border border-orange-200 bg-orange-50 p-4">
             <span className="text-xl">🔔</span>
-            <p className="text-orange-800 text-sm font-medium">
+            <p className="text-sm font-medium text-orange-800">
               {isArabic
                 ? `${pendingReviewOrders.length} طلب تحويل بنكي ينتظر مراجعتك`
                 : `${pendingReviewOrders.length} bank transfer order${pendingReviewOrders.length > 1 ? 's' : ''} awaiting your review`}
@@ -188,7 +190,7 @@ export default function ServiceBookingsManager({ eventId }: ServiceBookingsManag
             <button
               key={tab}
               onClick={() => setSelectedTab(tab as any)}
-              className={`px-4 py-2 font-medium text-sm transition-colors border-b-2 ${
+              className={`border-b-2 px-4 py-2 text-sm font-medium transition-colors ${
                 selectedTab === tab
                   ? 'border-purple-600 text-purple-600'
                   : 'border-transparent text-gray-600 hover:text-gray-900'
@@ -204,38 +206,36 @@ export default function ServiceBookingsManager({ eventId }: ServiceBookingsManag
 
         {/* Orders List */}
         {orders.length === 0 ? (
-          <div className="text-center py-8">
-            <p className="text-gray-500">
-              {isArabic ? 'لا توجد طلبات' : 'No orders found'}
-            </p>
+          <div className="py-8 text-center">
+            <p className="text-gray-500">{isArabic ? 'لا توجد طلبات' : 'No orders found'}</p>
           </div>
         ) : (
           <div className="space-y-4">
             {orders.map((order) => (
               <div
                 key={order.id}
-                className="rounded-lg border border-gray-200 bg-white p-4 hover:shadow-md transition-shadow"
+                className="rounded-lg border border-gray-200 bg-white p-4 transition-shadow hover:shadow-md"
               >
                 {/* Order Header */}
-                <div className="flex items-center justify-between mb-3">
+                <div className="mb-3 flex items-center justify-between">
                   <div>
                     <h3 className="font-semibold text-gray-900">{order.order_number}</h3>
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="mt-1 text-xs text-gray-500">
                       {new Date(order.created_at).toLocaleDateString(isArabic ? 'ar-SA' : 'en-SA')}
                     </p>
                   </div>
                   <div className="flex gap-2">
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(order.status)}`}>
+                    <span className={`rounded-full px-3 py-1 text-xs font-semibold ${getStatusColor(order.status)}`}>
                       {getStatusLabel(order.status)}
                     </span>
-                    <span className={`px-3 py-1 rounded-full text-xs ${getPaymentStatusColor(order.payment_status)}`}>
+                    <span className={`rounded-full px-3 py-1 text-xs ${getPaymentStatusColor(order.payment_status)}`}>
                       {getPaymentStatusLabel(order.payment_status)}
                     </span>
                   </div>
                 </div>
 
                 {/* Order Details Grid */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
                   <div>
                     <p className="text-xs text-gray-600">{isArabic ? 'المبلغ الفرعي' : 'Subtotal'}</p>
                     <p className="font-semibold text-gray-900">SAR {order.subtotal.toFixed(2)}</p>
@@ -250,23 +250,23 @@ export default function ServiceBookingsManager({ eventId }: ServiceBookingsManag
                   </div>
                   <div>
                     <p className="text-xs text-gray-600">{isArabic ? 'الإجمالي' : 'Total'}</p>
-                    <p className="font-bold text-lg text-purple-600">SAR {order.total_amount.toFixed(2)}</p>
+                    <p className="text-lg font-bold text-purple-600">SAR {order.total_amount.toFixed(2)}</p>
                   </div>
                 </div>
 
                 {/* Notes */}
                 {order.notes && (
-                  <div className="mt-3 pt-3 border-t border-gray-100">
+                  <div className="mt-3 border-t border-gray-100 pt-3">
                     <p className="text-xs text-gray-600">{isArabic ? 'ملاحظات' : 'Notes'}:</p>
-                    <p className="text-sm text-gray-700 mt-1">{order.notes}</p>
+                    <p className="mt-1 text-sm text-gray-700">{order.notes}</p>
                   </div>
                 )}
 
                 {/* Details link */}
-                <div className="mt-4 pt-3 border-t border-gray-100">
+                <div className="mt-4 border-t border-gray-100 pt-3">
                   <a
                     href={`/${locale}/event-management-dashboard/orders/${order.id}`}
-                    className="text-sm font-semibold text-purple-600 hover:text-purple-700 transition-colors"
+                    className="text-sm font-semibold text-purple-600 transition-colors hover:text-purple-700"
                   >
                     {isArabic ? 'عرض التفاصيل' : 'View Details'} →
                   </a>
@@ -277,14 +277,15 @@ export default function ServiceBookingsManager({ eventId }: ServiceBookingsManag
                   (order as any).payment_status === 'pending_verification' && (
                     <div className="mt-3 rounded-lg border border-orange-200 bg-orange-50 p-3">
                       <p className="mb-2 text-xs font-semibold text-orange-700">
-                        {isArabic
-                          ? '📎 إيصال تحويل بنكي – يحتاج مراجعة'
-                          : '📎 Bank Transfer Receipt – Needs Review'}
+                        {isArabic ? '📎 إيصال تحويل بنكي – يحتاج مراجعة' : '📎 Bank Transfer Receipt – Needs Review'}
                       </p>
                       <div className="flex flex-wrap gap-2">
                         {(order as any).proof_image_url && (
                           <button
-                            onClick={() => { setProofModalOrder(order); setActionNote('') }}
+                            onClick={() => {
+                              setProofModalOrder(order)
+                              setActionNote('')
+                            }}
                             className="rounded bg-blue-600 px-3 py-1 text-xs font-semibold text-white hover:bg-blue-700"
                           >
                             {isArabic ? '👁️ عرض الإيصال' : '👁️ View Receipt'}
@@ -315,7 +316,7 @@ export default function ServiceBookingsManager({ eventId }: ServiceBookingsManag
         {/* Summary Stats */}
         {orders.length > 0 && (
           <div className="rounded-lg border border-gray-200 bg-gray-50 p-4">
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
               <div>
                 <p className="text-xs text-gray-600">{isArabic ? 'إجمالي الطلبات' : 'Total Orders'}</p>
                 <p className="text-xl font-bold text-gray-900">{orders.length}</p>
@@ -329,7 +330,8 @@ export default function ServiceBookingsManager({ eventId }: ServiceBookingsManag
               <div>
                 <p className="text-xs text-gray-600">{isArabic ? 'المدفوع' : 'Amount Paid'}</p>
                 <p className="text-xl font-bold text-green-600">
-                  SAR {orders
+                  SAR{' '}
+                  {orders
                     .filter((o) => o.payment_status === 'paid')
                     .reduce((sum, o) => sum + o.total_amount, 0)
                     .toFixed(2)}
@@ -368,15 +370,11 @@ export default function ServiceBookingsManager({ eventId }: ServiceBookingsManag
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div className="rounded-lg bg-green-50 p-3">
                   <p className="text-xs text-gray-500">{isArabic ? 'الإجمالي' : 'Total'}</p>
-                  <p className="text-lg font-bold text-green-700">
-                    SAR {proofModalOrder.total_amount?.toFixed(2)}
-                  </p>
+                  <p className="text-lg font-bold text-green-700">SAR {proofModalOrder.total_amount?.toFixed(2)}</p>
                 </div>
                 <div className="rounded-lg bg-blue-50 p-3">
                   <p className="text-xs text-gray-500">{isArabic ? 'المرجع' : 'Reference'}</p>
-                  <p className="font-mono font-semibold text-blue-700">
-                    {proofModalOrder.bank_reference_code || '—'}
-                  </p>
+                  <p className="font-mono font-semibold text-blue-700">{proofModalOrder.bank_reference_code || '—'}</p>
                 </div>
               </div>
               <div>
@@ -397,18 +395,14 @@ export default function ServiceBookingsManager({ eventId }: ServiceBookingsManag
                   disabled={processing === proofModalOrder.id}
                   className="flex-1 rounded-lg bg-green-600 py-3 font-bold text-white hover:bg-green-700 disabled:opacity-50"
                 >
-                  {processing === proofModalOrder.id
-                    ? '...'
-                    : isArabic ? '✅ تأكيد الدفع' : '✅ Confirm Payment'}
+                  {processing === proofModalOrder.id ? '...' : isArabic ? '✅ تأكيد الدفع' : '✅ Confirm Payment'}
                 </button>
                 <button
                   onClick={() => handleApproveReject(proofModalOrder.id, 'reject')}
                   disabled={processing === proofModalOrder.id}
                   className="flex-1 rounded-lg bg-red-600 py-3 font-bold text-white hover:bg-red-700 disabled:opacity-50"
                 >
-                  {processing === proofModalOrder.id
-                    ? '...'
-                    : isArabic ? '❌ رفض' : '❌ Reject'}
+                  {processing === proofModalOrder.id ? '...' : isArabic ? '❌ رفض' : '❌ Reject'}
                 </button>
               </div>
             </div>

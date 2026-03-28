@@ -325,10 +325,10 @@ export async function resendVerification(
 
 /**
  * Check if verification channel is available in service
- * @param channel - Channel to check
+ * @param _channel - Channel to check
  * @returns true if available
  */
-export async function isChannelAvailable(channel: VerificationChannel): Promise<boolean> {
+export async function isChannelAvailable(_channel: VerificationChannel): Promise<boolean> {
   try {
     const serviceSid = process.env.TWILIO_VERIFY_SERVICE_SID
     if (!serviceSid) return false

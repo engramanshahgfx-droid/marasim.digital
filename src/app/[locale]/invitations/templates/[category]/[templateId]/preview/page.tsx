@@ -1,20 +1,19 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 'use client'
 
 import Header from '@/components/common/Header'
+import ElegantInvitation from '@/components/invitations/ElegantInvitation'
+import MinimalInvitation from '@/components/invitations/MinimalInvitation'
+import ModernInvitation from '@/components/invitations/ModernInvitation'
+import PlayfulInvitation from '@/components/invitations/PlayfulInvitation'
+import ProfessionalInvitation from '@/components/invitations/ProfessionalInvitation'
 import UserAuthGuard from '@/components/UserAuthGuard'
 import { getCurrentSession } from '@/lib/auth'
 import { INVITATION_TEMPLATES, TemplateStyle } from '@/types/invitations'
 import { useLocale } from 'next-intl'
 import Link from 'next/link'
-import { useState } from 'react'
-import { use } from 'react'
-import { useEffect } from 'react'
 import { useSearchParams } from 'next/navigation'
-import ElegantInvitation from '@/components/invitations/ElegantInvitation'
-import ModernInvitation from '@/components/invitations/ModernInvitation'
-import MinimalInvitation from '@/components/invitations/MinimalInvitation'
-import PlayfulInvitation from '@/components/invitations/PlayfulInvitation'
-import ProfessionalInvitation from '@/components/invitations/ProfessionalInvitation'
+import { use, useEffect, useState } from 'react'
 
 interface TemplatePreviewPageProps {
   params: Promise<{
@@ -36,7 +35,8 @@ const FRAME_OPTIONS = [
   {
     id: 1,
     name: 'Together in Tradition',
-    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/together%20in%20tradition-1.png?auto=compress',
+    imageUrl:
+      'https://images.greetingsisland.com/images/invitations/wedding/together%20in%20tradition-1.png?auto=compress',
   },
   {
     id: 2,
@@ -46,27 +46,32 @@ const FRAME_OPTIONS = [
   {
     id: 3,
     name: 'Union Time',
-    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/union-time-53144.gif?auto=format,compress&w=932',
+    imageUrl:
+      'https://images.greetingsisland.com/images/invitations/wedding/previews/union-time-53144.gif?auto=format,compress&w=932',
   },
   {
     id: 4,
     name: 'Dance of Two Souls',
-    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/dance-of-two-souls-53200.jpeg?auto=format,compress&w=932',
+    imageUrl:
+      'https://images.greetingsisland.com/images/invitations/wedding/previews/dance-of-two-souls-53200.jpeg?auto=format,compress&w=932',
   },
   {
     id: 5,
     name: 'Terracotta Frame',
-    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/terracotta-frame-33749.jpeg?auto=format,compress&w=932',
+    imageUrl:
+      'https://images.greetingsisland.com/images/invitations/wedding/previews/terracotta-frame-33749.jpeg?auto=format,compress&w=932',
   },
   {
     id: 6,
     name: 'Terracotta Round Frame',
-    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/terracotta-round-frame-34863.gif?auto=format,compress&w=932',
+    imageUrl:
+      'https://images.greetingsisland.com/images/invitations/wedding/previews/terracotta-round-frame-34863.gif?auto=format,compress&w=932',
   },
   {
     id: 7,
     name: 'Double Frame & Leaves',
-    imageUrl: 'https://images.greetingsisland.com/images/invitations/wedding/previews/double-frame-&-leaves-22133.jpeg?auto=format,compress&w=932',
+    imageUrl:
+      'https://images.greetingsisland.com/images/invitations/wedding/previews/double-frame-&-leaves-22133.jpeg?auto=format,compress&w=932',
   },
 ]
 
@@ -80,13 +85,12 @@ const SAMPLE_DATA = {
   time: '18:00',
   timezone: 'UTC',
   location: 'Atlanta, Georgia',
-  description: 'Together with their families, request the honor of your presence at the marriage of Catherine and Adrian. Dinner and merriment to follow.',
+  description:
+    'Together with their families, request the honor of your presence at the marriage of Catherine and Adrian. Dinner and merriment to follow.',
 }
 
-export default function TemplatePreviewPage({
-  params,
-}: TemplatePreviewPageProps) {
-  const { category, templateId, locale } = use(params)
+export default function TemplatePreviewPage({ params }: TemplatePreviewPageProps) {
+  const { category, templateId, locale: _locale } = use(params)
   const currentLocale = useLocale()
   const isArabic = currentLocale === 'ar'
   const searchParams = useSearchParams()
@@ -103,9 +107,7 @@ export default function TemplatePreviewPage({
         <div className="min-h-screen bg-gray-50">
           <Header />
           <main className="container mx-auto px-4 py-12 text-center">
-            <p className="text-xl text-gray-600">
-              {isArabic ? 'قالب غير محجود' : 'Template not found'}
-            </p>
+            <p className="text-xl text-gray-600">{isArabic ? 'قالب غير محجود' : 'Template not found'}</p>
           </main>
         </div>
       </UserAuthGuard>
@@ -184,34 +186,24 @@ export default function TemplatePreviewPage({
         <main className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
           {/* Breadcrumb */}
           <div className="mb-8 flex items-center gap-2 text-sm text-gray-600">
-            <Link
-              href={`/${currentLocale}/invitations/templates`}
-              className="hover:text-blue-600"
-            >
+            <Link href={`/${currentLocale}/invitations/templates`} className="hover:text-blue-600">
               {isArabic ? 'القوالب' : 'Templates'}
             </Link>
             <span>/</span>
-            <Link
-              href={`/${currentLocale}/invitations/templates/${category}`}
-              className="hover:text-blue-600"
-            >
+            <Link href={`/${currentLocale}/invitations/templates/${category}`} className="hover:text-blue-600">
               {category}
             </Link>
             <span>/</span>
-            <span className="text-gray-900 font-medium">
-              {isArabic ? template.name_ar : template.name}
-            </span>
+            <span className="font-medium text-gray-900">{isArabic ? template.name_ar : template.name}</span>
           </div>
 
           <div className="grid gap-8 lg:grid-cols-4 lg:gap-6">
             {/* Left Sidebar - Info */}
             <div className="lg:col-span-1">
-              <div className="sticky top-24 rounded-xl bg-white p-6 shadow-sm space-y-6">
+              <div className="sticky top-24 space-y-6 rounded-xl bg-white p-6 shadow-sm">
                 {/* Template Info */}
                 <div>
-                  <h1 className="text-2xl font-bold text-gray-900">
-                    {isArabic ? template.name_ar : template.name}
-                  </h1>
+                  <h1 className="text-2xl font-bold text-gray-900">{isArabic ? template.name_ar : template.name}</h1>
                   <p className="mt-2 text-sm text-gray-600">
                     {isArabic ? template.description_ar : template.description}
                   </p>
@@ -219,9 +211,7 @@ export default function TemplatePreviewPage({
 
                 {/* Colors */}
                 <div>
-                  <p className="text-sm font-semibold text-gray-800 mb-2">
-                    {isArabic ? 'الألوان' : 'Colors'}
-                  </p>
+                  <p className="mb-2 text-sm font-semibold text-gray-800">{isArabic ? 'الألوان' : 'Colors'}</p>
                   <div className="grid grid-cols-2 gap-2">
                     {[
                       { name: 'Primary', value: template.colors.primary },
@@ -242,13 +232,11 @@ export default function TemplatePreviewPage({
 
                 {/* Features */}
                 <div>
-                  <p className="text-sm font-semibold text-gray-800 mb-2">
-                    {isArabic ? 'الميزات' : 'Features'}
-                  </p>
+                  <p className="mb-2 text-sm font-semibold text-gray-800">{isArabic ? 'الميزات' : 'Features'}</p>
                   <div className="space-y-2">
                     {template.features.map((feature) => (
                       <div key={feature} className="flex items-start gap-2">
-                        <span className="text-blue-500 mt-0.5">✓</span>
+                        <span className="mt-0.5 text-blue-500">✓</span>
                         <span className="text-sm text-gray-700">{feature}</span>
                       </div>
                     ))}
@@ -258,7 +246,7 @@ export default function TemplatePreviewPage({
                 {/* Action Button */}
                 <Link
                   href={customizeHref}
-                  className="block w-full rounded-lg bg-blue-600 py-2 text-center text-sm font-semibold text-white hover:bg-blue-700 transition-colors"
+                  className="block w-full rounded-lg bg-blue-600 py-2 text-center text-sm font-semibold text-white transition-colors hover:bg-blue-700"
                 >
                   {isArabic ? 'تخصيص هذا القالب' : 'Customize This Template'}
                 </Link>
@@ -274,17 +262,15 @@ export default function TemplatePreviewPage({
                   <div className="flex gap-2">
                     <button
                       onClick={() => setViewType('card')}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
-                        viewType === 'card'
-                          ? 'bg-blue-500 text-white'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      className={`rounded-lg px-4 py-2 text-sm font-medium transition-all ${
+                        viewType === 'card' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }`}
                     >
                       📄 Card
                     </button>
                     <button
                       onClick={() => setViewType('fullPage')}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                      className={`rounded-lg px-4 py-2 text-sm font-medium transition-all ${
                         viewType === 'fullPage'
                           ? 'bg-blue-500 text-white'
                           : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -304,13 +290,11 @@ export default function TemplatePreviewPage({
                     onChange={(e) => setZoom(parseInt(e.target.value))}
                     className="flex-1"
                   />
-                  <span className="text-sm text-gray-600 font-medium w-12">
-                    {zoom}%
-                  </span>
+                  <span className="w-12 text-sm font-medium text-gray-600">{zoom}%</span>
                 </div>
 
-                        {/* Preview */}
-                <div className="flex justify-center bg-gray-50 rounded-lg p-6">
+                {/* Preview */}
+                <div className="flex justify-center rounded-lg bg-gray-50 p-6">
                   <div className="relative">
                     {activeFrameUrl && (
                       <img

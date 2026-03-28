@@ -65,9 +65,7 @@ export async function parseXLSX(arrayBuffer: ArrayBuffer): Promise<GuestRecord[]
 
     return guests.filter((g) => g.name.trim())
   } catch (error) {
-    throw new Error(
-      `XLSX parsing error: ${error instanceof Error ? error.message : 'Unknown error'}`
-    )
+    throw new Error(`XLSX parsing error: ${error instanceof Error ? error.message : 'Unknown error'}`)
   }
 }
 
@@ -111,9 +109,7 @@ function isValidEmail(email: string): boolean {
 /**
  * Detect file format from file extension or content
  */
-export function detectFileFormat(
-  filename: string
-): 'csv' | 'xlsx' | 'xls' | 'unknown' {
+export function detectFileFormat(filename: string): 'csv' | 'xlsx' | 'xls' | 'unknown' {
   const ext = filename.split('.').pop()?.toLowerCase()
 
   switch (ext) {

@@ -73,7 +73,7 @@ export async function GET(request: NextRequest) {
     if (cartError) {
       console.error('Error fetching cart items:', cartError)
       const message = String(cartError.message || cartError).toLowerCase()
-      if (message.includes('could not find the table') || message.includes('table \"cart_items\" does not exist')) {
+      if (message.includes('could not find the table') || message.includes('table "cart_items" does not exist')) {
         // Missing migration / table not created yet: return empty cart as fallback.
         return NextResponse.json(
           {

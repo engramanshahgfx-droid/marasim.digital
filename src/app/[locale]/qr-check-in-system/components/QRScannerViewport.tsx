@@ -62,8 +62,7 @@ const QRScannerViewport = ({ onScanSuccess, isActive, exampleCode }: QRScannerVi
         }
       } catch (error: unknown) {
         const isPermissionDismissed =
-          error instanceof DOMException &&
-          (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError')
+          error instanceof DOMException && (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError')
 
         if (!isPermissionDismissed) {
           console.warn('Camera initialization failed:', error)
@@ -278,7 +277,7 @@ const QRScannerViewport = ({ onScanSuccess, isActive, exampleCode }: QRScannerVi
         </div>
 
         {cameraError && (
-          <div className="mt-3 rounded-md border border-warning/30 bg-warning/10 p-3 text-sm text-warning">
+          <div className="border-warning/30 bg-warning/10 mt-3 rounded-md border p-3 text-sm text-warning">
             {cameraError}
           </div>
         )}

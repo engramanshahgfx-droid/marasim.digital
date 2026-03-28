@@ -1,7 +1,7 @@
+import { ensureInvitationLinkForEvent } from '@/lib/invitationTemplateCompat'
 import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
-import { ensureInvitationLinkForEvent } from '@/lib/invitationTemplateCompat'
 
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || '', process.env.SUPABASE_SERVICE_ROLE_KEY || '')
 const resendApiKey = process.env.RESEND_API_KEY
@@ -112,7 +112,11 @@ export async function POST(request: NextRequest) {
         })
       } catch (error) {
         failed += 1
-        errors.push({ guestId: (guest as any).id, email, error: error instanceof Error ? error.message : 'Unknown error' })
+        errors.push({
+          guestId: (guest as any).id,
+          email,
+          error: error instanceof Error ? error.message : 'Unknown error',
+        })
 
         messageRecords.push({
           guest_id: (guest as any).id,

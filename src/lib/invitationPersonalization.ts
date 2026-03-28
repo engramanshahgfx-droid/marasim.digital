@@ -33,7 +33,10 @@ function applyTokensRecursively(value: unknown, tokens: Record<string, string>):
 
   if (value && typeof value === 'object') {
     return Object.fromEntries(
-      Object.entries(value as Record<string, unknown>).map(([key, entry]) => [key, applyTokensRecursively(entry, tokens)])
+      Object.entries(value as Record<string, unknown>).map(([key, entry]) => [
+        key,
+        applyTokensRecursively(entry, tokens),
+      ])
     )
   }
 

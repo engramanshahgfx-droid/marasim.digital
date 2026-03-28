@@ -64,7 +64,6 @@ export const LayoutHydrationConfig = {
 /**
  * Recommended: Add to root layout client component
  */
-;('use client')
 
 import { useEffect } from 'react'
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { PreviewType, DeviceType } from '@/types/invitations'
+import { DeviceType, PreviewType } from '@/types/invitations'
 
 interface PreviewToggleProps {
   viewType: PreviewType
@@ -28,9 +28,7 @@ export default function PreviewToggle({
           <button
             onClick={() => onViewTypeChange('card')}
             className={`flex-1 rounded-lg py-2 text-sm font-medium transition-all ${
-              viewType === 'card'
-                ? 'bg-blue-500 text-white shadow-md'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              viewType === 'card' ? 'bg-blue-500 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
             📄 Card
@@ -111,9 +109,7 @@ export default function PreviewToggle({
               key={preset}
               onClick={() => onZoomChange(preset)}
               className={`rounded px-2 py-1 text-xs font-medium transition-all ${
-                zoom === preset
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                zoom === preset ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
               {preset}%

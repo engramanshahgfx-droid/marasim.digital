@@ -1,8 +1,8 @@
 // API Route: Get Invitation by Shareable Link
 // Location: src/app/api/invitations/shared/[shareLink]/route.ts
 
-import { getInvitationByPublicLink } from '@/lib/invitationTemplateCompat'
 import { personalizeInvitationData } from '@/lib/invitationPersonalization'
+import { getInvitationByPublicLink } from '@/lib/invitationTemplateCompat'
 import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -24,9 +24,9 @@ async function resolveInvitationBankDetails(eventId: string) {
   const bankColumnMissing = String(eventWithBank.error?.message || '').includes('bank_account_holder')
   const hasEventBankDetails = Boolean(
     (eventWithBank.data as any)?.bank_account_holder ||
-      (eventWithBank.data as any)?.bank_name ||
-      (eventWithBank.data as any)?.bank_account_number ||
-      (eventWithBank.data as any)?.bank_iban
+    (eventWithBank.data as any)?.bank_name ||
+    (eventWithBank.data as any)?.bank_account_number ||
+    (eventWithBank.data as any)?.bank_iban
   )
 
   if (!eventWithBank.error && hasEventBankDetails) {

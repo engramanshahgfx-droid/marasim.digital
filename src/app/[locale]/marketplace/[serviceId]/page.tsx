@@ -76,9 +76,7 @@ export default function ServiceDetailPage({ params }: { params: Promise<{ servic
         <Header />
         <div className="flex min-h-[60vh] flex-col items-center justify-center gap-4">
           <div className="text-6xl">🔍</div>
-          <h1 className="text-2xl font-bold text-gray-800">
-            {isArabic ? 'الخدمة غير موجودة' : 'Service not found'}
-          </h1>
+          <h1 className="text-2xl font-bold text-gray-800">{isArabic ? 'الخدمة غير موجودة' : 'Service not found'}</h1>
           <Link
             href={`/${locale}/marketplace`}
             className="rounded-xl bg-purple-600 px-6 py-2 text-white hover:bg-purple-700"
@@ -93,7 +91,8 @@ export default function ServiceDetailPage({ params }: { params: Promise<{ servic
   const name = isArabic && service.name_ar ? service.name_ar : service.name
   const description = isArabic && service.description_ar ? service.description_ar : service.description
   const provider = service.providers
-  const providerName = isArabic && provider?.business_name_ar ? provider.business_name_ar : provider?.business_name || ''
+  const providerName =
+    isArabic && provider?.business_name_ar ? provider.business_name_ar : provider?.business_name || ''
   const providerDesc =
     isArabic && provider?.business_description_ar
       ? provider.business_description_ar
@@ -129,11 +128,7 @@ export default function ServiceDetailPage({ params }: { params: Promise<{ servic
             <div className="mb-6 overflow-hidden rounded-2xl bg-gray-100">
               <div className="relative h-80 sm:h-96">
                 {service.images?.[selectedImage]?.url ? (
-                  <img
-                    src={service.images[selectedImage].url}
-                    alt={name}
-                    className="h-full w-full object-cover"
-                  />
+                  <img src={service.images[selectedImage].url} alt={name} className="h-full w-full object-cover" />
                 ) : (
                   <div className="flex h-full items-center justify-center text-7xl opacity-20">🛍️</div>
                 )}
@@ -180,7 +175,9 @@ export default function ServiceDetailPage({ params }: { params: Promise<{ servic
                   ))}
                 </div>
                 <span className="font-semibold text-gray-700">{service.rating.toFixed(1)}</span>
-                <span className="text-gray-400">({service.reviews_count} {isArabic ? 'تقييم' : 'reviews'})</span>
+                <span className="text-gray-400">
+                  ({service.reviews_count} {isArabic ? 'تقييم' : 'reviews'})
+                </span>
               </div>
               <p className="leading-relaxed text-gray-600">{description}</p>
             </div>
@@ -219,16 +216,20 @@ export default function ServiceDetailPage({ params }: { params: Promise<{ servic
                 <div className={`flex items-start gap-4 ${isArabic ? 'flex-row-reverse' : ''}`}>
                   <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-purple-100">
                     {provider.logo_url ? (
-                      <img src={provider.logo_url} alt={providerName} className="h-full w-full rounded-2xl object-cover" />
+                      <img
+                        src={provider.logo_url}
+                        alt={providerName}
+                        className="h-full w-full rounded-2xl object-cover"
+                      />
                     ) : (
-                      <span className="text-2xl font-bold text-purple-700">
-                        {providerName.charAt(0).toUpperCase()}
-                      </span>
+                      <span className="text-2xl font-bold text-purple-700">{providerName.charAt(0).toUpperCase()}</span>
                     )}
                   </div>
                   <div>
                     <h3 className="font-semibold text-gray-900">{providerName}</h3>
-                    <div className={`mt-1 flex items-center gap-2 text-sm ${isArabic ? 'flex-row-reverse justify-end' : ''}`}>
+                    <div
+                      className={`mt-1 flex items-center gap-2 text-sm ${isArabic ? 'flex-row-reverse justify-end' : ''}`}
+                    >
                       <span className="text-yellow-400">★</span>
                       <span className="text-gray-600">{provider.rating.toFixed(1)}</span>
                       <span className="text-gray-400">·</span>
@@ -264,7 +265,9 @@ export default function ServiceDetailPage({ params }: { params: Promise<{ servic
                       <div className={`mb-2 flex items-center gap-2 ${isArabic ? 'flex-row-reverse' : ''}`}>
                         <div className="flex">
                           {[1, 2, 3, 4, 5].map((s) => (
-                            <span key={s} className={s <= review.rating ? 'text-yellow-400' : 'text-gray-200'}>★</span>
+                            <span key={s} className={s <= review.rating ? 'text-yellow-400' : 'text-gray-200'}>
+                              ★
+                            </span>
                           ))}
                         </div>
                         <span className="font-semibold text-gray-800">{review.title}</span>
@@ -291,9 +294,7 @@ export default function ServiceDetailPage({ params }: { params: Promise<{ servic
               {/* Price */}
               <div className={`mb-4 ${isArabic ? 'text-right' : ''}`}>
                 <div className={`flex items-baseline gap-2 ${isArabic ? 'flex-row-reverse justify-end' : ''}`}>
-                  <span className="text-3xl font-bold text-purple-700">
-                    {service.final_price.toLocaleString()}
-                  </span>
+                  <span className="text-3xl font-bold text-purple-700">{service.final_price.toLocaleString()}</span>
                   <span className="text-gray-500">{isArabic ? 'ر.س' : 'SAR'}</span>
                 </div>
                 {service.price !== service.final_price && (
@@ -331,9 +332,7 @@ export default function ServiceDetailPage({ params }: { params: Promise<{ servic
               <div className="mt-5 space-y-2 border-t border-gray-100 pt-5 text-sm text-gray-600">
                 <div className={`flex items-center justify-between ${isArabic ? 'flex-row-reverse' : ''}`}>
                   <span>{isArabic ? 'التقييم' : 'Rating'}</span>
-                  <span className="font-medium text-gray-800">
-                    {service.rating.toFixed(1)} ★
-                  </span>
+                  <span className="font-medium text-gray-800">{service.rating.toFixed(1)} ★</span>
                 </div>
                 <div className={`flex items-center justify-between ${isArabic ? 'flex-row-reverse' : ''}`}>
                   <span>{isArabic ? 'عدد التقييمات' : 'Reviews'}</span>
@@ -463,10 +462,10 @@ function BookingModal({
         ) : (
           <>
             <div className="mb-5 flex items-center justify-between">
-              <h3 className="text-lg font-bold text-gray-900">
-                {isArabic ? 'تأكيد الحجز' : 'Book Service'}
-              </h3>
-              <button onClick={onClose} className="text-gray-400 hover:text-gray-600">✕</button>
+              <h3 className="text-lg font-bold text-gray-900">{isArabic ? 'تأكيد الحجز' : 'Book Service'}</h3>
+              <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+                ✕
+              </button>
             </div>
 
             <p className="mb-4 text-sm text-gray-600">{name}</p>
@@ -484,7 +483,9 @@ function BookingModal({
                 >
                   <option value="">{isArabic ? 'اختر فعالية' : 'Select event'}</option>
                   {events.map((ev) => (
-                    <option key={ev.id} value={ev.id}>{ev.event_name}</option>
+                    <option key={ev.id} value={ev.id}>
+                      {ev.event_name}
+                    </option>
                   ))}
                 </select>
               </div>
@@ -533,24 +534,24 @@ function BookingModal({
 
             {/* Total */}
             <div className={`my-4 rounded-xl bg-purple-50 p-3 text-sm ${isArabic ? 'text-right' : ''}`}>
-              <div className={`flex justify-between font-semibold text-purple-900 ${isArabic ? 'flex-row-reverse' : ''}`}>
+              <div
+                className={`flex justify-between font-semibold text-purple-900 ${isArabic ? 'flex-row-reverse' : ''}`}
+              >
                 <span>{isArabic ? 'الإجمالي' : 'Total'}</span>
-                <span>{(service.final_price * quantity).toLocaleString()} {isArabic ? 'ر.س' : 'SAR'}</span>
+                <span>
+                  {(service.final_price * quantity).toLocaleString()} {isArabic ? 'ر.س' : 'SAR'}
+                </span>
               </div>
             </div>
 
-            {error && (
-              <p className="mb-3 rounded-lg bg-red-50 p-2 text-sm text-red-600">{error}</p>
-            )}
+            {error && <p className="mb-3 rounded-lg bg-red-50 p-2 text-sm text-red-600">{error}</p>}
 
             <button
               onClick={handleBook}
               disabled={loading}
-              className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 py-3 font-semibold text-white disabled:opacity-60 hover:opacity-90"
+              className="w-full rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 py-3 font-semibold text-white hover:opacity-90 disabled:opacity-60"
             >
-              {loading
-                ? (isArabic ? 'جاري الحجز...' : 'Booking...')
-                : (isArabic ? 'تأكيد الحجز' : 'Confirm Booking')}
+              {loading ? (isArabic ? 'جاري الحجز...' : 'Booking...') : isArabic ? 'تأكيد الحجز' : 'Confirm Booking'}
             </button>
           </>
         )}

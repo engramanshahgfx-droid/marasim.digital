@@ -143,19 +143,19 @@ export default function MarketplacePage() {
           <div className="absolute left-1/4 top-1/4 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-purple-600 opacity-20 blur-3xl" />
           <div className="absolute right-1/4 top-3/4 h-64 w-64 rounded-full bg-pink-600 opacity-20 blur-3xl" />
         </div>
-        <div className="relative container mx-auto px-4 text-center sm:px-6 lg:px-8">
+        <div className="container relative mx-auto px-4 text-center sm:px-6 lg:px-8">
           <h1 className="mb-4 text-4xl font-bold text-white sm:text-5xl lg:text-6xl">
             {isArabic ? 'سوق مراسم' : 'Marasim Marketplace'}
           </h1>
           <p className="mb-10 text-lg text-purple-100 sm:text-xl">
-            {isArabic
-              ? 'اعثر على أفضل مزودي الخدمات لفعاليتك'
-              : 'Find the best service providers for your event'}
+            {isArabic ? 'اعثر على أفضل مزودي الخدمات لفعاليتك' : 'Find the best service providers for your event'}
           </p>
 
           {/* Search Bar */}
           <form onSubmit={handleSearch} className="mx-auto max-w-2xl">
-            <div className={`flex overflow-hidden rounded-2xl bg-white shadow-2xl ${isArabic ? 'flex-row-reverse' : ''}`}>
+            <div
+              className={`flex overflow-hidden rounded-2xl bg-white shadow-2xl ${isArabic ? 'flex-row-reverse' : ''}`}
+            >
               <input
                 type="text"
                 value={searchQuery}
@@ -191,12 +191,8 @@ export default function MarketplacePage() {
                 className={`group relative overflow-hidden rounded-2xl border p-5 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg ${cat.bg} ${cat.border}`}
               >
                 <div className="mb-3 text-4xl">{cat.icon}</div>
-                <h3 className="font-semibold text-gray-800">
-                  {isArabic ? cat.name.ar : cat.name.en}
-                </h3>
-                <p className="mt-1 text-xs text-gray-500">
-                  {isArabic ? cat.description.ar : cat.description.en}
-                </p>
+                <h3 className="font-semibold text-gray-800">{isArabic ? cat.name.ar : cat.name.en}</h3>
+                <p className="mt-1 text-xs text-gray-500">{isArabic ? cat.description.ar : cat.description.en}</p>
                 <div
                   className={`absolute bottom-0 ${isArabic ? 'left-0' : 'right-0'} h-1 w-8 rounded-full bg-gradient-to-r ${cat.color} transition-all duration-200 group-hover:w-full`}
                 />
@@ -228,12 +224,7 @@ export default function MarketplacePage() {
           ) : featuredServices.length > 0 ? (
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {featuredServices.map((service) => (
-                <ServiceCardComponent
-                  key={service.id}
-                  service={service}
-                  isArabic={isArabic}
-                  locale={locale}
-                />
+                <ServiceCardComponent key={service.id} service={service} isArabic={isArabic} locale={locale} />
               ))}
             </div>
           ) : (
@@ -243,9 +234,7 @@ export default function MarketplacePage() {
 
         {/* Become a Provider CTA */}
         <section className="overflow-hidden rounded-3xl bg-gradient-to-r from-indigo-600 to-purple-600 p-10 text-center text-white">
-          <h2 className="mb-3 text-3xl font-bold">
-            {isArabic ? 'هل أنت مزود خدمة؟' : 'Are you a service provider?'}
-          </h2>
+          <h2 className="mb-3 text-3xl font-bold">{isArabic ? 'هل أنت مزود خدمة؟' : 'Are you a service provider?'}</h2>
           <p className="mb-6 text-indigo-100">
             {isArabic
               ? 'انضم إلى سوق مراسم وابدأ بتقديم خدماتك لآلاف العملاء'
@@ -287,12 +276,18 @@ function ServiceCardComponent({
       {/* Image */}
       <div className="relative h-48 overflow-hidden bg-gradient-to-br from-purple-100 to-indigo-100">
         {image ? (
-          <img src={image} alt={name} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+          <img
+            src={image}
+            alt={name}
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          />
         ) : (
           <div className="flex h-full items-center justify-center text-6xl opacity-30">🛍️</div>
         )}
         {service.providers?.is_verified && (
-          <span className={`absolute top-3 ${isArabic ? 'left-3' : 'right-3'} rounded-full bg-green-500 px-2 py-0.5 text-xs font-semibold text-white`}>
+          <span
+            className={`absolute top-3 ${isArabic ? 'left-3' : 'right-3'} rounded-full bg-green-500 px-2 py-0.5 text-xs font-semibold text-white`}
+          >
             {isArabic ? 'موثق' : 'Verified'}
           </span>
         )}
@@ -301,7 +296,7 @@ function ServiceCardComponent({
       {/* Content */}
       <div className={`p-4 ${isArabic ? 'text-right' : 'text-left'}`}>
         <p className="mb-1 text-xs text-gray-400">{providerName}</p>
-        <h3 className="mb-2 font-semibold text-gray-900 line-clamp-2">{name}</h3>
+        <h3 className="mb-2 line-clamp-2 font-semibold text-gray-900">{name}</h3>
 
         {/* Rating */}
         <div className={`mb-3 flex items-center gap-1 ${isArabic ? 'flex-row-reverse justify-end' : ''}`}>
@@ -335,13 +330,9 @@ function EmptyState({ isArabic, locale }: { isArabic: boolean; locale: string })
   return (
     <div className="rounded-2xl border-2 border-dashed border-gray-200 py-16 text-center">
       <div className="mb-4 text-6xl">🛍️</div>
-      <h3 className="mb-2 text-lg font-semibold text-gray-700">
-        {isArabic ? 'لا توجد خدمات بعد' : 'No services yet'}
-      </h3>
+      <h3 className="mb-2 text-lg font-semibold text-gray-700">{isArabic ? 'لا توجد خدمات بعد' : 'No services yet'}</h3>
       <p className="mb-6 text-sm text-gray-500">
-        {isArabic
-          ? 'كن أول مزود خدمة في السوق'
-          : 'Be the first provider in the marketplace'}
+        {isArabic ? 'كن أول مزود خدمة في السوق' : 'Be the first provider in the marketplace'}
       </p>
       <Link
         href={`/${locale}/marketplace/become-provider`}

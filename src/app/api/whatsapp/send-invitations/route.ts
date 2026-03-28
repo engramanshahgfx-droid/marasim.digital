@@ -207,9 +207,7 @@ export async function POST(request: NextRequest) {
     try {
       const linkData = await ensureInvitationLinkForEvent(supabase as any, eventData as any, userId)
       shareLink =
-        (await adoptValidShareLink(linkData.shareLink)) ||
-        (await adoptValidShareLink(linkData.invitationId)) ||
-        ''
+        (await adoptValidShareLink(linkData.shareLink)) || (await adoptValidShareLink(linkData.invitationId)) || ''
     } catch (linkError) {
       // Do not fail invitation sending if link creation fails due schema/env issues.
       console.warn('Failed to ensure invitation link for WhatsApp send:', linkError)
@@ -282,12 +280,9 @@ export async function POST(request: NextRequest) {
     const savedInvitationData = (invitationTemplate as any)?.invitation_data || {}
     const invitationEventName =
       String(savedInvitationData.event_name || '').trim() || (eventData as any).name || 'Event'
-    const invitationDate =
-      String(savedInvitationData.date || '').trim() || (eventData as any).date || ''
-    const invitationTime =
-      String(savedInvitationData.time || '').trim() || (eventData as any).time || '14:00'
-    const invitationLocation =
-      String(savedInvitationData.location || '').trim() || (eventData as any).venue || null
+    const invitationDate = String(savedInvitationData.date || '').trim() || (eventData as any).date || ''
+    const invitationTime = String(savedInvitationData.time || '').trim() || (eventData as any).time || '14:00'
+    const invitationLocation = String(savedInvitationData.location || '').trim() || (eventData as any).venue || null
     const invitationBaseNote = [
       String(savedInvitationData.description || '').trim(),
       String(savedInvitationData.special_instructions || '').trim(),

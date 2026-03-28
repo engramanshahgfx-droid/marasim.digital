@@ -228,7 +228,9 @@ export default function InvitationsManager({
             {error && (
               <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700">{error}</div>
             )}
-            {notice && <div className="rounded-lg border border-green-200 bg-green-50 p-4 text-sm text-green-700">{notice}</div>}
+            {notice && (
+              <div className="rounded-lg border border-green-200 bg-green-50 p-4 text-sm text-green-700">{notice}</div>
+            )}
             <div className="flex flex-wrap gap-3">
               <button
                 onClick={handleCreateInvitation}
@@ -242,7 +244,7 @@ export default function InvitationsManager({
               <button
                 onClick={handleSendEmailInvitations}
                 disabled={isSendingEmail || isLoading}
-                className="inline-flex items-center gap-2 rounded-lg bg-secondary px-4 py-2 text-secondary-foreground hover:bg-secondary/90 disabled:opacity-50"
+                className="hover:bg-secondary/90 inline-flex items-center gap-2 rounded-lg bg-secondary px-4 py-2 text-secondary-foreground disabled:opacity-50"
               >
                 {isSendingEmail ? (
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-secondary-foreground border-t-transparent" />

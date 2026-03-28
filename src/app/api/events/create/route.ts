@@ -194,7 +194,7 @@ export async function POST(request: NextRequest) {
     event = insertWithBank.data
     error = insertWithBank.error
 
-    if (error && String(error.message || '').includes("bank_account_holder")) {
+    if (error && String(error.message || '').includes('bank_account_holder')) {
       const insertWithoutBank = await supabase.from('events').insert(basePayload).select().single()
       event = insertWithoutBank.data
       error = insertWithoutBank.error

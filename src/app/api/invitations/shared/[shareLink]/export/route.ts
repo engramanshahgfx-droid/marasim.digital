@@ -28,9 +28,7 @@ function buildInvitationSvg(invitation: any) {
   const accent = invitation.customization?.accent_color || '#0f172a'
   const backdropCss = customization.backdrop_css
   const svgBackground =
-    typeof backdropCss === 'string' && backdropCss.trim() && !backdropCss.includes('gradient')
-      ? backdropCss
-      : secondary
+    typeof backdropCss === 'string' && backdropCss.trim() && !backdropCss.includes('gradient') ? backdropCss : secondary
   const headerLogoMode = customization?.header_logo?.mode
   const headerLogoUrl = customization?.header_logo?.custom_url
   const canvasItems = Array.isArray(customization?.canvas_items) ? customization.canvas_items : []

@@ -16,7 +16,10 @@ export function ModernInvitation({ data }: ModernInvitationProps) {
   const accentColor = '#f093fb'
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-transparent p-0" dir={isRTL ? 'rtl' : 'ltr'}>
+    <div
+      className="flex min-h-screen w-full items-center justify-center bg-transparent p-0"
+      dir={isRTL ? 'rtl' : 'ltr'}
+    >
       <div className="aspect-[8.5/11] w-full max-w-full overflow-hidden rounded-xl shadow-2xl">
         {/* Gradient Background */}
         <div
@@ -63,7 +66,10 @@ export function ModernInvitation({ data }: ModernInvitationProps) {
               {data.host_name}
             </h2>
             {(data.guest_name || data.special_note) && (
-              <div className="mx-auto mt-3 max-w-xl rounded-lg border bg-white/70 p-3 text-left text-sm shadow-sm" style={{ borderColor: `${primaryColor}55` }}>
+              <div
+                className="mx-auto mt-3 max-w-xl rounded-lg border bg-white/70 p-3 text-left text-sm shadow-sm"
+                style={{ borderColor: `${primaryColor}55` }}
+              >
                 {data.guest_name && (
                   <p className="font-semibold" style={{ color: primaryColor }}>
                     {isRTL ? `دعوة خاصة إلى ${data.guest_name}` : `Special invitation for ${data.guest_name}`}

@@ -45,7 +45,7 @@ function isMissingColumn(error: unknown, column: string): boolean {
   const normalizedColumn = column.toLowerCase()
   return (
     normalized.includes(`could not find the '${normalizedColumn}' column`) ||
-    normalized.includes(`column \"${normalizedColumn}\" does not exist`) ||
+    normalized.includes(`column "${normalizedColumn}" does not exist`) ||
     normalized.includes(`column ${normalizedColumn} does not exist`) ||
     normalized.includes(`column invitation_templates.${normalizedColumn} does not exist`) ||
     normalized.includes(`column events.${normalizedColumn} does not exist`)
@@ -160,7 +160,8 @@ async function fetchLegacyInvitationById(supabase: SupabaseLike, invitationId: s
     event = modernEventResult.data
   } else if (
     modernEventResult.error &&
-    (isMissingColumn(modernEventResult.error, 'template_id') || isMissingColumn(modernEventResult.error, 'template_customization'))
+    (isMissingColumn(modernEventResult.error, 'template_id') ||
+      isMissingColumn(modernEventResult.error, 'template_customization'))
   ) {
     const legacyEventResult = await supabase
       .from('events')
@@ -185,7 +186,11 @@ async function fetchLegacyInvitationById(supabase: SupabaseLike, invitationId: s
 }
 
 export async function getInvitationByPublicLink(supabase: SupabaseLike, shareLink: string) {
-  const modernResult = await supabase.from('invitation_templates').select('*').eq('shareable_link', shareLink).maybeSingle()
+  const modernResult = await supabase
+    .from('invitation_templates')
+    .select('*')
+    .eq('shareable_link', shareLink)
+    .maybeSingle()
 
   if (modernResult.data) {
     return modernResult.data

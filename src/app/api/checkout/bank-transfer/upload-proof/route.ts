@@ -10,10 +10,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import twilio from 'twilio'
 
 function makeSupabase() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-    process.env.SUPABASE_SERVICE_ROLE_KEY || '',
-  )
+  return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || '', process.env.SUPABASE_SERVICE_ROLE_KEY || '')
 }
 
 function getTwilio() {
@@ -67,7 +64,8 @@ export async function POST(request: NextRequest) {
     // Load order + event + organizer
     const { data: order, error: orderError } = await supabase
       .from('bulk_orders')
-      .select(`
+      .select(
+        `
         id,
         order_number,
         total_amount,
@@ -76,7 +74,8 @@ export async function POST(request: NextRequest) {
         customer_id,
         event_id,
         events ( id, name, organizer_id )
-      `)
+      `
+      )
       .eq('id', orderId)
       .single()
 
@@ -142,16 +141,12 @@ export async function POST(request: NextRequest) {
       })
 
       // WhatsApp to organizer if they have a phone on file
-      const { data: orgUser } = await supabase
-        .from('users')
-        .select('phone, full_name')
-        .eq('id', organizerId)
-        .single()
+      const { data: orgUser } = await supabase.from('users').select('phone, full_name').eq('id', organizerId).single()
 
       if (orgUser?.phone) {
         await sendWhatsApp(
           orgUser.phone,
-          `🔔 *New Payment Receipt – ${eventName}*\n\nA guest submitted a bank transfer receipt for order ${order.order_number}.\nAmount: SAR ${(order.total_amount as number).toFixed(2)}\n\n⚡ Please check your dashboard to review and approve.`,
+          `🔔 *New Payment Receipt – ${eventName}*\n\nA guest submitted a bank transfer receipt for order ${order.order_number}.\nAmount: SAR ${(order.total_amount as number).toFixed(2)}\n\n⚡ Please check your dashboard to review and approve.`
         )
       }
     }
@@ -160,7 +155,7 @@ export async function POST(request: NextRequest) {
     if (guestPhone) {
       await sendWhatsApp(
         guestPhone,
-        `✅ *Receipt Submitted Successfully*\n\nThank you! Your payment receipt for order ${order.order_number} (${eventName}) has been received.\n\nWe'll notify you once the event organizer confirms your payment.\n\nReference: ${order.bank_reference_code}`,
+        `✅ *Receipt Submitted Successfully*\n\nThank you! Your payment receipt for order ${order.order_number} (${eventName}) has been received.\n\nWe'll notify you once the event organizer confirms your payment.\n\nReference: ${order.bank_reference_code}`
       )
     }
 
@@ -169,7 +164,7 @@ export async function POST(request: NextRequest) {
     if (adminPhone) {
       await sendWhatsApp(
         adminPhone,
-        `🔔 *Marketplace Bank Transfer Receipt*\n\nOrder: ${order.order_number}\nEvent: ${eventName}\nAmount: SAR ${(order.total_amount as number).toFixed(2)}\nRef: ${order.bank_reference_code}\n\nPlease review in admin dashboard.`,
+        `🔔 *Marketplace Bank Transfer Receipt*\n\nOrder: ${order.order_number}\nEvent: ${eventName}\nAmount: SAR ${(order.total_amount as number).toFixed(2)}\nRef: ${order.bank_reference_code}\n\nPlease review in admin dashboard.`
       )
     }
 

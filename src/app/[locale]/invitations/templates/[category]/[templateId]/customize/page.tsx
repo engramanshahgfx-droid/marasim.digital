@@ -2,12 +2,12 @@
 
 import Header from '@/components/common/Header'
 import UserAuthGuard from '@/components/UserAuthGuard'
-import TemplateCustomizationEditor from '../../../../../../../components/invitations/TemplateCustomizationEditor'
 import { getCurrentSession } from '@/lib/auth'
 import { TemplateStyle } from '@/types/invitations'
 import { useLocale } from 'next-intl'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import TemplateCustomizationEditor from '../../../../../../../components/invitations/TemplateCustomizationEditor'
 
 type RouteParams = {
   locale?: string
@@ -111,11 +111,13 @@ export default function TemplateCustomizePage() {
       const savedEventId = eventId && eventId !== 'new-event' ? eventId : eventRecord?.id || data?.event_id || ''
 
       if (!savedEventId) {
-        console.warn('No event ID available while saving. Skipping event update and saving invitation only if possible.')
+        console.warn(
+          'No event ID available while saving. Skipping event update and saving invitation only if possible.'
+        )
       }
 
       if (!eventRecord && savedEventId) {
-        console.warn('Event details not loaded, but event ID present. Continuing with invitation save.');
+        console.warn('Event details not loaded, but event ID present. Continuing with invitation save.')
       }
 
       if (savedEventId) {
@@ -196,9 +198,7 @@ export default function TemplateCustomizePage() {
           <main className="flex items-center justify-center py-24">
             <div className="text-center">
               <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-gray-300 border-t-blue-600" />
-              <p className="mt-4 text-gray-600">
-                {isArabic ? 'جاري التحميل...' : 'Loading...'}
-              </p>
+              <p className="mt-4 text-gray-600">{isArabic ? 'جاري التحميل...' : 'Loading...'}</p>
             </div>
           </main>
         </div>

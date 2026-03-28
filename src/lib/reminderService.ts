@@ -40,7 +40,7 @@ export async function sendPendingReminders(reminderType: string = 'initial') {
         },
       }
     } else if (reminderType === 'reminder_1_hour') {
-      eventFilter = {
+      _eventFilter = {
         event_date: {
           gte: new Date().toISOString(),
           lte: oneHourFromNow.toISOString(),
@@ -180,10 +180,7 @@ export async function getReminderStats(eventId: string) {
  */
 export async function toggleEventReminders(eventId: string, enabled: boolean) {
   try {
-    const { error } = await supabase
-      .from('events')
-      .update({ reminder_enabled: enabled })
-      .eq('id', eventId)
+    const { error } = await supabase.from('events').update({ reminder_enabled: enabled }).eq('id', eventId)
 
     if (error) throw error
 

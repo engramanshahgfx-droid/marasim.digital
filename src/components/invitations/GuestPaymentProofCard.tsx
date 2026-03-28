@@ -17,7 +17,12 @@ interface GuestPaymentProofCardProps {
   bankDetails: BankDetails
 }
 
-export default function GuestPaymentProofCard({ eventId, guestId, shareLink, bankDetails }: GuestPaymentProofCardProps) {
+export default function GuestPaymentProofCard({
+  eventId,
+  guestId,
+  shareLink,
+  bankDetails,
+}: GuestPaymentProofCardProps) {
   const locale = useLocale()
   const isArabic = locale === 'ar'
 
@@ -67,13 +72,16 @@ export default function GuestPaymentProofCard({ eventId, guestId, shareLink, ban
 
       if (!response.ok) {
         const message =
-          payload?.error || payload?.message ||
+          payload?.error ||
+          payload?.message ||
           text?.substring(0, 500) ||
           (isArabic ? 'فشل رفع الإثبات' : 'Failed to submit proof')
         throw new Error(message)
       }
 
-      setMessage(isArabic ? 'تم رفع إثبات الدفع بنجاح وسيتم مراجعته.' : 'Payment proof uploaded successfully and pending review.')
+      setMessage(
+        isArabic ? 'تم رفع إثبات الدفع بنجاح وسيتم مراجعته.' : 'Payment proof uploaded successfully and pending review.'
+      )
       setAmount('')
       setPaymentDate('')
       setNotes('')
@@ -93,10 +101,18 @@ export default function GuestPaymentProofCard({ eventId, guestId, shareLink, ban
 
       <div className="mb-5 rounded-lg border border-blue-200 bg-blue-50 p-4 text-sm text-blue-800">
         <p className="font-semibold">{isArabic ? 'بيانات الحساب البنكي' : 'Bank Account Details'}</p>
-        <p>{isArabic ? 'اسم صاحب الحساب:' : 'Account Holder:'} {bankDetails.bank_account_holder || '-'}</p>
-        <p>{isArabic ? 'اسم البنك:' : 'Bank Name:'} {bankDetails.bank_name || '-'}</p>
-        <p>{isArabic ? 'رقم الحساب:' : 'Account Number:'} {bankDetails.bank_account_number || '-'}</p>
-        <p>{isArabic ? 'الآيبان:' : 'IBAN:'} {bankDetails.bank_iban || '-'}</p>
+        <p>
+          {isArabic ? 'اسم صاحب الحساب:' : 'Account Holder:'} {bankDetails.bank_account_holder || '-'}
+        </p>
+        <p>
+          {isArabic ? 'اسم البنك:' : 'Bank Name:'} {bankDetails.bank_name || '-'}
+        </p>
+        <p>
+          {isArabic ? 'رقم الحساب:' : 'Account Number:'} {bankDetails.bank_account_number || '-'}
+        </p>
+        <p>
+          {isArabic ? 'الآيبان:' : 'IBAN:'} {bankDetails.bank_iban || '-'}
+        </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -114,7 +130,9 @@ export default function GuestPaymentProofCard({ eventId, guestId, shareLink, ban
             />
           </div>
           <div>
-            <label className="mb-1 block text-sm font-medium text-gray-700">{isArabic ? 'تاريخ الدفع' : 'Payment Date'}</label>
+            <label className="mb-1 block text-sm font-medium text-gray-700">
+              {isArabic ? 'تاريخ الدفع' : 'Payment Date'}
+            </label>
             <input
               type="date"
               value={paymentDate}
@@ -139,7 +157,9 @@ export default function GuestPaymentProofCard({ eventId, guestId, shareLink, ban
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-gray-700">{isArabic ? 'ملاحظات (اختياري)' : 'Notes (optional)'}</label>
+          <label className="mb-1 block text-sm font-medium text-gray-700">
+            {isArabic ? 'ملاحظات (اختياري)' : 'Notes (optional)'}
+          </label>
           <textarea
             rows={3}
             value={notes}
@@ -148,7 +168,9 @@ export default function GuestPaymentProofCard({ eventId, guestId, shareLink, ban
           />
         </div>
 
-        {message && <div className="rounded-md border border-green-200 bg-green-50 p-3 text-sm text-green-700">{message}</div>}
+        {message && (
+          <div className="rounded-md border border-green-200 bg-green-50 p-3 text-sm text-green-700">{message}</div>
+        )}
         {error && <div className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error}</div>}
 
         <button
@@ -156,7 +178,13 @@ export default function GuestPaymentProofCard({ eventId, guestId, shareLink, ban
           disabled={!canSubmit || isSubmitting}
           className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
         >
-          {isSubmitting ? (isArabic ? 'جارٍ الرفع...' : 'Uploading...') : isArabic ? 'رفع إثبات الدفع' : 'Upload Payment Proof'}
+          {isSubmitting
+            ? isArabic
+              ? 'جارٍ الرفع...'
+              : 'Uploading...'
+            : isArabic
+              ? 'رفع إثبات الدفع'
+              : 'Upload Payment Proof'}
         </button>
       </form>
 

@@ -51,25 +51,36 @@ export async function GET(request: NextRequest) {
     const eventSignatureMap = new Map<string, string[]>()
     const eventById = new Map<string, any>()
     events?.forEach((e: any) => {
-      const signature = `${String(e.name || '').trim().toLowerCase()}|${String(e.venue || '').trim().toLowerCase()}`
+      const signature = `${String(e.name || '')
+        .trim()
+        .toLowerCase()}|${String(e.venue || '')
+        .trim()
+        .toLowerCase()}`
       if (!eventSignatureMap.has(signature)) eventSignatureMap.set(signature, [])
       eventSignatureMap.get(signature)?.push(String(e.id))
       eventById.set(String(e.id), e)
     })
 
-    const guestStatsBySignature = new Map<string, {
-      invitationsSent: number
-      confirmed: number
-      declined: number
-      noResponse: number
-      checkedIn: number
-    }>()
+    const guestStatsBySignature = new Map<
+      string,
+      {
+        invitationsSent: number
+        confirmed: number
+        declined: number
+        noResponse: number
+        checkedIn: number
+      }
+    >()
 
     for (const guest of guests || []) {
       const eventId = String((guest as any).event_id)
       const event = eventById.get(eventId)
       if (!event) continue
-      const signature = `${String(event.name || '').trim().toLowerCase()}|${String(event.venue || '').trim().toLowerCase()}`
+      const signature = `${String(event.name || '')
+        .trim()
+        .toLowerCase()}|${String(event.venue || '')
+        .trim()
+        .toLowerCase()}`
 
       const current = guestStatsBySignature.get(signature) || {
         invitationsSent: 0,
@@ -93,14 +104,22 @@ export async function GET(request: NextRequest) {
       const eventId = String((invitation as any).event_id)
       const event = eventById.get(eventId)
       if (!event) continue
-      const signature = `${String(event.name || '').trim().toLowerCase()}|${String(event.venue || '').trim().toLowerCase()}`
+      const signature = `${String(event.name || '')
+        .trim()
+        .toLowerCase()}|${String(event.venue || '')
+        .trim()
+        .toLowerCase()}`
 
       const currentOpenCount = openCountBySignature.get(signature) || 0
       openCountBySignature.set(signature, currentOpenCount + ((invitation as any).view_count || 0))
     }
 
     const enrichedEvents = (events || []).map((event: any) => {
-      const signature = `${String(event.name || '').trim().toLowerCase()}|${String(event.venue || '').trim().toLowerCase()}`
+      const signature = `${String(event.name || '')
+        .trim()
+        .toLowerCase()}|${String(event.venue || '')
+        .trim()
+        .toLowerCase()}`
       const guestStats =
         guestStatsBySignature.get(signature) ||
         ({ invitationsSent: 0, confirmed: 0, declined: 0, noResponse: 0, checkedIn: 0 } as const)

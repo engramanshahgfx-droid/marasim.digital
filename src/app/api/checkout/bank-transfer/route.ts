@@ -9,19 +9,12 @@ import crypto from 'crypto'
 import { NextRequest, NextResponse } from 'next/server'
 
 function makeSupabase() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-    process.env.SUPABASE_SERVICE_ROLE_KEY || '',
-  )
+  return createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || '', process.env.SUPABASE_SERVICE_ROLE_KEY || '')
 }
 
 async function getBankDetails(supabase: ReturnType<typeof makeSupabase>) {
   try {
-    const { data } = await supabase
-      .from('bank_accounts')
-      .select('*')
-      .eq('is_active', true)
-      .single()
+    const { data } = await supabase.from('bank_accounts').select('*').eq('is_active', true).single()
     if (data) return data
   } catch {
     // fall through to env vars
@@ -179,17 +172,20 @@ export async function POST(request: NextRequest) {
 
     const bankDetails = await getBankDetails(supabase)
 
-    return NextResponse.json({
-      success: true,
-      data: {
-        bulk_order_id: bulkOrder.id,
-        order_number: orderNumber,
-        reference_code: referenceCode,
-        total_amount: totalAmount,
-        bank_details: bankDetails,
-        items_count: cartItems.length,
+    return NextResponse.json(
+      {
+        success: true,
+        data: {
+          bulk_order_id: bulkOrder.id,
+          order_number: orderNumber,
+          reference_code: referenceCode,
+          total_amount: totalAmount,
+          bank_details: bankDetails,
+          items_count: cartItems.length,
+        },
       },
-    }, { status: 201 })
+      { status: 201 }
+    )
   } catch (error) {
     console.error('Bank transfer checkout error:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })

@@ -1,7 +1,7 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
 import type { Html5Qrcode as Html5QrcodeType } from 'html5-qrcode'
+import { useEffect, useRef, useState } from 'react'
 
 interface ScannerProps {
   onScan: (token: string) => void

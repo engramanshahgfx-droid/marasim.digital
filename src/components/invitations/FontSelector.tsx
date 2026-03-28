@@ -1,7 +1,7 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
 import { FontFamily } from '@/types/invitations'
+import { useTranslations } from 'next-intl'
 
 interface FontSelectorProps {
   value: FontFamily
@@ -52,7 +52,10 @@ export default function FontSelector({ value, onChange, label = 'Font Style' }: 
 
       <div className="space-y-2">
         {FONT_OPTIONS.map((font) => (
-          <label key={font.id} className="flex cursor-pointer items-start gap-3 rounded-lg border-2 border-gray-200 p-3 transition-all hover:border-blue-400">
+          <label
+            key={font.id}
+            className="flex cursor-pointer items-start gap-3 rounded-lg border-2 border-gray-200 p-3 transition-all hover:border-blue-400"
+          >
             <input
               type="radio"
               name="font-family"
@@ -68,7 +71,11 @@ export default function FontSelector({ value, onChange, label = 'Font Style' }: 
               <div className="mt-1 text-sm text-gray-600">{font.description}</div>
             </div>
 
-            {value === font.id && <div className="mt-1 inline-block rounded bg-blue-100 px-2 py-1 text-xs font-medium text-blue-600">Selected</div>}
+            {value === font.id && (
+              <div className="mt-1 inline-block rounded bg-blue-100 px-2 py-1 text-xs font-medium text-blue-600">
+                Selected
+              </div>
+            )}
           </label>
         ))}
       </div>

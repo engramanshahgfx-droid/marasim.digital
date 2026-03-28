@@ -61,12 +61,8 @@ export default function TemplateSelectionPage() {
 
                   {/* Title */}
                   <div>
-                    <h2 className="text-2xl font-bold text-gray-900">
-                      {isArabic ? category.name_ar : category.name}
-                    </h2>
-                    <p className="mt-2 text-gray-600">
-                      {isArabic ? category.description_ar : category.description}
-                    </p>
+                    <h2 className="text-2xl font-bold text-gray-900">{isArabic ? category.name_ar : category.name}</h2>
+                    <p className="mt-2 text-gray-600">{isArabic ? category.description_ar : category.description}</p>
                   </div>
 
                   {/* Arrow Indicator */}
@@ -82,9 +78,7 @@ export default function TemplateSelectionPage() {
 
           {/* Info Section */}
           <div className="mt-16 rounded-lg bg-blue-50 p-8 text-center">
-            <h3 className="mb-2 text-lg font-semibold text-blue-900">
-              {isArabic ? 'نصيحة' : 'Tip'}
-            </h3>
+            <h3 className="mb-2 text-lg font-semibold text-blue-900">{isArabic ? 'نصيحة' : 'Tip'}</h3>
             <p className="text-blue-700">
               {isArabic
                 ? 'يمكنك تغيير نمط القالب والألوان والنصوص بعد اختياره'

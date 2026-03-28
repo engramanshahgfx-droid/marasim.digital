@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 
 const supabase = createClient(
@@ -23,10 +23,7 @@ export async function POST(request: NextRequest) {
       if (origin !== process.env.NEXT_PUBLIC_APP_URL && !authHeader?.includes('cron')) {
         // For testing, allow any internal call
         if (!process.env.NODE_ENV?.includes('development')) {
-          return NextResponse.json(
-            { error: 'Unauthorized' },
-            { status: 401 }
-          )
+          return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
         }
       }
     }
@@ -34,10 +31,7 @@ export async function POST(request: NextRequest) {
     const { guestId, eventId, eventName, guestName, guestEmail, reminderType } = await request.json()
 
     if (!guestEmail || !eventName || !reminderType) {
-      return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
-      )
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
     }
 
     // Generate reminder template

@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server'
 import { sendPendingReminders } from '@/lib/reminderService'
+import { NextRequest, NextResponse } from 'next/server'
 
 /**
  * GET /api/cron/reminders
@@ -14,17 +14,11 @@ export async function GET(request: NextRequest) {
 
     if (!expectedSecret) {
       console.warn('CRON_SECRET not set - cron jobs disabled')
-      return NextResponse.json(
-        { message: 'Cron not configured' },
-        { status: 400 }
-      )
+      return NextResponse.json({ message: 'Cron not configured' }, { status: 400 })
     }
 
     if (authHeader !== `Bearer ${expectedSecret}`) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
     // Determine which reminders to send based on query parameter

@@ -1,7 +1,7 @@
 'use client'
 
-import { getCurrentSession } from '@/lib/auth'
 import Icon from '@/components/ui/AppIcon'
+import { getCurrentSession } from '@/lib/auth'
 import { useLocale } from 'next-intl'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'

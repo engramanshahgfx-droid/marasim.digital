@@ -4,9 +4,7 @@ import { NextRequest, NextResponse } from 'next/server'
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || '', process.env.SUPABASE_SERVICE_ROLE_KEY || '')
 
 function toCsv(rows: string[][]) {
-  return rows
-    .map((row) => row.map((value) => `"${String(value ?? '').replace(/"/g, '""')}"`).join(','))
-    .join('\n')
+  return rows.map((row) => row.map((value) => `"${String(value ?? '').replace(/"/g, '""')}"`).join(',')).join('\n')
 }
 
 export async function GET(request: NextRequest) {
@@ -22,7 +20,10 @@ export async function GET(request: NextRequest) {
 
     if (authError || !user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-    const { data: events } = await supabase.from('events').select('id, name, date, venue, status').eq('user_id', user.id)
+    const { data: events } = await supabase
+      .from('events')
+      .select('id, name, date, venue, status')
+      .eq('user_id', user.id)
     const eventIds = (events || []).map((event: any) => event.id)
     const { data: guests } = eventIds.length
       ? await supabase.from('guests').select('id, event_id, name, status, checked_in').in('event_id', eventIds)
@@ -32,32 +33,42 @@ export async function GET(request: NextRequest) {
       : { data: [] as any[] }
     const templateIds = (invitations || []).map((invitation: any) => invitation.id)
     const { data: views } = templateIds.length
-      ? await supabase.from('invitation_views').select('invitation_template_id, viewed_at, metadata').in('invitation_template_id', templateIds)
+      ? await supabase
+          .from('invitation_views')
+          .select('invitation_template_id, viewed_at, metadata')
+          .in('invitation_template_id', templateIds)
       : { data: [] as any[] }
 
     const templateToEvent = new Map((invitations || []).map((invitation: any) => [invitation.id, invitation.event_id]))
     const guestById = new Map((guests || []).map((guest: any) => [guest.id, guest]))
     const eventById = new Map((events || []).map((event: any) => [event.id, event]))
 
-    const rows: string[][] = [[
-      'Event',
-      'Date',
-      'Venue',
-      'Status',
-      'Guests',
-      'Confirmed',
-      'Declined',
-      'Pending',
-      'Checked In',
-      'Total Opens',
-      'Unique Guest Opens',
-      'Open Rate %',
-    ]]
+    const rows: string[][] = [
+      [
+        'Event',
+        'Date',
+        'Venue',
+        'Status',
+        'Guests',
+        'Confirmed',
+        'Declined',
+        'Pending',
+        'Checked In',
+        'Total Opens',
+        'Unique Guest Opens',
+        'Open Rate %',
+      ],
+    ]
 
     for (const event of events || []) {
       const eventGuests = (guests || []).filter((guest: any) => guest.event_id === (event as any).id)
-      const eventInvitations = (invitations || []).filter((invitation: any) => invitation.event_id === (event as any).id)
-      const totalOpens = eventInvitations.reduce((sum: number, invitation: any) => sum + (invitation.view_count || 0), 0)
+      const eventInvitations = (invitations || []).filter(
+        (invitation: any) => invitation.event_id === (event as any).id
+      )
+      const totalOpens = eventInvitations.reduce(
+        (sum: number, invitation: any) => sum + (invitation.view_count || 0),
+        0
+      )
       const uniqueGuestOpens = new Set(
         (views || [])
           .filter((view: any) => templateToEvent.get(view.invitation_template_id) === (event as any).id)

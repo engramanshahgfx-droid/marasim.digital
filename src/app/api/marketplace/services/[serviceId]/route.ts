@@ -1,10 +1,7 @@
 import { MarketplaceService } from '@/lib/marketplaceService'
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function GET(
-  _request: NextRequest,
-  { params }: { params: Promise<{ serviceId: string }> }
-) {
+export async function GET(_request: NextRequest, { params }: { params: Promise<{ serviceId: string }> }) {
   try {
     const { serviceId } = await params
 
