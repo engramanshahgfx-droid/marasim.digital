@@ -266,7 +266,7 @@ const QuickActionToolbar = ({ className = '' }: QuickActionToolbarProps) => {
                       }}
                       className="transition-smooth hover:bg-muted/80 active:scale-97 flex flex-col items-center gap-2 rounded-md bg-muted p-4"
                     >
-                      <Icon name={action.icon as any} size={24} className="text-primary" />
+                      <Icon name={action.icon} size={24} className="text-primary" />
                       <span className="text-center text-xs font-medium text-text-primary">
                         {isArabic ? action.labelAr : action.label}
                       </span>

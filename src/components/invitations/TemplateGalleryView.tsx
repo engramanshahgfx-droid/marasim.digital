@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react'
 import { useLocale } from 'next-intl'
-import { INVITATION_TEMPLATES, TemplateStyle } from '@/types/invitations'
+import { INVITATION_TEMPLATES, InvitationData, TemplateStyle } from '@/types/invitations'
 import ElegantInvitation from './ElegantInvitation'
 import MinimalInvitation from './MinimalInvitation'
 import ModernInvitation from './ModernInvitation'
@@ -66,7 +66,7 @@ const PAPERLESS_POST_STICKERS = [
   { id: 48, name: 'Peony', imageUrl: 'https://assets.ppassets.com/p-2M7X9pNK15ZkzGY81ikyPG/flyer/sticker_svg/static_thumb_small' },
 ]
 
-const TEMPLATE_COMPONENTS: Record<TemplateStyle, React.ComponentType<any>> = {
+const TEMPLATE_COMPONENTS: Record<TemplateStyle, React.ComponentType<{ data: InvitationData }>> = {
   elegant: ElegantInvitation,
   modern: ModernInvitation,
   minimal: MinimalInvitation,

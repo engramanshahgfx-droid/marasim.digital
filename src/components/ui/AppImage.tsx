@@ -17,7 +17,7 @@ interface AppImageProps {
   sizes?: string
   onClick?: () => void
   fallbackSrc?: string
-  [key: string]: any
+  [key: string]: unknown
 }
 
 function AppImage({

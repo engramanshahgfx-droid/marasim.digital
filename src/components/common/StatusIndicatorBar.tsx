@@ -53,7 +53,7 @@ const StatusIndicatorBar = ({ className = '', eventId }: StatusIndicatorBarProps
   ])
 
   const [isExpanded, setIsExpanded] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
+  const [_isLoading, setIsLoading] = useState(true)
 
   // Fetch event statistics
   useEffect(() => {
@@ -171,7 +171,7 @@ const StatusIndicatorBar = ({ className = '', eventId }: StatusIndicatorBarProps
             {metrics.map((metric, index) => (
               <div key={index} className="flex items-center gap-3">
                 <div className={`rounded-md p-2 ${getColorClasses(metric.color)}`}>
-                  <Icon name={metric.icon as any} size={20} />
+                  <Icon name={metric.icon} size={20} />
                 </div>
                 <div className="flex flex-col">
                   <span className="font-caption text-xs text-text-secondary">
@@ -208,7 +208,7 @@ const StatusIndicatorBar = ({ className = '', eventId }: StatusIndicatorBarProps
                 {metrics.map((metric, index) => (
                   <div key={index} className="flex items-center gap-2 rounded-md bg-muted p-3">
                     <div className={`rounded-md p-2 ${getColorClasses(metric.color)}`}>
-                      <Icon name={metric.icon as any} size={16} />
+                      <Icon name={metric.icon} size={16} />
                     </div>
                     <div className="flex flex-col">
                       <span className="font-caption text-xs text-text-secondary">
