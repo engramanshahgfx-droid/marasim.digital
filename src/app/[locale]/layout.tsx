@@ -2,8 +2,6 @@ import { NextIntlClientProvider } from 'next-intl'
 import { getMessages } from 'next-intl/server'
 import { ReactNode } from 'react'
 
-export const dynamic = 'force-dynamic'
-
 type Props = {
   children: ReactNode
   params: Promise<{
