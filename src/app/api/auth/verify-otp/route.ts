@@ -98,7 +98,8 @@ export async function POST(request: NextRequest) {
     })
 
     // ===== EMAIL-BASED VERIFICATION =====
-    if (normalizedEmail && !normalizedPhone) {
+    // Always use email OTP path when email is present (phone is optional profile data)
+    if (normalizedEmail) {
       // Check OTP from verification_codes table
       const { data: otpRecord, error: otpError } = await supabaseAdmin
         .from('verification_codes')
@@ -150,13 +151,12 @@ export async function POST(request: NextRequest) {
         {
           id: authData.user.id,
           email: normalizedEmail,
-          phone: null,
+          phone: normalizedPhone || null,
           full_name: sanitizedFullName,
           account_type: 'free',
           subscription_status: 'trial',
           plan_type: 'free',
           event_limit: 1,
-          guest_limit: 50,
         },
       ])
 

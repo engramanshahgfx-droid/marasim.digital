@@ -11,11 +11,14 @@ export interface Database {
           id: string
           email: string
           full_name: string | null
-          role: 'admin' | 'staff'
-          subscription_status: 'active' | 'inactive' | 'cancelled' | 'pending' | 'trial'
-          plan_type: 'basic' | 'pro' | 'enterprise'
+          phone: string | null
+          role: 'user' | 'super_admin'
+          account_type: 'free' | 'paid'
+          subscription_status: 'active' | 'inactive' | 'cancelled' | 'pending' | 'trial' | 'suspended'
+          plan_type: 'free' | 'basic' | 'pro' | 'enterprise'
           subscription_expiry: string | null
-          payment_status: 'pending' | 'paid' | 'failed'
+          event_limit: number
+          payment_status: 'pending' | 'paid' | 'failed' | 'refunded'
           stripe_customer_id: string | null
           stripe_subscription_id: string | null
           whatsapp_limit_per_month: number
@@ -27,11 +30,14 @@ export interface Database {
           id?: string
           email: string
           full_name?: string | null
-          role?: 'admin' | 'staff'
-          subscription_status?: 'active' | 'inactive' | 'cancelled' | 'pending' | 'trial'
-          plan_type?: 'basic' | 'pro' | 'enterprise'
+          phone?: string | null
+          role?: 'user' | 'super_admin'
+          account_type?: 'free' | 'paid'
+          subscription_status?: 'active' | 'inactive' | 'cancelled' | 'pending' | 'trial' | 'suspended'
+          plan_type?: 'free' | 'basic' | 'pro' | 'enterprise'
           subscription_expiry?: string | null
-          payment_status?: 'pending' | 'paid' | 'failed'
+          event_limit?: number
+          payment_status?: 'pending' | 'paid' | 'failed' | 'refunded'
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
           whatsapp_limit_per_month?: number
@@ -43,11 +49,14 @@ export interface Database {
           id?: string
           email?: string
           full_name?: string | null
-          role?: 'admin' | 'staff'
-          subscription_status?: 'active' | 'inactive' | 'cancelled' | 'pending' | 'trial'
-          plan_type?: 'basic' | 'pro' | 'enterprise'
+          phone?: string | null
+          role?: 'user' | 'super_admin'
+          account_type?: 'free' | 'paid'
+          subscription_status?: 'active' | 'inactive' | 'cancelled' | 'pending' | 'trial' | 'suspended'
+          plan_type?: 'free' | 'basic' | 'pro' | 'enterprise'
           subscription_expiry?: string | null
-          payment_status?: 'pending' | 'paid' | 'failed'
+          event_limit?: number
+          payment_status?: 'pending' | 'paid' | 'failed' | 'refunded'
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
           whatsapp_limit_per_month?: number

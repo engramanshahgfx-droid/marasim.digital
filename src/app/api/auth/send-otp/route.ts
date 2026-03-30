@@ -92,7 +92,8 @@ export async function POST(request: NextRequest) {
     }
 
     // ===== EMAIL-BASED VERIFICATION (Resend) =====
-    if (normalizedEmail && (!normalizedPhone || method === 'email')) {
+    // Always use email path when email is present — phone is optional profile data only
+    if (normalizedEmail) {
       if (!resend || !resendFromEmail) {
         return NextResponse.json(
           { error: 'Email service is not configured. Set RESEND_API_KEY and RESEND_FROM_EMAIL.' },
