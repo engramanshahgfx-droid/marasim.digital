@@ -13,7 +13,7 @@ function makeSupabase() {
 
 async function sendWhatsApp(to: string, body: string) {
   try {
-    const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_API_KEY_SECRET)
+    const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
     const formatted = to.startsWith('+') ? to : to.startsWith('966') ? '+' + to : '+966' + to
     await client.messages.create({
       from: 'whatsapp:' + process.env.TWILIO_PHONE_NUMBER,

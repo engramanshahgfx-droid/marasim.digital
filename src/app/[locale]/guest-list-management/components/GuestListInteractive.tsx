@@ -191,7 +191,7 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
             checkInTime: g.checkInTime,
             qrCode: g.qrCode,
             avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(g.name)}&background=4F46E5&color=fff&size=128`,
-            avatarAlt: `Avatar for ${g.name}`,
+            avatarAlt: isArabic ? `الصورة الرمزية لـ ${g.name}` : `Avatar for ${g.name}`,
             plusOnes: g.plusOnes || 0,
           }))
 
@@ -206,7 +206,7 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
         setIsLoadingGuests(false)
       }
     },
-    [sendAuthorizedRequest]
+    [isArabic, sendAuthorizedRequest]
   )
 
   // Fetch events on mount
@@ -215,7 +215,7 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
       try {
         const auth = await getAuthContext()
         if (!auth.userId || !auth.token) {
-          setUploadError('User not authenticated')
+          setUploadError(isArabic ? 'المستخدم غير مصادق' : 'User not authenticated')
           setIsHydrated(true)
           return
         }
@@ -239,7 +239,7 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
         }
       } catch (err) {
         console.error('Error initializing component:', err)
-        setUploadError('Failed to load events')
+        setUploadError(isArabic ? 'فشل تحميل الفعاليات' : 'Failed to load events')
       } finally {
         setIsLoadingEvents(false)
         setIsHydrated(true)
@@ -247,7 +247,7 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
     }
 
     initializeComponent()
-  }, [getAuthContext, sendAuthorizedRequest])
+  }, [getAuthContext, isArabic, sendAuthorizedRequest])
 
   // Fetch guests when event is selected
   useEffect(() => {
@@ -345,7 +345,7 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
   }
 
   const handleDeleteGuest = async (id: string | number) => {
-    if (!confirm('Are you sure you want to delete this guest?')) {
+    if (!confirm(isArabic ? 'هل أنت متأكد أنك تريد حذف هذا الضيف؟' : 'Are you sure you want to delete this guest?')) {
       return
     }
 
@@ -368,7 +368,11 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
       }
     } catch (err) {
       console.error('Error deleting guest:', err)
-      setUploadError(`Failed to delete guest: ${err instanceof Error ? err.message : 'Unknown error'}`)
+      setUploadError(
+        isArabic
+          ? `فشل حذف الضيف: ${err instanceof Error ? err.message : 'خطأ غير معروف'}`
+          : `Failed to delete guest: ${err instanceof Error ? err.message : 'Unknown error'}`
+      )
     }
   }
 
@@ -495,7 +499,7 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
 
       const data = await response.json()
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to send reminders')
+        throw new Error(data.error || (isArabic ? 'فشل إرسال التذكيرات' : 'Failed to send reminders'))
       }
 
       setUploadSuccess(
@@ -522,7 +526,15 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
     }
 
     const rows = [
-      ['Name', 'Phone', 'Email', 'Delivery Status', 'Response Status', 'Check-in Time', 'Plus Ones'],
+      [
+        isArabic ? 'الاسم' : 'Name',
+        isArabic ? 'الجوال' : 'Phone',
+        isArabic ? 'البريد الإلكتروني' : 'Email',
+        isArabic ? 'حالة الإرسال' : 'Delivery Status',
+        isArabic ? 'حالة الرد' : 'Response Status',
+        isArabic ? 'وقت تسجيل الحضور' : 'Check-in Time',
+        isArabic ? 'المرافقون' : 'Plus Ones',
+      ],
       ...guestsToExport.map((guest) => [
         guest.name,
         guest.phone,
@@ -539,7 +551,7 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.download = 'selected-guests.csv'
+    link.download = isArabic ? 'الضيوف-المحددين.csv' : 'selected-guests.csv'
     document.body.appendChild(link)
     link.click()
     link.remove()
@@ -556,7 +568,7 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
 
   const handleFileUpload = async (file: File, replace: boolean = false) => {
     if (!selectedEventId) {
-      setUploadError('Please select an event first')
+      setUploadError(isArabic ? 'يرجى اختيار فعالية أولاً' : 'Please select an event first')
       return
     }
 
@@ -595,7 +607,7 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
           )
           return
         }
-        throw new Error(data.error || 'Failed to upload file')
+        throw new Error(data.error || (isArabic ? 'فشل رفع الملف' : 'Failed to upload file'))
       }
 
       console.log('Upload successful:', data)
@@ -609,7 +621,11 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
       await fetchGuests(selectedEventId)
     } catch (err) {
       console.error('Error uploading file:', err)
-      setUploadError(`Upload failed: ${err instanceof Error ? err.message : 'Unknown error'}`)
+      setUploadError(
+        isArabic
+          ? `فشل الرفع: ${err instanceof Error ? err.message : 'خطأ غير معروف'}`
+          : `Upload failed: ${err instanceof Error ? err.message : 'Unknown error'}`
+      )
     } finally {
       setIsUploading(false)
     }
@@ -623,7 +639,7 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
 
   const handleClearAllGuests = async () => {
     if (!selectedEventId) {
-      setUploadError('Please select an event first')
+      setUploadError(isArabic ? 'يرجى اختيار فعالية أولاً' : 'Please select an event first')
       return
     }
 
@@ -649,7 +665,7 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
       const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to delete guests')
+        throw new Error(data.error || (isArabic ? 'فشل حذف الضيوف' : 'Failed to delete guests'))
       }
 
       setUploadSuccess(isArabic ? 'تم حذف جميع الضيوف بنجاح' : 'All guests have been deleted successfully')
@@ -660,7 +676,11 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
       await fetchGuests(selectedEventId)
     } catch (err) {
       console.error('Error deleting guests:', err)
-      setUploadError(`Failed to clear guests: ${err instanceof Error ? err.message : 'Unknown error'}`)
+      setUploadError(
+        isArabic
+          ? `فشل حذف جميع الضيوف: ${err instanceof Error ? err.message : 'خطأ غير معروف'}`
+          : `Failed to clear guests: ${err instanceof Error ? err.message : 'Unknown error'}`
+      )
     } finally {
       setIsClearing(false)
     }
@@ -836,7 +856,20 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
                 <div className="border-current/20 mt-3 max-h-36 overflow-y-auto rounded border bg-white/60 p-2">
                   {whatsAppReport.results.slice(0, 8).map((result, idx) => (
                     <p key={`${result.sid || result.phone}-${idx}`} className="text-xs">
-                      {result.phone} - {(result.status || 'pending').toUpperCase()}
+                      {result.phone} -
+                      {isArabic
+                        ? result.status === 'delivered'
+                          ? ' تم التسليم'
+                          : result.status === 'failed'
+                            ? ' فشل'
+                            : result.status === 'sent'
+                              ? ' تم الإرسال'
+                              : result.status === 'queued'
+                                ? ' في قائمة الإرسال'
+                                : result.status === 'pending'
+                                  ? ' قيد الانتظار'
+                                  : ` ${(result.status || 'pending').toUpperCase()}`
+                        : ` ${(result.status || 'pending').toUpperCase()}`}
                       {result.errorMessage ? ` (${result.errorMessage})` : ''}
                     </p>
                   ))}
@@ -850,7 +883,14 @@ const GuestListInteractive = ({ onEventSelected }: GuestListInteractiveProps) =>
                   </p>
                   {whatsAppReport.mediaAttachmentAttempts.slice(0, 8).map((attempt, idx) => (
                     <p key={`${attempt.phone}-${idx}`} className="text-xs">
-                      {attempt.phone} - {attempt.attempted ? 'MEDIA_ATTEMPTED' : 'MEDIA_SKIPPED'}
+                      {attempt.phone} -
+                      {attempt.attempted
+                        ? isArabic
+                          ? ' تمت محاولة الإرفاق'
+                          : ' MEDIA_ATTEMPTED'
+                        : isArabic
+                          ? ' تم تخطي الإرفاق'
+                          : ' MEDIA_SKIPPED'}
                       {attempt.mode ? ` | mode=${attempt.mode}` : ''}
                       {attempt.reason ? ` | reason=${attempt.reason}` : ''}
                     </p>

@@ -6,9 +6,16 @@ import { createClient } from '@supabase/supabase-js'
 import { NextRequest, NextResponse } from 'next/server'
 import Stripe from 'stripe'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
-  apiVersion: '2026-02-25.clover',
-})
+let _stripe: Stripe | null = null
+function getStripe(): Stripe {
+  if (!_stripe) {
+    if (!process.env.STRIPE_SECRET_KEY) {
+      throw new Error('STRIPE_SECRET_KEY is not configured')
+    }
+    _stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2026-02-25.clover' })
+  }
+  return _stripe
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -138,7 +145,7 @@ export async function POST(request: NextRequest) {
     // Create Stripe payment intent
     let paymentIntentId: string | null = null
     try {
-      const paymentIntent = await stripe.paymentIntents.create({
+      const paymentIntent = await getStripe().paymentIntents.create({
         amount: Math.round(totalAmount * 100), // Amount in cents
         currency: 'sar', // Saudi Riyal
         metadata: {

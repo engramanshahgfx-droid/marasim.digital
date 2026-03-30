@@ -62,14 +62,14 @@ export default function ShoppingCart({ isOpen, onClose, eventId }: ShoppingCartP
             <div className="flex h-32 items-center justify-center">
               <div className="h-8 w-8 animate-spin rounded-full border-4 border-purple-600 border-t-transparent" />
             </div>
-          ) : !cart || cart.items.length === 0 ? (
+          ) : !cart || !cart.items || cart.items.length === 0 ? (
             <div className="flex h-48 flex-col items-center justify-center gap-3">
               <AiOutlineShoppingCart className="h-12 w-12 text-gray-300" />
               <p className="text-center text-gray-500">{isArabic ? 'سلتك فارغة' : 'Your cart is empty'}</p>
             </div>
           ) : (
             <div className="space-y-4">
-              {cart.items.map((item) => (
+              {(cart.items || []).map((item) => (
                 <div key={item.id} className="flex gap-3 border-b border-gray-100 pb-4">
                   {/* Service Image */}
                   {item.service?.images?.[0]?.url && (

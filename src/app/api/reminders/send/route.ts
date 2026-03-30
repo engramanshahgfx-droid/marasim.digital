@@ -62,7 +62,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to fetch pending guests' }, { status: 500 })
     }
 
-    const appBaseUrl = (process.env.NEXT_PUBLIC_APP_URL || '').replace(/\/$/, '')
+    const isDevelopment = process.env.NODE_ENV !== 'production'
+    const envBaseUrl = (process.env.NEXT_PUBLIC_APP_URL || '').replace(/\/$/, '')
+    const appBaseUrl =
+      (isDevelopment ? (request.nextUrl.origin || '').replace(/\/$/, '') : '') ||
+      envBaseUrl ||
+      (request.nextUrl.origin || '').replace(/\/$/, '')
     const eventDate = (eventData as any).date ? new Date((eventData as any).date).toLocaleDateString('en-US') : 'TBD'
 
     let sent = 0

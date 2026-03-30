@@ -5,7 +5,7 @@ import twilio from 'twilio'
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL || '', process.env.SUPABASE_SERVICE_ROLE_KEY || '')
 
 // Initialize Twilio for WhatsApp
-const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_API_KEY_SECRET)
+const twilioClient = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
 
 // Upload proof image for bank transfer
 export async function POST(request: NextRequest) {

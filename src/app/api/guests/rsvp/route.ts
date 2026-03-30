@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
       .eq('id', guest_id)
       .eq('event_id', event_id)
       .single()
-    
+
     guest = result.data
 
     if (!guest) {

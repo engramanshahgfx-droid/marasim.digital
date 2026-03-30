@@ -63,7 +63,7 @@ export default function AdminDashboard() {
         style={isArabic ? { fontFamily: "'Tajawal', sans-serif" } : {}}
       >
         {/* Sidebar */}
-        <div className="w-64 bg-gray-900 p-6 text-white">
+        <div className={`w-64 bg-gray-900 p-6 text-white ${isArabic ? 'text-right' : 'text-left'}`}>
           <div className="mb-6 flex items-center justify-between">
             <h1 className="text-2xl font-bold">{isArabic ? 'لوحة التحكم' : 'Admin Panel'}</h1>
             <button
@@ -87,7 +87,7 @@ export default function AdminDashboard() {
               <button
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
-                className={`w-full rounded-lg px-4 py-2 text-left transition ${
+                className={`w-full rounded-lg px-4 py-2 transition ${isArabic ? 'text-right' : 'text-left'} ${
                   activeTab === item.id ? 'bg-blue-600 text-white' : 'text-gray-300 hover:bg-gray-800'
                 }`}
               >
@@ -98,7 +98,7 @@ export default function AdminDashboard() {
 
           <button
             onClick={handleLogout}
-            className="mt-12 w-full rounded-lg bg-red-600 px-4 py-2 text-white transition hover:bg-red-700"
+            className={`mt-12 w-full rounded-lg bg-red-600 px-4 py-2 text-white transition hover:bg-red-700 ${isArabic ? 'text-right' : 'text-left'}`}
           >
             🚪 {isArabic ? 'تسجيل الخروج' : 'Logout'}
           </button>
@@ -297,6 +297,33 @@ function UsersManagement() {
     setSelectedPlan('basic')
   }
 
+  const handleDeleteUser = async (userId: string, userEmail: string) => {
+    const confirmed = window.confirm(
+      isArabic
+        ? `هل أنت متأكد أنك تريد حذف المستخدم ${userEmail}؟ لا يمكن التراجع عن هذا الإجراء.`
+        : `Are you sure you want to delete user ${userEmail}? This action cannot be undone.`
+    )
+    if (!confirmed) return
+
+    try {
+      const { data: authData } = await supabase.auth.getUser()
+      if (!authData?.user?.id) throw new Error('Not authenticated')
+
+      const response = await fetch('/api/admin/users/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ adminId: authData.user.id, userId }),
+      })
+
+      const payload = await response.json()
+      if (!response.ok) throw new Error(payload.error || 'Failed to delete user')
+
+      await fetchUsers()
+    } catch (error) {
+      alert(error instanceof Error ? error.message : 'Failed to delete user')
+    }
+  }
+
   const handleConfirmUpgrade = async () => {
     if (!upgradeModal.userId || !selectedPlan || !admin) {
       alert('Please select a plan')
@@ -394,12 +421,22 @@ function UsersManagement() {
                 <td className="px-6 py-4 text-sm text-gray-900">{user.plan_type || 'free'}</td>
                 <td className="px-6 py-4 text-sm text-gray-600">{formatDate(user.created_at)}</td>
                 <td className="px-6 py-4 text-sm">
-                  <button
-                    onClick={() => handleUpgradeClick(user.id)}
-                    className="font-medium text-blue-600 hover:text-blue-900"
-                  >
-                    {isArabic ? 'ترقية' : 'Upgrade'}
-                  </button>
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={() => handleUpgradeClick(user.id)}
+                      className="font-medium text-blue-600 hover:text-blue-900"
+                    >
+                      {isArabic ? 'ترقية' : 'Upgrade'}
+                    </button>
+                    {user.role !== 'super_admin' && (
+                      <button
+                        onClick={() => handleDeleteUser(user.id, user.email)}
+                        className="font-medium text-red-600 hover:text-red-900"
+                      >
+                        {isArabic ? 'حذف' : 'Delete'}
+                      </button>
+                    )}
+                  </div>
                 </td>
               </tr>
             ))}

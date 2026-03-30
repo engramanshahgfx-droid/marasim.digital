@@ -254,7 +254,8 @@ export default function EventGuestPaymentsPage() {
         }
 
         const payload = await eventsResponse.json()
-        const mapped = (payload || []).map((event: any) => ({
+        const safedPayload = Array.isArray(payload) ? payload : payload?.events || []
+        const mapped = (safedPayload || []).map((event: any) => ({
           id: String(event.id),
           name: String(event.name || ''),
           date: String(event.date || ''),

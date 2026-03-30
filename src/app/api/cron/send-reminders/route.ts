@@ -40,7 +40,12 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to fetch events for reminders' }, { status: 500 })
     }
 
-    const appUrl = (process.env.NEXT_PUBLIC_APP_URL || '').replace(/\/$/, '')
+    const isDevelopment = process.env.NODE_ENV !== 'production'
+    const envBaseUrl = (process.env.NEXT_PUBLIC_APP_URL || '').replace(/\/$/, '')
+    const appUrl =
+      (isDevelopment ? (request.nextUrl.origin || '').replace(/\/$/, '') : '') ||
+      envBaseUrl ||
+      (request.nextUrl.origin || '').replace(/\/$/, '')
     const results: Array<{ eventId: string; sent: number; failed: number; pendingGuests: number }> = []
 
     for (const event of events || []) {

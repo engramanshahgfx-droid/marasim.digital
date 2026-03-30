@@ -96,6 +96,26 @@ function buildInvitationImageUrl(appBaseUrl: string, shareLink: string, guestId:
 
 function resolveAppBaseUrl(request: NextRequest) {
   const envUrl = (process.env.NEXT_PUBLIC_APP_URL || '').trim()
+  const isDevelopment = process.env.NODE_ENV !== 'production'
+
+  if (isDevelopment) {
+    const originHeader = request.headers.get('origin')
+    if (originHeader) {
+      return originHeader.replace(/\/$/, '')
+    }
+
+    const forwardedHost = request.headers.get('x-forwarded-host')
+    const forwardedProto = request.headers.get('x-forwarded-proto') || 'http'
+    if (forwardedHost) {
+      return `${forwardedProto}://${forwardedHost}`.replace(/\/$/, '')
+    }
+
+    const nextOrigin = (request.nextUrl.origin || '').replace(/\/$/, '')
+    if (nextOrigin) {
+      return nextOrigin
+    }
+  }
+
   if (envUrl) {
     return envUrl.replace(/\/$/, '')
   }
@@ -416,20 +436,23 @@ export async function POST(request: NextRequest) {
         }
 
         const invitationCardMessage = [
-          messageMeta.invitationLink ? `Open your invitation: ${messageMeta.invitationLink}` : '',
+          messageMeta.invitationLink ? 'Open your invitation:' : '',
+          messageMeta.invitationLink || '',
           'The attached invitation card can be shared with guests.',
         ]
           .filter(Boolean)
-          .join(' ')
+          .join('\n')
 
         const qrMessage = [
           messageMeta.qrToken ? `Check-in code: ${messageMeta.qrToken}` : '',
-          messageMeta.qrToken ? `QR link: ${buildQrMediaUrl(messageMeta.qrToken)}` : '',
-          messageMeta.invitationLink ? `Invitation: ${messageMeta.invitationLink}` : '',
+          messageMeta.qrToken ? 'QR link:' : '',
+          messageMeta.qrToken ? buildQrMediaUrl(messageMeta.qrToken) : '',
+          messageMeta.invitationLink ? 'Invitation:' : '',
+          messageMeta.invitationLink || '',
           'The attached QR can be shown at entry.',
         ]
           .filter(Boolean)
-          .join(' ')
+          .join('\n')
 
         const stepResults: Array<{
           step: 'invitation_card' | 'qr'

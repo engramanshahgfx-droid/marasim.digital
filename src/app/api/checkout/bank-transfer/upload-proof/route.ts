@@ -15,7 +15,7 @@ function makeSupabase() {
 
 function getTwilio() {
   try {
-    return twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_API_KEY_SECRET)
+    return twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN)
   } catch {
     return null
   }
