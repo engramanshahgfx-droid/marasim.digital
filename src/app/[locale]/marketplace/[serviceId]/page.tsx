@@ -7,18 +7,6 @@ import Link from 'next/link'
 import { use, useEffect, useState } from 'react'
 
 interface ServiceWithRelations extends Service {
-  providers?: {
-    id: string
-    business_name: string
-    business_name_ar?: string
-    business_description?: string
-    business_description_ar?: string
-    rating: number
-    reviews_count: number
-    is_verified: boolean
-    logo_url?: string
-    website_url?: string
-  }
   service_reviews?: ServiceReview[]
 }
 

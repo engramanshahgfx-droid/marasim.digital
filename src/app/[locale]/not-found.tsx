@@ -5,8 +5,8 @@ export const metadata = {
   description: 'The page you are looking for does not exist',
 }
 
-export default function NotFound({ params }: { params: { locale: string } }) {
-  const locale = params.locale
+export default function NotFound({ params }: { params?: { locale?: string } }) {
+  const locale = params?.locale === 'ar' ? 'ar' : 'en'
   const isArabic = locale === 'ar'
 
   const title = isArabic ? 'الصفحة غير موجودة' : '404 - Page Not Found'

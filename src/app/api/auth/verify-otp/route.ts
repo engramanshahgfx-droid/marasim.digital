@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check rate limit
-    const identifier = getClientIdentifier(normalizedEmail, normalizedPhone, ip)
+    const identifier = getClientIdentifier(normalizedEmail || undefined, normalizedPhone || undefined, ip)
     const rateLimit = checkRateLimit(identifier, RATE_LIMITS.verifyOTP)
 
     if (!rateLimit.allowed) {

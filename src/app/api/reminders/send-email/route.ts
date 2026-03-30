@@ -94,7 +94,7 @@ export async function POST(request: NextRequest) {
       html: template.body,
     })
 
-    if (!emailResult.id) {
+    if (emailResult.error || !emailResult.data?.id) {
       throw new Error('Failed to send email')
     }
 
@@ -108,7 +108,7 @@ export async function POST(request: NextRequest) {
         status: 'sent',
         content: {
           subject: template.subject,
-          resendId: emailResult.id,
+          resendId: emailResult.data?.id,
         },
         sent_at: new Date().toISOString(),
       })
@@ -117,7 +117,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       message: 'Reminder sent successfully',
-      emailId: emailResult.id,
+      emailId: emailResult.data?.id,
     })
   } catch (error) {
     console.error('Error sending reminder email:', error)

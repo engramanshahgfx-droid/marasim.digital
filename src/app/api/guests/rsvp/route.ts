@@ -28,12 +28,15 @@ export async function POST(request: NextRequest) {
     }
 
     // Verify guest exists and try to resolve event mismatch.
-    const { data: guest, error: _guestError } = await supabase
+    let guest: any
+    const result = await supabase
       .from('guests')
       .select('id, event_id, status')
       .eq('id', guest_id)
       .eq('event_id', event_id)
       .single()
+    
+    guest = result.data
 
     if (!guest) {
       const fallbackResult = await supabase.from('guests').select('id, event_id, status').eq('id', guest_id).single()

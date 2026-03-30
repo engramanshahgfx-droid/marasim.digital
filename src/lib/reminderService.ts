@@ -40,7 +40,7 @@ export async function sendPendingReminders(reminderType: string = 'initial') {
         },
       }
     } else if (reminderType === 'reminder_1_hour') {
-      _eventFilter = {
+      eventFilter = {
         event_date: {
           gte: new Date().toISOString(),
           lte: oneHourFromNow.toISOString(),

@@ -35,7 +35,7 @@ export default function AdminDashboard() {
       }
 
       setAdmin(adminUser)
-    } catch (error) {
+    } catch (_error) {
       router.push('/admin-login')
     } finally {
       setLoading(false)

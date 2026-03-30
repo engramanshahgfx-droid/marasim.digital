@@ -31,7 +31,7 @@ export async function parseCSV(fileContent: string): Promise<GuestRecord[]> {
 
         resolve(guests.filter((g) => g.name.trim()))
       },
-      error: (error) => reject(new Error(`CSV parsing error: ${error.message}`)),
+      error: (error: any) => reject(new Error(`CSV parsing error: ${error.message}`)),
     })
   })
 }
@@ -85,7 +85,7 @@ export function validateGuestRecords(guests: GuestRecord[]): {
       return
     }
 
-    if (guest.plus_ones < 0) {
+    if ((guest.plus_ones ?? 0) < 0) {
       errors.push({ row: index + 1, error: 'Plus ones cannot be negative' })
       return
     }

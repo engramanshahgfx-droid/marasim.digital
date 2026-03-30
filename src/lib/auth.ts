@@ -1,3 +1,4 @@
+import type { Database } from '@/types/database'
 import { supabase } from './supabase'
 
 // Send email OTP via Resend (server-side API route)
@@ -125,7 +126,7 @@ export async function updateUserProfile(
   userId: string,
   updates: Partial<Database['public']['Tables']['users']['Update']>
 ) {
-  const { data, error } = await supabase.from('users').update(updates).eq('id', userId).select().single()
+  const { data, error } = await (supabase.from('users') as any).update(updates).eq('id', userId).select().single()
 
   if (error) throw error
   return data as Database['public']['Tables']['users']['Row'] | undefined

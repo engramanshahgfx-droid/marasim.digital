@@ -12,7 +12,7 @@ export interface Database {
           email: string
           full_name: string | null
           role: 'admin' | 'staff'
-          subscription_status: 'active' | 'inactive' | 'cancelled' | 'pending'
+          subscription_status: 'active' | 'inactive' | 'cancelled' | 'pending' | 'trial'
           plan_type: 'basic' | 'pro' | 'enterprise'
           subscription_expiry: string | null
           payment_status: 'pending' | 'paid' | 'failed'
@@ -28,7 +28,7 @@ export interface Database {
           email: string
           full_name?: string | null
           role?: 'admin' | 'staff'
-          subscription_status?: 'active' | 'inactive' | 'cancelled' | 'pending'
+          subscription_status?: 'active' | 'inactive' | 'cancelled' | 'pending' | 'trial'
           plan_type?: 'basic' | 'pro' | 'enterprise'
           subscription_expiry?: string | null
           payment_status?: 'pending' | 'paid' | 'failed'
@@ -44,7 +44,7 @@ export interface Database {
           email?: string
           full_name?: string | null
           role?: 'admin' | 'staff'
-          subscription_status?: 'active' | 'inactive' | 'cancelled' | 'pending'
+          subscription_status?: 'active' | 'inactive' | 'cancelled' | 'pending' | 'trial'
           plan_type?: 'basic' | 'pro' | 'enterprise'
           subscription_expiry?: string | null
           payment_status?: 'pending' | 'paid' | 'failed'

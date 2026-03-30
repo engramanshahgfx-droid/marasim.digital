@@ -61,10 +61,13 @@ export interface InvitationData {
   location_ar?: string
   description: string
   description_ar?: string
+  title?: string
+  title_ar?: string
   host_name: string
   host_name_ar?: string
   dress_code?: string
   dress_code_ar?: string
+  footer_text?: string
   rsvp_by?: string
   guest_count?: number
   custom_colors?: {
